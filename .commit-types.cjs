@@ -1,0 +1,26 @@
+module.exports = {
+  TYPES: [
+    "feat",
+    "fix",
+    "docs",
+    "style",
+    "refactor",
+    "perf",
+    "test",
+    "chore",
+    "rename",
+    "remove",
+  ],
+  EMOJIS: {
+    feat: "✨",
+    fix: "🐛",
+    docs: "📝",
+    style: "💄",
+    refactor: "♻️",
+    perf: "⚡",
+    test: "✅",
+    chore: "🔧",
+    rename: "📛",
+    remove: "🗑️",
+  },
+};
