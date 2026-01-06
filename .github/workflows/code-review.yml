@@ -1,0 +1,204 @@
+name: Gemini Code Review
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+
+jobs:
+  code-review:
+    name: Gemini Code Review
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v44
+        with:
+          files: |
+            **/*.ts
+            **/*.tsx
+            **/*.js
+            **/*.jsx
+
+      - name: Generate diff
+        id: diff
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            git diff origin/${{ github.base_ref }}...HEAD > diff.txt
+          else
+            git diff HEAD~1 HEAD > diff.txt
+          fi
+          
+          # 변경된 파일 목록 저장
+          git diff --name-only origin/${{ github.base_ref }}...HEAD 2>/dev/null || git diff --name-only HEAD~1 HEAD > changed_files.txt || echo "No changes"
+          
+          # diff 내용을 환경 변수로 저장 (최대 길이 제한)
+          DIFF_CONTENT=$(cat diff.txt | head -c 50000)
+          echo "diff_content<<EOF" >> $GITHUB_OUTPUT
+          echo "$DIFF_CONTENT" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+          
+          # 변경된 파일 목록
+          CHANGED_FILES=$(cat changed_files.txt 2>/dev/null | tr '\n' ',' || echo "None")
+          echo "changed_files=$CHANGED_FILES" >> $GITHUB_OUTPUT
+
+      - name: Install jq
+        run: sudo apt-get update && sudo apt-get install -y jq
+
+      - name: Run Gemini Code Review
+        id: review
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: |
+          if [ -z "$GEMINI_API_KEY" ]; then
+            echo "⚠️ GEMINI_API_KEY가 설정되지 않았습니다."
+            echo "GitHub 리포지토리 Settings > Secrets and variables > Actions에서 GEMINI_API_KEY를 추가해주세요."
+            exit 1
+          fi
+
+          # 변경된 파일이 없으면 종료
+          if [ ! -s diff.txt ] || [ "${{ steps.diff.outputs.changed_files }}" = "None" ]; then
+            echo "변경된 파일이 없습니다."
+            exit 0
+          fi
+
+          # PR 정보 수집 (이스케이프 처리)
+          PR_NUMBER=${{ github.event.pull_request.number }}
+          PR_TITLE=$(echo "${{ github.event.pull_request.title }}" | sed 's/"/\\"/g' | sed "s/'/\\'/g")
+          PR_BODY=$(echo "${{ github.event.pull_request.body }}" | sed 's/"/\\"/g' | sed "s/'/\\'/g" | head -500)
+          
+          # Diff 내용 읽기 (크기 제한)
+          DIFF_CONTENT=$(cat diff.txt | head -c 80000 | sed 's/"/\\"/g' | sed 's/$/\\n/' | tr -d '\n')
+          
+          # 프롬프트 생성
+          PROMPT="당신은 경험 많은 코드 리뷰어입니다. 다음 Pull Request에 대한 코드 리뷰를 수행해주세요.
+
+PR 제목: ${PR_TITLE}
+PR 설명: ${PR_BODY}
+
+변경된 파일:
+\`\`\`diff
+${DIFF_CONTENT}
+\`\`\`
+
+다음 항목에 대해 리뷰해주세요:
+1. 코드 품질 및 버그 가능성
+2. 성능 이슈
+3. 보안 문제
+4. 코드 스타일 및 베스트 프랙티스
+5. 테스트 커버리지
+6. 문서화
+
+리뷰 결과를 한국어로 작성해주세요. 구조화된 마크다운 형식으로 작성하고, 중요한 이슈는 🔴, 경고는 🟡, 제안사항은 💡, 긍정적인 부분은 ✅로 표시해주세요."
+
+          # JSON 페이로드 생성
+          JSON_PAYLOAD=$(jq -n \
+            --arg prompt "$PROMPT" \
+            '{
+              contents: [{
+                parts: [{
+                  text: $prompt
+                }]
+              }]
+            }')
+          
+          # Gemini API를 사용한 코드 리뷰 요청
+          REVIEW_RESPONSE=$(curl -s -w "\nHTTP_CODE:%{http_code}" -X POST \
+            "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}" \
+            -H "Content-Type: application/json" \
+            -d "$JSON_PAYLOAD")
+          
+          # HTTP 상태 코드 분리
+          HTTP_CODE=$(echo "$REVIEW_RESPONSE" | grep "HTTP_CODE:" | cut -d: -f2)
+          BODY=$(echo "$REVIEW_RESPONSE" | sed '/HTTP_CODE:/d')
+          
+          # 응답 검증
+          if [ "$HTTP_CODE" != "200" ]; then
+            echo "⚠️ Gemini API 호출 실패 (HTTP $HTTP_CODE):"
+            echo "$BODY" | jq '.' 2>/dev/null || echo "$BODY"
+            REVIEW_TEXT="## ⚠️ 코드 리뷰 생성 실패\n\nGemini API 호출 중 오류가 발생했습니다 (HTTP $HTTP_CODE).\n\nAPI 키와 설정을 확인해주세요."
+          else
+            # 응답에서 리뷰 내용 추출
+            REVIEW_TEXT=$(echo "$BODY" | jq -r '.candidates[0].content.parts[0].text' 2>/dev/null)
+            
+            if [ "$REVIEW_TEXT" = "null" ] || [ -z "$REVIEW_TEXT" ]; then
+              echo "⚠️ Gemini API 응답 파싱 오류:"
+              echo "$BODY" | jq '.' 2>/dev/null || echo "$BODY"
+              REVIEW_TEXT="## ⚠️ 코드 리뷰 생성 실패\n\nGemini API 응답을 파싱하는 중 오류가 발생했습니다."
+            fi
+          fi
+          
+          # 리뷰 내용을 파일로 저장
+          echo "$REVIEW_TEXT" > review.md
+          
+          # GitHub Actions 출력에 저장
+          {
+            echo "review<<EOF"
+            echo "$REVIEW_TEXT"
+            echo "EOF"
+          } >> $GITHUB_OUTPUT
+
+      - name: Post review comment
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const reviewContent = fs.readFileSync('review.md', 'utf8');
+            
+            // 기존 봇 리뷰 코멘트 찾기
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+            });
+            
+            const botComment = comments.find(
+              comment => comment.user.type === 'Bot' && comment.body.includes('## 🤖 Gemini Code Review')
+            );
+            
+            const body = `## 🤖 Gemini Code Review\n\n${reviewContent}\n\n---\n*이 리뷰는 Gemini AI를 사용하여 자동으로 생성되었습니다.*`;
+            
+            if (botComment) {
+              // 기존 코멘트 업데이트
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: botComment.id,
+                body: body,
+              });
+            } else {
+              // 새 코멘트 생성
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body: body,
+              });
+            }
+
+      - name: Review summary
+        if: always()
+        run: |
+          if [ -f review.md ]; then
+            echo "## 📋 리뷰 요약"
+            echo ""
+            cat review.md | head -20
+          fi
+
