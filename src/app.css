@@ -25,33 +25,6 @@
     "TossFace", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
 }
 
-:root {
-  --color-blue-001: #e6f0ff;
-  --color-blue-002: #b3d4ff;
-  --color-blue-003: #4d8fe6;
-  --color-blue-004: #09317c;
-  --color-gray-001: #fafafa;
-  --color-gray-002: #f0f0f0;
-  --color-gray-003: #e0e0e0;
-  --color-gray-004: #c0c0c0;
-  --color-gray-005: #808080;
-  --color-gray-006: #606060;
-  --color-gray-007: #404040;
-  --color-gray-008: #202020;
-  --color-kakao: #ffe812;
-  --color-red: #ed0202;
-  --color-positive: #11d888;
-  --color-positive-background: #11d8880f;
-  --color-negative: #ff5f4e;
-  --color-negative-background: #ff5f4e0f;
-  --color-white: #fff;
-  --color-black: #222;
-  --background-rgb: var(--color-white);
-  --foreground-rgb: var(--color-black);
-  --font-tossface:
-    "TossFace", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
-}
-
 body {
   background: var(--color-white);
   color: var(--color-black);
