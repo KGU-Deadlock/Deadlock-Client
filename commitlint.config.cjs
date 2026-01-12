@@ -5,7 +5,7 @@ module.exports = {
   parserPreset: {
     parserOpts: {
       headerPattern:
-        /^(?<emoji>[\u{1F300}-\u{1F9FF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}])\s\[(?<type>feat|fix|chore|docs|style|refactor|test|perf|rename|remove)\]\s(?<subject>.+)$/u,
+        /^(?<emoji>[\u{1F300}-\u{1F9FF}\u{1F600}-\u{1F64F}\u{1F680}-\u{1F6FF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}\u{1F5D1}]\u{FE0F}?)\s\[(?<type>feat|fix|chore|docs|style|refactor|test|perf|rename|remove)\]\s(?<subject>.+)$/u,
       headerCorrespondence: ["emoji", "type", "subject"],
     },
   },
