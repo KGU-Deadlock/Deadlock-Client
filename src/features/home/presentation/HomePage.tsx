@@ -1,6 +1,6 @@
 import { SubTitle, Title } from "~/shared/components";
 
-import HomeStrickCard from "./HomeStrickCard";
+import HomeStreakCard from "./HomeStreakCard";
 import HomeSelectButton from "./HomeSelectButton";
 import HomeRankingItem from "./HomeRankingItem";
 
@@ -12,7 +12,7 @@ export default function HomePage() {
         <span class="text-lg font-medium">{USER}</span>님 안녕하세요!
       </section>
       <section class="w-full px-4">
-        <HomeStrickCard />
+        <HomeStreakCard />
       </section>
       <section class="flex w-full gap-4 px-4">
         <HomeSelectButton

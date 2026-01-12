@@ -1,6 +1,6 @@
 import { SubTitle, Title } from "~/shared/components";
 
-export default function HomeStrickCard() {
+export default function HomeStreakCard() {
   const streakDays = 4;
   const daysPerRow = 7;
   const totalRows = 3;
@@ -16,12 +16,7 @@ export default function HomeStrickCard() {
           </div>
           <div class="flex items-center gap-1">
             <span class="font-tossface text-3xl">🔥</span>
-            <span
-              class="text-2xl font-bold"
-              style="color: var(--color-positive)"
-            >
-              {streakDays}
-            </span>
+            <span class="text-positive text-2xl font-bold">{streakDays}</span>
           </div>
         </div>
         <div class="flex flex-col gap-1">
