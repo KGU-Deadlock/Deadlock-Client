@@ -1,4 +1,3 @@
-import { A } from "@solidjs/router";
 import { Header, Title } from "~/shared/components";
 
 export default function QuizVoicePage() {
