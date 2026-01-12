@@ -1,11 +1,11 @@
-import { createMemo } from "solid-js";
+import { createMemo, JSX } from "solid-js";
 import { cn } from "~/shared/utils/cn";
 
 export interface ButtonProps {
   variant?: "default" | "disabled" | "select";
   size?: "medium" | "large";
   disabled?: boolean;
-  children?: any;
+  children?: JSX.Element;
   onClick?: (e: MouseEvent) => void;
   className?: string;
   [key: string]: any;

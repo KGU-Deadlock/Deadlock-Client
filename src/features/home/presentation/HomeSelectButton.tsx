@@ -1,7 +1,7 @@
 import { A } from "@solidjs/router";
 import { SubTitle, Title } from "~/shared/components";
 
-interface SelectButtonProps {
+interface HomeSelectButtonProps {
   title: string;
   icon: string;
   subtitle: string;
@@ -13,7 +13,7 @@ export default function HomeSelectButton({
   icon,
   subtitle,
   href,
-}: SelectButtonProps) {
+}: HomeSelectButtonProps) {
   return (
     <A
       href={href}

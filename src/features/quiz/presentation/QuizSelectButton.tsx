@@ -1,10 +1,10 @@
-import { createEffect, createSignal } from "solid-js";
+import { createEffect, createSignal, JSX } from "solid-js";
 import { SubTitle, Title } from "~/shared/components";
 
 interface QuizSelectButtonProps {
   icon: string;
   title: string;
-  subtitle: string | any;
+  subtitle: string | JSX.Element;
   isSelected?: () => boolean;
   onClick?: () => void;
 }
