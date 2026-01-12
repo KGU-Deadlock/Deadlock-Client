@@ -31,7 +31,7 @@ export default function QuizSelectButton({
     <button
       class="grid h-[20vh] place-items-center rounded-[8px] border focus:outline-none"
       classList={{
-        "border-blue-004 bg-blue-004/6 text-blue-004": active(),
+        "border-blue-004 bg-blue-004/10 text-blue-004": active(),
         "border-gray-003": !active(),
       }}
       onClick={handleClick}

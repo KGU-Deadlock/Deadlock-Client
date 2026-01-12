@@ -6,7 +6,7 @@ export interface ButtonProps {
   size?: "medium" | "large";
   disabled?: boolean;
   children?: JSX.Element;
-  onClick?: (e: MouseEvent) => void;
+  onClick?: JSX.EventHandler<HTMLButtonElement, MouseEvent>;
   className?: string;
   [key: string]: any;
 }
