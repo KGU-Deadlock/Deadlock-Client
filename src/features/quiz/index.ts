@@ -4,6 +4,7 @@ export { default as QuizMultipleChoicePage } from "./presentation/QuizMultipleCh
 export { default as QuizSubjectivePage } from "./presentation/QuizSubjectivePage";
 export { default as QuizResultPage } from "./presentation/QuizResultPage";
 export { default as QuizVoicePage } from "./presentation/QuizVoicePage";
+export { default as VoiceQuizResultPage } from "./presentation/VoiceQuizResultPage";
 export { default as CategorySelectionPage } from "./presentation/CategorySelectionPage";
 export { default as AgreementPage } from "./presentation/AgreementPage";
 export type {
@@ -12,6 +13,9 @@ export type {
   MultipleChoiceQuestion,
   MultipleChoiceOption,
   SubjectiveQuestion,
+  VoiceQuestion,
+  VoiceFeedbackItem,
+  VoiceQuizResult,
   QuizProgress,
   QuestionType,
   QuizResult,

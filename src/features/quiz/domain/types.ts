@@ -57,6 +57,26 @@ export interface Category {
 
 export type QuizMode = "normal" | "voice";
 
+export interface VoiceQuestion {
+  id: string;
+  question: string;
+  explanation?: string;
+}
+
+export interface VoiceFeedbackItem {
+  type: "answer" | "missing" | "correct";
+  text: string;
+  highlightedKeywords?: string[];
+}
+
+export interface VoiceQuizResult {
+  questionId: string;
+  questionNumber: number;
+  question: string;
+  userAnswer: string;
+  feedback: VoiceFeedbackItem[];
+}
+
 export interface AgreementItem {
   id: string;
   label: string;
