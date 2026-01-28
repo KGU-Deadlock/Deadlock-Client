@@ -32,3 +32,20 @@ export interface QuizProgress {
   currentQuestionIndex: number;
   totalQuestions: number;
 }
+
+export type QuestionType = "ox" | "multiple-choice" | "subjective";
+
+export interface QuizResultItem {
+  questionId: string;
+  questionNumber: number;
+  questionType: QuestionType;
+  question: string;
+  isCorrect: boolean;
+  explanation?: string;
+}
+
+export interface QuizResult {
+  totalQuestions: number;
+  correctCount: number;
+  items: QuizResultItem[];
+}
