@@ -7,6 +7,19 @@ export interface QuizQuestion {
   explanation?: string;
 }
 
+export interface MultipleChoiceOption {
+  id: string;
+  text: string;
+}
+
+export interface MultipleChoiceQuestion {
+  id: string;
+  question: string;
+  options: MultipleChoiceOption[];
+  correctAnswerId: string;
+  explanation?: string;
+}
+
 export interface QuizProgress {
   currentQuestionIndex: number;
   totalQuestions: number;
