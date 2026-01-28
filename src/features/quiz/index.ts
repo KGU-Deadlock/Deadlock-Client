@@ -5,6 +5,7 @@ export { default as QuizSubjectivePage } from "./presentation/QuizSubjectivePage
 export { default as QuizResultPage } from "./presentation/QuizResultPage";
 export { default as QuizVoicePage } from "./presentation/QuizVoicePage";
 export { default as CategorySelectionPage } from "./presentation/CategorySelectionPage";
+export { default as AgreementPage } from "./presentation/AgreementPage";
 export type {
   AnswerType,
   QuizQuestion,
@@ -17,4 +18,6 @@ export type {
   QuizResultItem,
   Category,
   QuizMode,
+  AgreementItem,
+  AgreementState,
 } from "./domain/types";

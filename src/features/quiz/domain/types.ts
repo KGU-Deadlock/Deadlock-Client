@@ -56,3 +56,16 @@ export interface Category {
 }
 
 export type QuizMode = "normal" | "voice";
+
+export interface AgreementItem {
+  id: string;
+  label: string;
+  isRequired: boolean;
+  isOptional?: boolean;
+  onViewDetails?: () => void;
+}
+
+export interface AgreementState {
+  allAgreed: boolean;
+  items: Record<string, boolean>;
+}

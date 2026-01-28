@@ -6,7 +6,6 @@ export default function ChevronRightIcon() {
       viewBox="0 0 24 24"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      class="text-gray-005"
     >
       <path
         d="M9 18L15 12L9 6"
