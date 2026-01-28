@@ -20,6 +20,14 @@ export interface MultipleChoiceQuestion {
   explanation?: string;
 }
 
+export interface SubjectiveQuestion {
+  id: string;
+  question: string;
+  maxLength?: number;
+  placeholder?: string;
+  explanation?: string;
+}
+
 export interface QuizProgress {
   currentQuestionIndex: number;
   totalQuestions: number;
