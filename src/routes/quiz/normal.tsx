@@ -1,3 +1,5 @@
+import { QuizNormalPage } from "~/features/quiz";
+
 export default function NormalQuiz() {
-  return <main class="mx-auto min-h-screen overflow-hidden"></main>;
+  return <QuizNormalPage />;
 }
