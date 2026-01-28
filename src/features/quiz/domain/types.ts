@@ -49,3 +49,10 @@ export interface QuizResult {
   correctCount: number;
   items: QuizResultItem[];
 }
+
+export interface Category {
+  id: string;
+  name: string;
+}
+
+export type QuizMode = "normal" | "voice";

@@ -4,6 +4,7 @@ export { default as QuizMultipleChoicePage } from "./presentation/QuizMultipleCh
 export { default as QuizSubjectivePage } from "./presentation/QuizSubjectivePage";
 export { default as QuizResultPage } from "./presentation/QuizResultPage";
 export { default as QuizVoicePage } from "./presentation/QuizVoicePage";
+export { default as CategorySelectionPage } from "./presentation/CategorySelectionPage";
 export type {
   AnswerType,
   QuizQuestion,
@@ -14,4 +15,6 @@ export type {
   QuestionType,
   QuizResult,
   QuizResultItem,
+  Category,
+  QuizMode,
 } from "./domain/types";
