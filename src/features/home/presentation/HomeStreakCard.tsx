@@ -1,10 +1,26 @@
+import { A } from "@solidjs/router";
 import { SubTitle, Title } from "~/shared/components";
 
 export default function HomeStreakCard() {
   const streakDays = 4;
-  const daysPerRow = 7;
-  const totalRows = 3;
-  // const totalDays = daysPerRow * totalRows;
+  const daysPerRow = 14;
+  const totalRows = 4;
+  const totalDays = daysPerRow * totalRows;
+
+  const getActivityColor = (dayIndex: number): string => {
+    if (dayIndex >= streakDays) {
+      return "bg-gray-002";
+    }
+    // 최근 날짜일수록 더 진한 초록색
+    const daysFromEnd = streakDays - dayIndex;
+    if (daysFromEnd === 1) {
+      return "bg-[#66BB6A]"; // 진한 초록
+    } else if (daysFromEnd === 2) {
+      return "bg-[#A5D6A7]"; // 중간 초록
+    } else {
+      return "bg-[#D4EDD4]"; // 연한 초록
+    }
+  };
 
   return (
     <div class="box-border h-fit w-full rounded-2xl bg-white p-6">
@@ -14,27 +30,20 @@ export default function HomeStreakCard() {
             <Title>연속 스트릭</Title>
             <SubTitle>{`현재 ${streakDays}일째 공부 중이에요`}</SubTitle>
           </div>
-          <div class="flex items-center gap-1">
-            <span class="font-tossface text-3xl">🔥</span>
-            <span class="text-positive text-2xl font-bold">{streakDays}</span>
-          </div>
+          <A href="/my/study" class="text-gray-005 hover:text-gray-008 text-sm">
+            더보기
+          </A>
         </div>
-        <div class="flex flex-col gap-1">
-          {Array.from({ length: totalRows }).map((_, rowIndex) => (
-            <div class="flex w-full gap-1">
-              {Array.from({ length: daysPerRow }).map((_, dayIndex) => {
-                const dayNumber = rowIndex * daysPerRow + dayIndex;
-                const isActive = dayNumber < streakDays;
-                return (
-                  <div
-                    class={`h-6 flex-1 rounded transition-colors ${
-                      isActive ? "bg-positive" : "bg-gray-100"
-                    }`}
-                  />
-                );
-              })}
-            </div>
-          ))}
+        <div class="grid grid-cols-14 gap-1">
+          {Array.from({ length: totalDays }).map((_, dayIndex) => {
+            const isActive = dayIndex < streakDays;
+            return (
+              <div
+                class={`aspect-square rounded transition-colors ${getActivityColor(dayIndex)}`}
+                aria-label={`${dayIndex + 1}일차`}
+              />
+            );
+          })}
         </div>
       </div>
     </div>

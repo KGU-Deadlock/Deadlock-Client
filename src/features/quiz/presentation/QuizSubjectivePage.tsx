@@ -3,67 +3,74 @@ import { useNavigate } from "@solidjs/router";
 import Button from "~/shared/components/Button";
 import CloseIcon from "~/shared/components/icons/CloseIcon";
 import ProgressBar from "./ProgressBar";
-import QuizAnswerCard from "./QuizAnswerCard";
-import type { AnswerType, QuizQuestion } from "../domain/types";
+import SubjectiveAnswerInput from "./SubjectiveAnswerInput";
+import type { SubjectiveQuestion } from "../domain/types";
 
-interface QuizNormalPageProps {
-  questions?: QuizQuestion[];
+interface QuizSubjectivePageProps {
+  questions?: SubjectiveQuestion[];
 }
 
-export default function QuizNormalPage(props: QuizNormalPageProps) {
+export default function QuizSubjectivePage(props: QuizSubjectivePageProps) {
   const navigate = useNavigate();
 
   // TODO: 실제 API 연동 시 createResource로 변경
-  const [questions] = createSignal<QuizQuestion[]>(
+  const [questions] = createSignal<SubjectiveQuestion[]>(
     props.questions ?? [
       {
         id: "1",
-        question: "프로세스와 스레드는 같은 개념이다.",
-        correctAnswer: "false",
+        question: "프로세스와 스레드의 차이를 적어보세요.",
+        maxLength: 5000,
+        placeholder: "답변을 입력하세요",
       },
       {
         id: "2",
-        question: "HTTP는 상태를 유지하는 프로토콜이다.",
-        correctAnswer: "false",
+        question: "HTTP와 HTTPS의 차이점을 설명하세요.",
+        maxLength: 5000,
+        placeholder: "답변을 입력하세요",
       },
       {
         id: "3",
-        question: "RESTful API는 REST 원칙을 따르는 API이다.",
-        correctAnswer: "true",
+        question: "RESTful API의 특징을 설명하세요.",
+        maxLength: 5000,
+        placeholder: "답변을 입력하세요",
       },
       {
         id: "4",
-        question: "JavaScript는 싱글 스레드 언어이다.",
-        correctAnswer: "true",
+        question: "JavaScript의 이벤트 루프에 대해 설명하세요.",
+        maxLength: 5000,
+        placeholder: "답변을 입력하세요",
       },
       {
         id: "5",
-        question: "CSS는 프로그래밍 언어이다.",
-        correctAnswer: "false",
+        question: "데이터베이스 정규화의 목적과 장점을 설명하세요.",
+        maxLength: 5000,
+        placeholder: "답변을 입력하세요",
       },
     ]
   );
 
   const [currentQuestionIndex, setCurrentQuestionIndex] = createSignal(0);
-  const [selectedAnswer, setSelectedAnswer] = createSignal<AnswerType | null>(
-    null
-  );
+  const [answers, setAnswers] = createSignal<Record<string, string>>({});
 
   const currentQuestion = () => questions()[currentQuestionIndex()];
   const totalQuestions = () => questions().length;
-  const hasSelectedAnswer = () => selectedAnswer() !== null;
+  const currentAnswer = () =>
+    answers()[currentQuestion().id] ?? "";
+  const hasAnswer = () => currentAnswer().trim().length > 0;
 
-  const handleAnswerSelect = (answer: AnswerType) => {
-    setSelectedAnswer(answer);
+  const handleAnswerChange = (value: string) => {
+    setAnswers({
+      ...answers(),
+      [currentQuestion().id]: value,
+    });
   };
 
   const handleContinue = () => {
-    if (!hasSelectedAnswer()) return;
+    if (!hasAnswer()) return;
 
     const nextIndex = currentQuestionIndex() + 1;
     if (nextIndex < totalQuestions()) {
       setCurrentQuestionIndex(nextIndex);
-      setSelectedAnswer(null);
     } else {
       // 퀴즈 완료 처리
       // TODO: 결과 페이지로 이동
@@ -96,30 +103,24 @@ export default function QuizNormalPage(props: QuizNormalPageProps) {
       </div>
 
       {/* Question Area */}
-      <div class="flex flex-1 flex-col items-center justify-center gap-12 px-4 py-8">
+      <div class="flex flex-1 flex-col gap-6 px-4 py-8">
         <h2 class="text-center text-xl font-medium text-gray-008">
           {currentQuestion().question}
         </h2>
 
-        {/* Answer Options */}
-        <div class="flex w-full gap-4">
-          <QuizAnswerCard
-            type="true"
-            isSelected={selectedAnswer() === "true"}
-            onClick={() => handleAnswerSelect("true")}
-          />
-          <QuizAnswerCard
-            type="false"
-            isSelected={selectedAnswer() === "false"}
-            onClick={() => handleAnswerSelect("false")}
-          />
-        </div>
+        {/* Answer Input */}
+        <SubjectiveAnswerInput
+          value={currentAnswer()}
+          maxLength={currentQuestion().maxLength}
+          placeholder={currentQuestion().placeholder}
+          onChange={handleAnswerChange}
+        />
       </div>
 
       {/* Bottom Button */}
       <div class="p-4">
         <Button
-          variant={hasSelectedAnswer() ? "default" : "disabled"}
+          variant={hasAnswer() ? "default" : "disabled"}
           size="large"
           onClick={handleContinue}
           className="w-full"

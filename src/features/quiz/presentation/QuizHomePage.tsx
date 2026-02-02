@@ -1,9 +1,11 @@
 import { Button, Header, Title } from "~/shared/components";
 import { createSignal } from "solid-js";
 import QuizSelectButton from "./QuizSelectButton";
+import { useNavigate } from "@solidjs/router";
 
 export default function QuizHomePage() {
   const [selected, setSelected] = createSignal<string>("");
+  const navigate = useNavigate();
 
   return (
     <div class="flex h-screen flex-col">
@@ -52,6 +54,10 @@ export default function QuizHomePage() {
           className="w-full"
           variant={!selected() ? "disabled" : "default"}
           size="large"
+          onClick={() => {
+            const mode = selected() === "text" ? "normal" : "voice";
+            navigate(`/quiz/category?mode=${mode}`);
+          }}
         >
           계속
         </Button>

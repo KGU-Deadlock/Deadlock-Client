@@ -1,3 +1,5 @@
+import { LoginPage } from "~/features/auth";
+
 export default function Login() {
-  return <main class="mx-auto min-h-screen overflow-hidden"></main>;
+  return <LoginPage />;
 }

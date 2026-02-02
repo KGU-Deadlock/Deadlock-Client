@@ -1,7 +1,8 @@
 import { SubTitle } from "~/shared/components";
+import MedalIcon from "~/shared/components/icons/MedalIcon";
 
 interface HomeRankingItemProps {
-  rank: string;
+  rank: number;
   name: string;
   info: string;
   score: number;
@@ -13,17 +14,32 @@ export default function HomeRankingItem({
   score,
   info,
 }: HomeRankingItemProps) {
+  const isTopThree = () => rank <= 3;
+  const isTopScore = () => rank === 1 || rank === 3;
+
   return (
-    <div class="box-border grid h-fit w-full grid-cols-8 rounded-2xl pb-4">
-      <div class="flex flex-col items-start justify-center">
-        <span class="font-tossface text-xl font-medium">{rank}</span>
+    <div class="flex items-center gap-3 py-4">
+      <div class="flex w-6 items-center justify-center">
+        {isTopThree() ? (
+          <MedalIcon rank={rank as 1 | 2 | 3} />
+        ) : (
+          <span class="text-base font-medium text-gray-008">{rank}</span>
+        )}
       </div>
-      <div class="col-span-6 flex flex-col">
-        <p class="text-sm font-medium">{name}</p>
+      <div class="flex flex-1 flex-col gap-1">
+        <p class="text-sm font-medium text-gray-008">{name}</p>
         <SubTitle>{info}</SubTitle>
       </div>
-      <div class="flex flex-col items-end justify-center">
-        <span class="text-sm font-medium text-nowrap">{score}점</span>
+      <div class="flex items-center">
+        <span
+          class="text-sm font-medium text-nowrap"
+          classList={{
+            "text-[#FF8C00]": isTopScore(),
+            "text-gray-008": !isTopScore(),
+          }}
+        >
+          {score.toLocaleString()}점
+        </span>
       </div>
     </div>
   );
