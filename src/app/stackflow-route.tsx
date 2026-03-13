@@ -5,6 +5,8 @@ import RankingPage from "@/pages/ranking/RankingPage";
 import StreakPage from "@/pages/streak/StreakPage";
 import UserPage from "@/pages/user/UserPage";
 import type { ActivityEntry } from "./stackflow-util";
+import QuizHomePage from "@/pages/quiz-home/QuizHomePage";
+import InterviewPage from "@/pages/interview/InterviewPage";
 
 export const Route: ActivityEntry[] = [
   {
@@ -36,5 +38,15 @@ export const Route: ActivityEntry[] = [
     name: "UserPage",
     component: UserPage,
     path: "/user",
+  },
+  {
+    name: "QuizHomePage",
+    component: QuizHomePage,
+    path: "/quiz-home",
+  },
+  {
+    name: "InterviewPage",
+    component: InterviewPage,
+    path: "/interview",
   },
 ];
