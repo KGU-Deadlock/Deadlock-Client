@@ -5,7 +5,7 @@
 }
 
 @theme {
-  --color-blue-001: #e6f0ff;
+  --color-blue-001: #f4f4f4;
   --color-blue-002: #b3d4ff;
   --color-blue-003: #4d8fe6;
   --color-blue-004: #09317c;
@@ -25,6 +25,12 @@
   --color-negative-background: #ff5f4e0f;
   --color-white: #fff;
   --color-black: #222;
+
+  --spacing-header: 36px;
+  --spacing-gutter: 20px;
+  --spacing-colgap: 24px;
+  --spacing-colgap-small: 16px;
+
   --font-tossface:
     "TossFace", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
 }
@@ -106,6 +112,22 @@
   src: url("/fonts/tossFace.ttf") format("truetype");
   font-weight: normal;
   font-display: swap;
+}
+
+html,
+body {
+  height: 100%;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+  -webkit-touch-callout: none;
+  -webkit-user-drag: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 body {
