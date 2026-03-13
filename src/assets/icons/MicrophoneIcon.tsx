@@ -6,7 +6,7 @@ export default function MicrophoneIcon() {
       viewBox="0 0 32 32"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      class="text-white"
+      className="text-white"
     >
       <path
         d="M16 20C18.7614 20 21 17.7614 21 15V9C21 6.23858 18.7614 4 16 4C13.2386 4 11 6.23858 11 9V15C11 17.7614 13.2386 20 16 20Z"

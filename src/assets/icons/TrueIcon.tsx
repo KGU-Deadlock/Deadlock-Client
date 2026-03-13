@@ -10,7 +10,7 @@ export default function TrueIcon(props: TrueIconProps) {
       viewBox="0 0 80 80"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      class={props.isSelected ? "text-red" : "text-gray-004"}
+      className={props.isSelected ? "text-red" : "text-gray-004"}
     >
       <circle
         cx="40"

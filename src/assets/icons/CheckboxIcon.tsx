@@ -11,16 +11,9 @@ export default function CheckboxIcon(props: CheckboxIconProps) {
         viewBox="0 0 24 24"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
-        class="text-blue-004"
+        className="text-blue-004"
       >
-        <rect
-          x="3"
-          y="3"
-          width="18"
-          height="18"
-          rx="4"
-          fill="currentColor"
-        />
+        <rect x="3" y="3" width="18" height="18" rx="4" fill="currentColor" />
         <path
           d="M8 12L11 15L16 9"
           stroke="white"
@@ -39,7 +32,7 @@ export default function CheckboxIcon(props: CheckboxIconProps) {
       viewBox="0 0 24 24"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      class="text-gray-003"
+      className="text-gray-003"
     >
       <rect
         x="3"
