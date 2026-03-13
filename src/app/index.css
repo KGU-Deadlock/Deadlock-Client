@@ -1,0 +1,16 @@
+@import "tailwindcss";
+
+#root {
+  height: 100vh;
+}
+
+.stackflow-root {
+  max-width: 480px;
+  width: 100vw;
+  margin: 0 auto;
+  height: 100vh;
+  height: 100dvh;
+  height: -webkit-fill-available;
+  position: relative;
+  overflow: hidden;
+}
