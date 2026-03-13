@@ -8,7 +8,7 @@ import { historySyncPlugin } from "@stackflow/plugin-history-sync";
 export const { Stack, useFlow } = stackflow({
   transitionDuration: 350,
   activities: routeToActivityMap(Route),
-  initialActivity: () => "HomePage",
+  initialActivity: () => "LoginPage",
   plugins: [
     basicRendererPlugin(),
     basicUIPlugin({
