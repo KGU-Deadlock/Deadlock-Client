@@ -1,6 +1,7 @@
 import { useFlow } from "@/app/stackflow";
 import type { ActivityEntry } from "@/app/stackflow-util";
 import { Subtitle, Title } from "@/components/common";
+import { StreakBoard } from "@/components/streak";
 import { AppScreen } from "@stackflow/plugin-basic-ui";
 import { RiUser3Fill } from "react-icons/ri";
 
@@ -38,7 +39,8 @@ export default function HomePage() {
             <Title>
               연속 스트릭 <span className="font-tossface">🔥</span>
             </Title>
-            <Subtitle>현재 n일째 공부 중이에요 </Subtitle>
+            <Subtitle className="mb-3">현재 n일째 공부 중이에요 </Subtitle>
+            <StreakBoard />
           </button>
           <div className="gap-colgap-small flex w-full">
             <button
