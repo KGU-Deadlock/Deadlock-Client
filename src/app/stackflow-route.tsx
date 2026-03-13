@@ -1,12 +1,14 @@
 import HomePage from "@/pages/home/HomePage";
+import InterviewPage from "@/pages/interview/InterviewPage";
 import LoginPage from "@/pages/login/LoginPage";
-import OnboardingPage from "@/pages/onboarding/OnboardingPage";
+import OnboardingInterestPage from "@/pages/onboarding/OnboardingInterestPage";
+import OnboardingNamePage from "@/pages/onboarding/OnboardingNamePage";
+import QuizHomePage from "@/pages/quiz-home/QuizHomePage";
 import RankingPage from "@/pages/ranking/RankingPage";
 import StreakPage from "@/pages/streak/StreakPage";
 import UserPage from "@/pages/user/UserPage";
 import type { ActivityEntry } from "./stackflow-util";
-import QuizHomePage from "@/pages/quiz-home/QuizHomePage";
-import InterviewPage from "@/pages/interview/InterviewPage";
+import OnboardingCompletePage from "@/pages/onboarding/OnboardingCompletePage";
 
 export const Route: ActivityEntry[] = [
   {
@@ -20,9 +22,19 @@ export const Route: ActivityEntry[] = [
     path: "/login",
   },
   {
-    name: "OnboardingPage",
-    component: OnboardingPage,
-    path: "/onboarding",
+    name: "OnboardingNamePage",
+    component: OnboardingNamePage,
+    path: "/onboarding/name",
+  },
+  {
+    name: "OnboardingInterestPage",
+    component: OnboardingInterestPage,
+    path: "/onboarding/interest",
+  },
+  {
+    name: "OnboardingCompletePage",
+    component: OnboardingCompletePage,
+    path: "/onboarding/complete",
   },
   {
     name: "RankingPage",

@@ -3,10 +3,7 @@ import type { ButtonHTMLAttributes, ReactNode } from "react";
 import { cn } from "@/utils/cn";
 
 const buttonVariant = cva(
-  [
-    "flex justify-center items-center w-full cursor-pointer border-none",
-    "rounded-2xl",
-  ],
+  "flex justify-center items-center w-full cursor-pointer rounded-xl",
   {
     variants: {
       size: {
@@ -15,14 +12,11 @@ const buttonVariant = cva(
         small: "h-8 w-fit px-3 text-sm font-normal",
       },
       state: {
-        kakao: ["bg-kakao text-black text-base rounded-xl"],
-        apple: ["bg-white text-black text-base rounded-xl"],
-        active: ["bg-blue-003 text-white"],
-        outline: ["bg-white text-blue-003 border border-blue-003"],
-        disabled: ["bg-gray-002 text-gray-005 cursor-not-allowed"],
-        disabled_outline: [
-          "bg-white text-gray-004 border border-gray-003 cursor-not-allowed",
-        ],
+        kakao: ["bg-kakao text-black text-base rounded-xl border-none "],
+        active: ["bg-blue-004 text-white border-none "],
+        outline: ["bg-blue-002/25 border-1 border-blue-004"],
+        disabled: ["bg-gray-002 text-gray-005 cursor-not-allowed border-none"],
+        disabled_outline: ["bg-white text-gray-004 border-1 border-gray-004"],
       },
     },
     defaultVariants: {
