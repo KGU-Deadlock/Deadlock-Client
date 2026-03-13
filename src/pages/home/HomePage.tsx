@@ -2,6 +2,7 @@ import { useFlow } from "@/app/stackflow";
 import type { ActivityEntry } from "@/app/stackflow-util";
 import { Subtitle, Title } from "@/components/common";
 import { AppScreen } from "@stackflow/plugin-basic-ui";
+import { RiUser3Fill } from "react-icons/ri";
 
 export default function HomePage() {
   const { push } = useFlow();
@@ -22,7 +23,12 @@ export default function HomePage() {
               님 안녕하세요!
             </span>
           </div>
-          <div className="bg-gray-001 grid h-10 w-10 place-items-center rounded-full"></div>
+          <button
+            onClick={handleNavigation("UserPage")}
+            className="bg-gray-001 grid h-10 w-10 cursor-pointer place-items-center rounded-full border-none"
+          >
+            <RiUser3Fill className="text-gray-006" />
+          </button>
         </div>
         <div className="px-gutter gap-colgap-small flex w-full flex-col">
           <button
