@@ -1,12 +1,12 @@
 import { useFlow } from "@/app/stackflow";
-import { IconBack } from "@stackflow/plugin-basic-ui";
+import { FaChevronLeft } from "react-icons/fa6";
 
 export default function BackButton() {
   const { pop } = useFlow();
 
   return (
     <button onClick={() => pop()}>
-      <IconBack />
+      <FaChevronLeft size={18} color="black" />
     </button>
   );
 }
