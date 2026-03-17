@@ -1,6 +1,6 @@
 import { useFlow } from "@/app/stackflow";
 import type { ActivityEntry } from "@/app/stackflow-util";
-import { Subtitle, Title } from "@/components/common";
+import { Card, Subtitle, Title, Scrollable } from "@/components/common";
 import { RankingItem } from "@/components/ranking";
 import { StreakBoard } from "@/components/streak";
 import { AppScreen } from "@stackflow/plugin-basic-ui";
@@ -15,7 +15,7 @@ export default function HomePage() {
 
   return (
     <AppScreen backgroundColor="var(--color-gray-002)">
-      <div className="space-y-colgap h-full w-full overflow-hidden">
+      <Scrollable className="space-y-colgap">
         <div className="px-gutter pt-header flex items-center justify-between">
           <div>
             <span className="text-xl leading-6 font-bold text-black">
@@ -33,38 +33,41 @@ export default function HomePage() {
           </button>
         </div>
         <div className="px-gutter gap-colgap-small flex w-full flex-col">
-          <button
-            onClick={handleNavigation("StreakPage")}
-            className="p-gutter flex w-full flex-col items-start gap-1 rounded-3xl bg-white"
-          >
-            <Title>
-              연속 스트릭 <span className="font-tossface">🔥</span>
-            </Title>
-            <Subtitle className="mb-3">현재 n일째 공부 중이에요 </Subtitle>
-            <StreakBoard />
+          <button onClick={handleNavigation("StreakPage")}>
+            <Card className="flex w-full flex-col items-start gap-1 bg-white">
+              <Title>
+                연속 스트릭 <span className="font-tossface">🔥</span>
+              </Title>
+              <Subtitle className="mb-3">현재 n일째 공부 중이에요 </Subtitle>
+              <StreakBoard />
+            </Card>
           </button>
           <div className="gap-colgap-small flex w-full">
             <button
               onClick={handleNavigation("InterviewPage")}
-              className="p-gutter flex flex-1 cursor-pointer flex-col items-start gap-1 rounded-3xl bg-white"
+              className="w-full"
             >
-              <Title>
-                모의 면접 <span className="font-tossface">🤖</span>
-              </Title>
-              <Subtitle>AI와 함께 준비해요</Subtitle>
+              <Card className="flex w-full flex-col items-start gap-1 bg-white">
+                <Title>
+                  모의 면접 <span className="font-tossface">🤖</span>
+                </Title>
+                <Subtitle>AI와 함께 준비해요</Subtitle>
+              </Card>
             </button>
             <button
               onClick={handleNavigation("QuizHomePage")}
-              className="p-gutter flex flex-1 cursor-pointer flex-col items-start gap-1 rounded-3xl bg-white"
+              className="w-full"
             >
-              <Title>
-                CS 퀴즈 <span className="font-tossface">💡</span>
-              </Title>
-              <Subtitle>퀴즈로 배경지식 쌓기</Subtitle>
+              <Card className="flex w-full flex-col items-start gap-1 bg-white">
+                <Title>
+                  CS 퀴즈 <span className="font-tossface">💡</span>
+                </Title>
+                <Subtitle>퀴즈로 배경지식 쌓기</Subtitle>
+              </Card>
             </button>
           </div>
         </div>
-        <div className="h-full w-full rounded-t-3xl bg-white">
+        <div className="w-full flex-1 rounded-t-3xl bg-white">
           <button
             onClick={handleNavigation("RankingPage")}
             className="pt-header flex w-full flex-col items-start gap-1 px-[calc(var(--spacing-gutter)*1.5)]"
@@ -103,7 +106,7 @@ export default function HomePage() {
             />
           </div>
         </div>
-      </div>
+      </Scrollable>
     </AppScreen>
   );
 }

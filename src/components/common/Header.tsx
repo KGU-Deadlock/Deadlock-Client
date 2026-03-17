@@ -15,7 +15,7 @@ const header = cva(
         sub: "bg-gray-002",
       },
       sticky: {
-        true: "sticky top-0 left-0 z-10",
+        true: "sticky top-0 left-0 z-10 bg-white",
         false: "",
       },
     },
