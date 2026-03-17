@@ -17,6 +17,8 @@ const buttonVariant = cva(
         outline: ["bg-blue-002/25 border-1 border-blue-004"],
         disabled: ["bg-gray-002 text-gray-005 cursor-not-allowed border-none"],
         disabled_outline: ["bg-white text-gray-004 border-1 border-gray-004"],
+        ghost: ["bg-transparent text-black"],
+        ghost_background: ["bg-gray-002 text-black border-none"],
       },
     },
     defaultVariants: {
