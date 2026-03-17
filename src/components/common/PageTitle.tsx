@@ -9,13 +9,13 @@ export default function Title({
   className?: string;
 }) {
   return (
-    <p
+    <div
       className={cn(
         "px-gutter mt-10 flex flex-col items-start justify-start gap-0.5 text-xl font-semibold text-black",
         className,
       )}
     >
       {children}
-    </p>
+    </div>
   );
 }
