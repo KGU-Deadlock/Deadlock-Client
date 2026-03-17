@@ -1,9 +1,13 @@
+import { cn } from "@/utils/cn";
+
 interface RankingItemProps {
   rank: number;
   name: string;
   university: string;
   interest: string;
   score: number;
+  className?: string;
+  tone?: "default" | "inverse";
 }
 
 export default function RankingItem({
@@ -12,6 +16,8 @@ export default function RankingItem({
   university,
   interest,
   score,
+  className,
+  tone = "default",
 }: RankingItemProps) {
   const getRankTag = () => {
     switch (rank) {
@@ -22,22 +28,48 @@ export default function RankingItem({
       case 3:
         return "🥉";
       default:
-        return rank;
+        return (
+          <span
+            className={cn(
+              "font-[Pretendard] text-base",
+              tone === "inverse" ? "text-white" : "text-black",
+            )}
+          >
+            {rank}
+          </span>
+        );
     }
   };
 
   return (
-    <div className="grid w-full grid-cols-[1fr_4fr_1fr] py-2">
-      <span className="font-tossface flex items-center justify-start text-[24px]">
+    <div className={cn("grid w-full grid-cols-[1fr_4fr_1fr] py-2", className)}>
+      <div className="font-tossface flex items-center justify-start text-[24px]">
         {getRankTag()}
-      </span>
+      </div>
       <div className="flex h-full flex-col justify-center">
-        <span className="text-[15px] font-medium">{name}</span>
-        <span className="text-gray-006 text-sm">
+        <span
+          className={cn(
+            "text-[15px] font-medium",
+            tone === "inverse" ? "text-white" : "text-black",
+          )}
+        >
+          {name}
+        </span>
+        <span
+          className={cn(
+            "text-sm",
+            tone === "inverse" ? "text-gray-002" : "text-gray-006",
+          )}
+        >
           {university} · {interest}
         </span>
       </div>
-      <span className="flex items-center justify-end text-sm font-semibold">
+      <span
+        className={cn(
+          "flex items-center justify-end text-sm font-semibold",
+          tone === "inverse" ? "text-gray-002" : "text-black",
+        )}
+      >
         {score}점
       </span>
     </div>

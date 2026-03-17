@@ -3,6 +3,7 @@ import type { ActivityEntry } from "@/app/stackflow-util";
 import { Card, Subtitle, Title, Scrollable } from "@/components/common";
 import { RankingItem } from "@/components/ranking";
 import { StreakBoard } from "@/components/streak";
+import { ranking as rankingData } from "@/constants/ranking/ranking";
 import { AppScreen } from "@stackflow/plugin-basic-ui";
 import { RiUser3Fill } from "react-icons/ri";
 
@@ -76,34 +77,11 @@ export default function HomePage() {
             <Subtitle>내 위치는 어디일까요?</Subtitle>
           </button>
           <div className="pb-footer divide-gray-002 flex flex-col gap-1 divide-y px-[calc(var(--spacing-gutter)*1.5)] pt-4">
-            <RankingItem
-              rank={1}
-              name="전상현"
-              university="경기대학교"
-              interest="투수"
-              score={3000}
-            />
-            <RankingItem
-              rank={2}
-              name="이준영"
-              university="경기대학교"
-              interest="투수"
-              score={3000}
-            />
-            <RankingItem
-              rank={3}
-              name="황동하"
-              university="경기대학교"
-              interest="투수"
-              score={3000}
-            />
-            <RankingItem
-              rank={4}
-              name="이의리"
-              university="경기대학교"
-              interest="투수"
-              score={3000}
-            />
+            {rankingData
+              .filter((item) => item.rank <= 4)
+              .map((item) => (
+              <RankingItem key={item.rank} {...item} />
+            ))}
           </div>
         </div>
       </Scrollable>
