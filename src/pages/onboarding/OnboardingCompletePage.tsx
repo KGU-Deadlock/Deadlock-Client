@@ -1,5 +1,5 @@
 import { useFlow } from "@/app/stackflow";
-import { Button, Title } from "@/components/common";
+import { Button, Footer, Title } from "@/components/common";
 import { AppScreen } from "@stackflow/plugin-basic-ui";
 
 export default function OnboardingCompletePage() {
@@ -16,11 +16,11 @@ export default function OnboardingCompletePage() {
         <Title className="text-2xl">가입이 완료되었어요.</Title>
         <Title className="text-2xl">공부를 시작해 볼까요?</Title>
       </div>
-      <div className="px-gutter bottom-footer absolute right-0 left-0 justify-end">
+      <Footer>
         <Button size="large" state="active" onClick={handleComplete}>
           시작하기
         </Button>
-      </div>
+      </Footer>
     </AppScreen>
   );
 }

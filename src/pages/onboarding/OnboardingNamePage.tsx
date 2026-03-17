@@ -1,5 +1,11 @@
 import { useFlow } from "@/app/stackflow";
-import { BackButton, Button, Header, PageTitle } from "@/components/common";
+import {
+  BackButton,
+  Button,
+  Footer,
+  Header,
+  PageTitle,
+} from "@/components/common";
 import { AppScreen } from "@stackflow/plugin-basic-ui";
 import { useState } from "react";
 
@@ -27,7 +33,7 @@ export default function OnboardingNamePage() {
           onChange={(e) => setName(e.target.value)}
         />
       </div>
-      <div className="px-gutter bottom-footer absolute right-0 left-0 justify-end">
+      <Footer>
         <Button
           size="large"
           state={name ? "active" : "disabled"}
@@ -35,7 +41,7 @@ export default function OnboardingNamePage() {
         >
           다음
         </Button>
-      </div>
+      </Footer>
     </AppScreen>
   );
 }
