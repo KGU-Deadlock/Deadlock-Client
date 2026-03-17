@@ -1,6 +1,7 @@
 import { useFlow } from "@/app/stackflow";
 import type { ActivityEntry } from "@/app/stackflow-util";
 import { Subtitle, Title } from "@/components/common";
+import { RankingItem } from "@/components/ranking";
 import { StreakBoard } from "@/components/streak";
 import { AppScreen } from "@stackflow/plugin-basic-ui";
 import { RiUser3Fill } from "react-icons/ri";
@@ -66,11 +67,41 @@ export default function HomePage() {
         <div className="h-full w-full rounded-t-3xl bg-white">
           <button
             onClick={handleNavigation("RankingPage")}
-            className="pt-header flex w-full flex-col items-start gap-1 p-[calc(var(--spacing-gutter)*2)]"
+            className="pt-header flex w-full flex-col items-start gap-1 px-[calc(var(--spacing-gutter)*1.5)]"
           >
             <Title>실시간 랭킹</Title>
             <Subtitle>내 위치는 어디일까요?</Subtitle>
           </button>
+          <div className="pb-footer divide-gray-002 flex flex-col gap-1 divide-y px-[calc(var(--spacing-gutter)*1.5)] pt-4">
+            <RankingItem
+              rank={1}
+              name="전상현"
+              university="경기대학교"
+              interest="투수"
+              score={3000}
+            />
+            <RankingItem
+              rank={2}
+              name="이준영"
+              university="경기대학교"
+              interest="투수"
+              score={3000}
+            />
+            <RankingItem
+              rank={3}
+              name="황동하"
+              university="경기대학교"
+              interest="투수"
+              score={3000}
+            />
+            <RankingItem
+              rank={4}
+              name="이의리"
+              university="경기대학교"
+              interest="투수"
+              score={3000}
+            />
+          </div>
         </div>
       </div>
     </AppScreen>
