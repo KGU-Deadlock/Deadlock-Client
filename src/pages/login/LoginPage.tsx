@@ -1,13 +1,43 @@
+import { authQueries } from "@/api/auth/api.query";
+import { END_POINTS } from "@/api/config/api-endpoints";
 import { useFlow } from "@/app/stackflow";
 import { Button, Footer } from "@/components/common";
+import { useAuthStore } from "@/model/auth/auth-store";
 import { AppScreen } from "@stackflow/plugin-basic-ui";
+import { useQuery } from "@tanstack/react-query";
+import { useEffect } from "react";
 import { RiKakaoTalkFill } from "react-icons/ri";
 
 export default function LoginPage() {
-  const { push } = useFlow();
+  const { replace } = useFlow();
+  const { setAccessToken, setIsInitialized } = useAuthStore();
+  const code = new URLSearchParams(window.location.search).get("code");
+
+  const { data, refetch, isPending } = useQuery(
+    authQueries.kakaoLoginQuery(code ?? ""),
+  );
+
   const handleKakaoLogin = () => {
-    push("OnboardingNamePage", {});
+    const baseUrl = import.meta.env.VITE_API_BASE_URL;
+    window.location.assign(`${baseUrl}${END_POINTS.AUTH.LOGIN}`);
   };
+
+  useEffect(() => {
+    if (code) {
+      refetch();
+      if (data) {
+        setAccessToken(data.accessToken);
+        if (data.isUser) {
+          setIsInitialized(true);
+          replace("HomePage", {}, { animate: false });
+        } else {
+          setIsInitialized(false);
+          replace("OnboardingNamePage", {}, { animate: false });
+        }
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [code, refetch]);
 
   return (
     <AppScreen className="relative">
@@ -21,6 +51,7 @@ export default function LoginPage() {
           state="kakao"
           className="mt-40"
           onClick={handleKakaoLogin}
+          disabled={!isPending}
         >
           <RiKakaoTalkFill className="mr-2" size={24} />
           카카오로 시작하기
