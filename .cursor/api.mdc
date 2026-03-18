@@ -1,0 +1,343 @@
+---
+alwaysApply: true
+---
+
+## 도메인별 API 모듈 생성/수정 방법
+
+너는 현재 프로젝트의 API 레이어를 확장하는 프론트엔드 엔지니어다. 이 프로젝트는 아래 규칙으로 API 통신을 구성한다.
+
+- 도메인별 구조: `api/<domain>/api.type.ts`, `api/<domain>/api.model.ts`, `api/<domain>/api.query.ts`
+- 실제 네트워크 호출은 도메인 폴더 내 `getXxx.ts`, `postXxx.ts` 같은 “endpoint 함수 파일”로 분리되어 있고,
+- `api.query.ts`는 **React Query 옵션(queryOptions / mutationOptions / infiniteQueryOptions)**을 만들어 export 하는 역할을 한다.
+
+### A. 공통 세팅 파일(필수 이해 / 반드시 이 방식 유지)
+
+#### 1) `api/config/api-client.ts`
+
+- **HTTP 클라이언트**는 `ky`를 사용한다.
+- `baseURL`: `import.meta.env.VITE_BASE_API_URL`
+- `baseApiClient`: `ky.extend({ prefixUrl: baseURL, headers: { "Content-Type": "application/json" } })`
+- `authApiClient`:
+  - `beforeRequest`에서 access token 있으면 `Authorization: Bearer <token>` 헤더를 붙인다.
+  - `afterResponse`에서 401이면 refresh token 유무를 확인:
+    - 없으면 토큰 삭제 후 `ROUTE.LOGIN`으로 이동
+    - 있으면 `postReissueToken(refreshToken)`으로 토큰 재발급
+    - 동시 재발급 방지 `reissueLock` 사용
+    - 재발급 성공 시 동일 요청을 “retry”로 다시 시도
+
+#### 2) `api/config/api-client-handler.ts`
+
+- 네트워크 호출은 `apiClientHandler<T>(client, endpoint, options?)`를 통해 통일한다.
+- 반환은 **예외 throw가 아니라** 아래 유니온 타입 `ApiResult<T>`로 통일:
+
+- 성공:
+  - `{ ok: true, status, data, headers }`
+
+- 실패(HTTPError):
+  - `{ ok: false, status, error: { message } }`
+
+- 실패(기타):
+  - `{ ok: false, status: 0, error: { message } }`
+
+#### 3) `api/config/api-client-method.ts`
+
+- `createHttpMethod(kyInstance)`로 아래 메서드 래퍼를 만든다. 모든 메서드는 내부적으로 `apiClientHandler`만 호출한다.
+
+- `baseApi = createHttpMethod(baseApiClient)`
+- `authApi = createHttpMethod(authApiClient)`
+
+제공 메서드:
+
+- `get<T>(url, options?)`
+- `post<T, B>(url, body, options?)` (`json: body`)
+- `put<T, B>(url, body, options?)`
+- `patch<T, B>(url, body, options?)`
+- `del<T>(url, options?)`
+
+#### 4) `api/config/api-base-types.ts`
+
+- 서버 응답 래핑 형태에 맞춰 아래 타입을 조합해 쓴다.
+  - `ApiResponse<T> = { code, message, data }`
+
+---
+
+### B. 도메인 파일 역할 분담(현재 코드 패턴 그대로)
+
+#### 1) `api.model.ts` (DTO/요청 바디 정의 중심, 실제로 많이 씀)
+
+- 이 프로젝트에서는 “모델”이라기보다 **API DTO + 요청 바디 타입**을 여기에 정의하는 패턴이 흔하다.
+- 예시(`user/api.model.ts`):
+  - `getUserInfoResponse = BaseApiResponse<{ ... }>`
+  - `PatchMemberRequest`, `PatchPasswordRequest` 등
+
+#### 2) `api.type.ts` (도메인에서 재활용하기 좋은 타입 alias)
+
+- `api.model.ts`에서 정의한 응답 타입에서 필요한 조각을 뽑아 alias로 제공.
+- 예시(`user/api.type.ts`):
+
+- `export type UserInfo = getUserInfoResponse["data"];`
+
+#### 3) `api.query.ts` (React Query 옵션 구성)
+
+- **네트워크 호출 자체**는 보통 같은 폴더의 `getXxx.ts`, `postXxx.ts` 같은 파일에서 수행한다.
+- `api.query.ts`는 다음을 export:
+  - query key 묶음(`keys`/`QueryKey`)
+  - `queryOptions`, `mutationOptions`, `infiniteQueryOptions`로 만든 옵션들
+
+- 중요한 스타일:
+  - 네트워크 함수는 `ApiResult<T>`를 반환한다.
+  - `api.query.ts` 내부에서는 상황에 따라:
+    - `res.ok`가 false면 `throw new Error(...)`로 React Query error flow로 넘기기도 하고(예: `userQueries.getUserInfoQuery`)
+    - 또는 실패 시 “빈 데이터로 복구”해서 infinite query가 끊기지 않게 하기도 함(예: `newsQueries.getNewsInfiniteQuery`)
+    - 또는 `select`로 `{ ok ? data.data.data : null }`처럼 안전하게 매핑하기도 함(예: `newsQueries.getNewsDetailQuery`)
+
+---
+
+## C. 예시 1) `user` 도메인 패턴(실제 코드 스타일)
+
+### 폴더 구조(권장)
+
+- `api/user/api.model.ts` : 응답/요청 타입
+- `api/user/api.type.ts` : alias
+- `api/user/getUserInfo.ts` : 실제 ky 호출(authApi)
+- `api/user/patchMember.ts` / `patchPassword.ts` / `postProfileFile.ts`
+- `api/user/api.query.ts` : React Query 옵션 묶음
+
+### `getUserInfo.ts` (endpoint 함수) 작성 프롬프트
+
+- `authApi.get`를 사용하고 `ApiResult<getUserInfoResponse>` 반환.
+- endpoint 문자열은 서버 라우트에 맞춰 하드코딩(프로젝트는 이런 패턴이 일반적).
+
+```ts
+import type { ApiResult } from "@/api/config/api-client-handler";
+import { authApi } from "@/api/config/api-client-method";
+import type { getUserInfoResponse } from "./api.model";
+
+export function getUserInfo(): Promise<ApiResult<getUserInfoResponse>> {
+  return authApi.get<getUserInfoResponse>("member/me");
+}
+```
+
+### `api.query.ts` (React Query 옵션) 작성 프롬프트
+
+- queryKey는 도메인별 prefix 배열을 `as const`로 둔다.
+- queryFn 내부에서 `res.ok` 확인 후:
+  - 실패면 `throw`해서 에러 토스트/에러 바운더리로 넘기는 스타일을 사용 가능.
+
+```ts
+import { mutationOptions, queryOptions } from "@tanstack/react-query";
+import { TOAST_MESSAGES } from "@/constants";
+import { showErrorToast } from "@/utils/toast";
+
+import { getUserInfo } from "./getUserInfo";
+import type {
+  getUserInfoResponse,
+  PatchMemberRequest,
+  PatchPasswordRequest,
+  ProfileFileResponse,
+} from "./api.model";
+import { patchMember } from "./patchMember";
+import { patchPassword } from "./patchPassword";
+import { postProfileFile } from "./postProfileFile";
+
+const userQueryKey = ["user"] as const;
+
+export const userQueries = {
+  all: userQueryKey,
+  infoKey: () => [...userQueryKey, "info"] as const,
+
+  getUserInfoQuery: () =>
+    queryOptions<getUserInfoResponse>({
+      queryKey: userQueries.infoKey(),
+      queryFn: async () => {
+        const res = await getUserInfo();
+        if (!res.ok) throw new Error("사용자 정보 조회에 실패했습니다.");
+        return res.data;
+      },
+    }),
+
+  postProfileFileMutation: mutationOptions<ProfileFileResponse, Error, File>({
+    mutationFn: async (file: File) => {
+      const res = await postProfileFile(file);
+      if (!res.ok) throw new Error("프로필 이미지 업로드에 실패했습니다.");
+      return res.data.data;
+    },
+    onError: () => showErrorToast(TOAST_MESSAGES.PROFILE_IMAGE_UPDATE),
+  }),
+
+  patchMemberMutation: mutationOptions<
+    unknown,
+    Error,
+    { memberId: string; body: PatchMemberRequest }
+  >({
+    mutationFn: ({ memberId, body }) => patchMember(memberId, body),
+    onError: () => showErrorToast(TOAST_MESSAGES.PROFILE_UPDATE),
+  }),
+
+  patchPasswordMutation: mutationOptions<
+    unknown,
+    Error,
+    { memberId: string; body: PatchPasswordRequest }
+  >({
+    mutationFn: ({ memberId, body }) => patchPassword(memberId, body),
+    onError: () => showErrorToast(TOAST_MESSAGES.PASSWORD_UPDATE),
+  }),
+};
+```
+
+---
+
+## D. 예시 2) `community/news` infinite query 패턴(실패 시 복구)
+
+이 프로젝트는 infinite query에서 실패하면 throw 대신 “빈 결과”를 반환해 UX를 지키는 패턴도 사용한다.
+
+핵심 포인트:
+
+- response wrapper: `ApiResponse<PagedResponse<Dto>>`
+- page/size는 `DEFAULT_PAGE_SIZE` 사용
+- 실패 시 `{ hasNext:false, items:[], currentPage:0 }` 같은 최소 형태로 복구
+
+```ts
+import { infiniteQueryOptions, queryOptions } from "@tanstack/react-query";
+import type { ApiResponse, PagedResponse } from "@/api/config";
+import { DEFAULT_PAGE_SIZE } from "@/api/config";
+
+import type {
+  GetNewsParams,
+  NewsDetailsResponseDto,
+  NewsResponseDto,
+} from "./api.model";
+import { getNews } from "./getNews";
+import { getNewsDetail } from "./getNewsDetail";
+
+type GetNewsResponse = ApiResponse<PagedResponse<NewsResponseDto>>;
+
+export const newsKeys = {
+  all: ["community", "news"] as const,
+  lists: ["community", "news", "list"] as const,
+  infinite: (params?: Omit<GetNewsParams, "page" | "size">) =>
+    [...newsKeys.lists, "infinite", params] as const,
+};
+
+export const newsQueries = {
+  getNewsInfiniteQuery: (params?: Omit<GetNewsParams, "page" | "size">) =>
+    infiniteQueryOptions({
+      queryKey: newsKeys.infinite(params),
+      queryFn: async ({ pageParam }) => {
+        const res = await getNews({
+          ...params,
+          page: pageParam as number,
+          size: DEFAULT_PAGE_SIZE,
+        });
+
+        if (!res.ok) {
+          return {
+            data: { hasNext: false, items: [], currentPage: 0 },
+          } as unknown as GetNewsResponse;
+        }
+        return res.data;
+      },
+      initialPageParam: 0,
+      getNextPageParam: (lastPage) =>
+        lastPage.data.hasNext ? lastPage.data.currentPage + 1 : undefined,
+    }),
+
+  getNewsDetailQuery: (newsId: number) =>
+    queryOptions({
+      queryKey: [...newsKeys.all, newsId],
+      queryFn: () => getNewsDetail(newsId),
+      select: (data): NewsDetailsResponseDto | null =>
+        data.ok ? data.data.data : null,
+    }),
+};
+```
+
+## E. API 타입 정의 규칙 (중요 – 반드시 우선 적용)
+
+이 프로젝트에서는 API 응답 타입을 각 도메인에서 중복 정의하지 않는다.
+
+공통 응답 스키마는 아래 파일에 정의되어 있다:
+• api/config/api-models.ts
+
+📌 반드시 지켜야 할 규칙 1. 응답 타입을 새로 만들기 전에 먼저 확인
+• api/config/api-models.ts에서
+• ApiResponse<T>
+• ApiPagedResponse<T>
+• 기타 공통 Response Wrapper
+• 이미 정의된 타입을 우선적으로 사용한다.
+
+⸻
+
+❌ 잘못된 방식 (중복 정의)
+
+type GetUserResponse = {
+code: number;
+message: string;
+data: {
+name: string;
+};
+};
+
+✅ 올바른 방식 (공통 타입 재사용)
+
+import type { ApiResponse } from "@/api/config/api-base-types";
+
+export type GetUserResponse = ApiResponse<{
+name: string;
+}>;
+
+## 도메인 api.model.ts 역할
+
+    •	❗ “공통 타입을 감싸는 역할만 한다”
+    •	❗ Wrapper를 다시 만들지 않는다
+
+## api.type.ts에서의 활용
+
+export type UserInfo = GetUserResponse["data"];
+
+👉 data 내부 타입만 꺼내서 재사용
+
+## ApiResult와의 관계
+
+    •	endpoint 함수 (getXxx.ts)는:
+
+Promise<ApiResult<ApiResponse<T>>>
+
+형태가 된다.
+
+👉 즉:
+• 바깥: ApiResult (성공/실패)
+• 안쪽: ApiResponse (서버 응답 구조)
+
+E. API 타입 정의 규칙 (반드시 준수)
+• 모든 API 응답 타입은 api/config/api-models.ts에 정의된 공통 타입을 우선 재사용한다.
+• 도메인에서 응답 wrapper(code, message, success 등)를 직접 다시 정의하지 않는다.
+• 반드시 아래 패턴을 따른다:
+
+ApiResponse<T>
+
+    •	api.model.ts에서는 data 내부 구조만 정의하고, wrapper는 공통 타입으로 감싼다.
+    •	api.type.ts에서는 Response["data"] 형태로 필요한 타입만 alias로 추출한다.
+    •	endpoint 함수는 항상:
+
+Promise<ApiResult<ApiResponse<T>>>
+
+형태를 따른다.
+
+내가 너에게 새 도메인(예: `community/hashtag`)의 API 스펙을 줄 때는 아래를 포함해달라:
+
+- endpoint 목록(메서드/경로)
+- 인증 필요 여부(baseApi vs authApi)
+- request body / query params / response schema
+- pagination 여부(있으면 page/size 규칙)
+
+- `api.model.ts`에 DTO/요청 타입 정의
+- `api.type.ts`에 alias(선택)
+- `getXxx.ts`, `postXxx.ts` 같은 endpoint 함수 생성(반드시 `ApiResult<T>` 반환)
+- `api.query.ts`에 `keys` + React Query 옵션 생성
+- 실패 처리 스타일은 도메인 특성에 맞게 선택:
+  - “실패 시 throw” (form/저장 등)
+  - “실패 시 빈 데이터 복구” (infinite list 등)
+  - “select로 null 처리” (detail 등)
+
+---
