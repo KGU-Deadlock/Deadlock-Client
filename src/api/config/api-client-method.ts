@@ -13,9 +13,10 @@ function createHttpMethod(apiClient: KyInstance) {
     body: B,
     options?: Options,
   ): Promise<ApiResult<T>> => {
+    const hasBody = body !== undefined;
     return apiClientHandler(apiClient, url, {
       method: "POST",
-      json: body,
+      ...(hasBody ? { json: body } : {}),
       ...options,
     });
   };
