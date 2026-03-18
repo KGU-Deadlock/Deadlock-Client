@@ -11,18 +11,31 @@ export function AuthInitializer({ children }: AuthInitializerProps) {
   const { replace } = useFlow();
   const stack = useStack();
 
-  const { isInitialized } = useAuthStore();
+  const { accessToken, isInitialized } = useAuthStore();
 
   const currentActivity = stack.activities[stack.activities.length - 1]?.name;
 
   useEffect(() => {
-    const target = isInitialized ? "HomePage" : "OnboardingNamePage";
+    const hasToken = Boolean(accessToken);
+
+    const target = hasToken
+      ? isInitialized
+        ? "HomePage"
+        : "OnboardingNamePage"
+      : "LoginPage";
+
     if (currentActivity && currentActivity !== target) {
       replace(target, {}, { animate: false });
     }
-  }, [currentActivity, isInitialized, replace]);
+  }, [accessToken, currentActivity, isInitialized, replace]);
 
-  const target = isInitialized ? "HomePage" : "OnboardingNamePage";
+  const hasToken = Boolean(accessToken);
+  const target = hasToken
+    ? isInitialized
+      ? "HomePage"
+      : "OnboardingNamePage"
+    : "LoginPage";
+
   const isRedirecting = currentActivity && currentActivity !== target;
   if (isRedirecting) return null;
 

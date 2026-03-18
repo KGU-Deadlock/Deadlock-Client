@@ -4,6 +4,7 @@ import { basicUIPlugin } from "@stackflow/plugin-basic-ui";
 import { Route } from "./stackflow-route";
 import { routeToActivityMap, routeToPathMap } from "./stackflow-util";
 import { historySyncPlugin } from "@stackflow/plugin-history-sync";
+import { AuthInitializer } from "@/components/auth/AuthInitializer";
 
 export const { Stack, useFlow } = stackflow({
   transitionDuration: 350,
@@ -19,5 +20,13 @@ export const { Stack, useFlow } = stackflow({
       routes: routeToPathMap(Route),
       fallbackActivity: () => "LoginPage",
     }),
+    () => {
+      return {
+        key: "auth-initializer",
+        wrapStack: ({ stack }) => {
+          return <AuthInitializer>{stack.render()}</AuthInitializer>;
+        },
+      };
+    },
   ],
 });
