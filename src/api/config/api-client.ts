@@ -6,7 +6,7 @@ import ky, {
 } from "ky";
 import { useAuthStore } from "@/model/auth/auth-store";
 
-const baseURL = import.meta.env.VITE_BASE_API_URL;
+const baseURL = import.meta.env.VITE_API_BASE_URL;
 
 export const baseApiClient = ky.extend({
   prefixUrl: baseURL,
