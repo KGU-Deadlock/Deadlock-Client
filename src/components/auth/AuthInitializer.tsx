@@ -2,6 +2,7 @@ import { useFlow } from "@/app/stackflow";
 import { useStack } from "@stackflow/react";
 import { useEffect, type ReactNode } from "react";
 import { useAuthStore } from "@/model/auth/auth-store";
+import { Route } from "@/app/stackflow-route";
 
 interface AuthInitializerProps {
   children: ReactNode;
@@ -14,8 +15,12 @@ export function AuthInitializer({ children }: AuthInitializerProps) {
   const { accessToken, isInitialized } = useAuthStore();
 
   const currentActivity = stack.activities[stack.activities.length - 1]?.name;
+  const currentPath = window.location.pathname;
+  const isAppRoute = Route.some(({ path }) => path === currentPath);
 
   useEffect(() => {
+    if (!isAppRoute) return;
+
     const { accessToken: nextToken, isInitialized: nextInitialized } =
       useAuthStore.getState();
 
@@ -39,7 +44,11 @@ export function AuthInitializer({ children }: AuthInitializerProps) {
     if (currentActivity === "LoginPage") {
       replace("HomePage", {}, { animate: false });
     }
-  }, [accessToken, currentActivity, isInitialized, replace]);
+  }, [accessToken, currentActivity, isAppRoute, isInitialized, replace]);
+
+  if (!isAppRoute) {
+    return <>{children}</>;
+  }
 
   const hasToken = Boolean(accessToken);
   const target = !hasToken
