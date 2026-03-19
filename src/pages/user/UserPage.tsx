@@ -1,4 +1,10 @@
-import { Button, Header, Scrollable, Subtitle, Title } from "@/components/common";
+import {
+  Button,
+  Header,
+  Scrollable,
+  Subtitle,
+  Title,
+} from "@/components/common";
 import { BackButton } from "@/components/common";
 import { quizQueries } from "@/api/quiz/api.query";
 import { useUserStore } from "@/model/user/user-store";
@@ -12,9 +18,11 @@ export default function UserPage() {
     window.location.replace("/login");
   };
 
-  const { data: topicResponse, isPending, isError } = useQuery(
-    quizQueries.getQuizTopicQuery(),
-  );
+  const {
+    data: topicResponse,
+    isPending,
+    isError,
+  } = useQuery(quizQueries.getQuizTopicQuery());
   const topics = topicResponse?.data ?? [];
   const interestName =
     topics.find((topic) => topic.id === interest)?.name ??
@@ -40,7 +48,7 @@ export default function UserPage() {
                   ? "관심 분야를 불러오는 중..."
                   : isError
                     ? "관심 분야를 불러오지 못했어요"
-                    : interestName ?? "관심 분야를 설정해 주세요"}
+                    : (interestName ?? "관심 분야를 설정해 주세요")}
               </Subtitle>
             </div>
             <Button size="small" state="ghost_background" className="mt-2">
