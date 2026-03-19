@@ -36,6 +36,36 @@
     "TossFace", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
 }
 
+[data-sonner-toaster][data-x-position="center"][data-y-position="bottom"] {
+  left: 50% !important;
+  right: auto !important;
+  width: auto !important;
+}
+
+.hcs-toast {
+  left: 50% !important;
+  right: auto !important;
+  transform: translateX(-50%) var(--y) !important;
+  margin-bottom: 100px;
+  background-color: var(--color-gray-008) !important;
+  border-radius: 8px !important;
+  border: none !important;
+  color: var(--color-white) !important;
+  width: fit-content !important;
+  padding: 8px 24px !important;
+  white-space: nowrap !important;
+  font-family:
+    "Pretendard",
+    -apple-system,
+    BlinkMacSystemFont,
+    system-ui,
+    sans-serif !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  line-height: 1.4 !important;
+  letter-spacing: 0 !important;
+}
+
 .scrollbar-hide {
   -ms-overflow-style: none;
   scrollbar-width: none;

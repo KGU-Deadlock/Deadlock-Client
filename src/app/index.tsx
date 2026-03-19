@@ -5,6 +5,7 @@ import "@stackflow/plugin-basic-ui/index.css";
 import { Stack } from "./stackflow";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { isStackflowRoute } from "./route-match";
+import { Toaster } from "sonner";
 
 const queryClient = new QueryClient();
 
@@ -16,6 +17,13 @@ if (rootElement && shouldMountStackflow) {
     <QueryClientProvider client={queryClient}>
       <StrictMode>
         <Stack />
+        <Toaster
+          position="bottom-center"
+          toastOptions={{
+            duration: 2500,
+            className: "hcs-toast",
+          }}
+        />
       </StrictMode>
     </QueryClientProvider>,
   );
