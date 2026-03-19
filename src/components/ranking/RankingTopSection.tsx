@@ -1,25 +1,23 @@
-import type { ranking } from "@/constants/ranking/ranking";
+import type { RankingEntryResult } from "@/api/ranking/api.model";
 
 export default function RankingTopSection({
   users,
 }: {
-  users: readonly (typeof ranking)[number][];
+  users: readonly RankingEntryResult[];
 }) {
   return (
     <section className="px-gutter pt-header">
       <div className="flex items-end justify-between">
         {users.map((user) => {
-          const isFirst = user.rank === 1;
+          const rank = user.rank ?? 0;
+          const isFirst = rank === 1;
           const size = isFirst ? "size-[100px]" : "size-[80px]";
           const ring = isFirst
             ? "ring-[3px] ring-yellow-400"
             : "ring-2 ring-blue-002";
 
           return (
-            <div
-              key={user.rank}
-              className="flex w-[105px] flex-col items-center"
-            >
+            <div key={rank} className="flex w-[105px] flex-col items-center">
               <div className={`relative ${size} rounded-full bg-white ${ring}`}>
                 <div className="bg-gray-002 absolute inset-[6px] rounded-full" />
                 <div
@@ -29,16 +27,14 @@ export default function RankingTopSection({
                       : "bg-blue-003 text-white"
                   }`}
                 >
-                  {user.rank}
+                  {rank}
                 </div>
               </div>
               <div className="mt-3 flex flex-col items-center">
                 <span className="text-sm font-medium text-black">
-                  {user.name}
+                  {user.nickname ?? "익명"}
                 </span>
-                <span className="text-gray-005 text-[11px] font-medium">
-                  {user.university} · {user.interest}
-                </span>
+                <span className="text-gray-005 text-[11px] font-medium">-</span>
               </div>
             </div>
           );

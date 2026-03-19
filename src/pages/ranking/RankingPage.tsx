@@ -2,14 +2,19 @@ import { Header, Scrollable, Subtitle, Title } from "@/components/common";
 import { BackButton } from "@/components/common";
 import { RankingItem, RankingTopSection } from "@/components/ranking";
 import { AppScreen } from "@stackflow/plugin-basic-ui";
-import { me, ranking } from "@/constants/ranking/ranking";
+import { rankingQueries } from "@/api/ranking/api.query";
+import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { CgChevronDown, CgChevronUp } from "react-icons/cg";
 
-const TOP3_ORDER = [2, 1, 3] as const;
-
 export default function RankingPage() {
   const [isOpen, setIsOpen] = useState(false);
+  const { data } = useQuery(
+    rankingQueries.getRankingDetailQuery({ filterType: "ALL", size: 20 }),
+  );
+
+  const rankings = data?.data?.rankings ?? [];
+  const myRanking = data?.data?.myRanking;
 
   const handleToggle = () => {
     setIsOpen((prev) => !prev);
@@ -38,22 +43,33 @@ export default function RankingPage() {
           </div>
         )}
 
-        <RankingTopSection
-          users={TOP3_ORDER.map((r) => ranking.find((item) => item.rank === r)!)}
-        />
+        {rankings.length > 0 && (
+          <RankingTopSection users={rankings.slice(0, 3)} />
+        )}
 
         <div className="bg-gray-002 pb-footer mt-colgap w-full flex-1 rounded-t-3xl">
           <div className="px-gutter pt-4">
             <div className="divide-gray-003 mt-3 divide-y px-4">
-              {ranking.filter((item) => item.rank >= 4).map((item) => (
+              {rankings.slice(3).map((item) => (
                 <div key={item.rank} className="py-1">
-                  <RankingItem rank={item.rank} nickname={item.name} score={item.score} university={item.university} interest={item.interest} />
+                  <RankingItem
+                    rank={item.rank ?? 0}
+                    nickname={item.nickname ?? "익명"}
+                    score={item.score ?? 0}
+                  />
                 </div>
               ))}
             </div>
-            <div className="bg-blue-003 mt-2 w-full rounded-xl px-4">
-              <RankingItem rank={me.rank} nickname={me.name} score={me.score} university={me.university} interest={me.interest} tone="inverse" />
-            </div>
+            {myRanking && (
+              <div className="bg-blue-003 mt-2 w-full rounded-xl px-4">
+                <RankingItem
+                  rank={myRanking.rank ?? 0}
+                  nickname={myRanking.nickname ?? "나"}
+                  score={myRanking.score ?? 0}
+                  tone="inverse"
+                />
+              </div>
+            )}
             <div className="mt-4">
               <Subtitle className="text-gray-006 text-center">
                 더 많은 랭킹은 준비 중이에요
