@@ -19,6 +19,9 @@ const buttonVariant = cva(
         disabled_outline: ["bg-white text-gray-004 border-1 border-gray-004"],
         ghost: ["bg-transparent text-black"],
         ghost_background: ["bg-gray-002 text-black border-none"],
+        gradient: [
+          "bg-gradient-to-r from-blue-002 to-blue-004 text-white border-none",
+        ],
       },
     },
     defaultVariants: {
