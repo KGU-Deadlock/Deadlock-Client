@@ -14,7 +14,7 @@ export default function LoginPage() {
   const code = new URLSearchParams(window.location.search).get("code");
   const state = new URLSearchParams(window.location.search).get("state");
 
-  const { data, refetch, isPending } = useQuery(
+  const { refetch, isPending } = useQuery(
     authQueries.kakaoLoginQuery(code ?? "", state ?? ""),
   );
 
@@ -25,17 +25,18 @@ export default function LoginPage() {
 
   useEffect(() => {
     if (code && state) {
-      refetch();
-      if (data) {
-        setAccessToken(data.accessToken);
-        if (data.isUser) {
-          setIsInitialized(true);
-          replace("HomePage", {}, { animate: false });
-        } else {
-          setIsInitialized(false);
-          replace("OnboardingNamePage", {}, { animate: false });
+      refetch().then((res) => {
+        if (res.data) {
+          setAccessToken(res.data.accessToken);
+          if (res.data.isUser) {
+            setIsInitialized(true);
+            replace("HomePage", {}, { animate: false });
+          } else {
+            setIsInitialized(false);
+            replace("OnboardingNamePage", {}, { animate: false });
+          }
         }
-      }
+      });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [code, refetch]);
