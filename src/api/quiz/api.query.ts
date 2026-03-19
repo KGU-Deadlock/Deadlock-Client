@@ -42,6 +42,15 @@ export const quizQueries = {
       },
     }),
 
+  postQuizListMutation: () =>
+    mutationOptions({
+      mutationFn: async (params: GetQuizRequest) => {
+        const res = await postQuizList(params);
+        if (!res.ok) throw new Error("퀴즈 조회에 실패했습니다.");
+        return res.data;
+      },
+    }),
+
   postQuizGradeMutation: () =>
     mutationOptions({
       mutationFn: async (body: Parameters<typeof postQuizGrade>[0]) => {
