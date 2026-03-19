@@ -7,11 +7,15 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { isStackflowRoute } from "./route-match";
 
 const queryClient = new QueryClient();
+const rootElement = document.getElementById("root");
+const shouldMountStackflow = isStackflowRoute(window.location.pathname);
 
-createRoot(document.getElementById("root")!).render(
-  <QueryClientProvider client={queryClient}>
-    <StrictMode>
-      {isStackflowRoute(window.location.pathname) ? <Stack /> : null}
-    </StrictMode>
-  </QueryClientProvider>,
-);
+if (rootElement && shouldMountStackflow) {
+  createRoot(rootElement).render(
+    <QueryClientProvider client={queryClient}>
+      <StrictMode>
+        <Stack />
+      </StrictMode>
+    </QueryClientProvider>,
+  );
+}
