@@ -1,9 +1,18 @@
 import { Card, Header, Title, Scrollable } from "@/components/common";
 import { BackButton } from "@/components/common";
+import { streakQueries } from "@/api/streak/api.query";
 import { StreakBoard, StreakCalendar } from "@/components/streak";
 import { AppScreen } from "@stackflow/plugin-basic-ui";
+import { useQuery } from "@tanstack/react-query";
 
 export default function StreakPage() {
+  const { data: streakDetail } = useQuery(streakQueries.getStreakDetailQuery());
+
+  const currentStreakDays = streakDetail?.data?.currentStreakDays ?? 0;
+  const solvedQuizCount = streakDetail?.data?.solvedQuizCount ?? 0;
+  const solvedTopicCount = streakDetail?.data?.solvedTopicCount ?? 0;
+  const longestStreakDays = streakDetail?.data?.longestStreakDays ?? 0;
+
   return (
     <AppScreen>
       <Scrollable>
@@ -13,19 +22,26 @@ export default function StreakPage() {
           center={<Title>연속 스트릭</Title>}
         />
         <section className="pt-header px-gutter gap-colgap flex flex-col">
-          <StreakBoard />
+          <StreakBoard
+            currentStreakDays={currentStreakDays}
+            longestStreakDays={longestStreakDays}
+          />
           <div className="gap-colgap-small grid grid-cols-3">
             <Card className="bg-gray-002 grid place-items-center">
               <span className="text-sm">연속 학습</span>
-              <span className="text-lg font-semibold">4일</span>
+              <span className="text-lg font-semibold">
+                {currentStreakDays}일
+              </span>
             </Card>
             <Card className="bg-gray-002 grid place-items-center">
               <span className="text-sm">해결한 문제</span>
-              <span className="text-lg font-semibold">4개</span>
+              <span className="text-lg font-semibold">{solvedQuizCount}개</span>
             </Card>
             <Card className="bg-gray-002 grid place-items-center">
               <span className="text-sm">해결한 분야</span>
-              <span className="text-lg font-semibold">4개</span>
+              <span className="text-lg font-semibold">
+                {solvedTopicCount}개
+              </span>
             </Card>
           </div>
         </section>

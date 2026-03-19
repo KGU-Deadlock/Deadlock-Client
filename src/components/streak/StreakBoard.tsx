@@ -11,11 +11,25 @@ const levelToClass: Record<number, string> = {
   4: "bg-blue-004",
 };
 
-export default function StreakBoard() {
-  const cells = Array.from({ length: TOTAL_DAYS }, (_, index) => {
-    const level = index % 5;
+interface StreakBoardProps {
+  currentStreakDays: number;
+  longestStreakDays: number;
+}
 
-    return level;
+export default function StreakBoard(props: StreakBoardProps) {
+  const current = Math.max(0, props.currentStreakDays ?? 0);
+  const longest = Math.max(current, props.longestStreakDays ?? current);
+
+  const latestIndex = TOTAL_DAYS - 1;
+
+  const cells = Array.from({ length: TOTAL_DAYS }, (_, index) => {
+    const offsetFromEnd = latestIndex - index;
+
+    if (offsetFromEnd < 0) return 0;
+    if (offsetFromEnd < current) return 4; // 현재 연속 스트릭 구간
+    if (offsetFromEnd < longest) return 2; // 과거 최장 스트릭 구간
+
+    return 0;
   });
 
   const rows = Math.ceil(TOTAL_DAYS / COLUMNS_PER_ROW);

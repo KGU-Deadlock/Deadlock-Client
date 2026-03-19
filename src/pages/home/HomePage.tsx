@@ -1,6 +1,7 @@
 import { useFlow } from "@/app/stackflow";
 import type { ActivityEntry } from "@/app/stackflow-util";
 import { userQueries } from "@/api/user/api.query";
+import { streakQueries } from "@/api/streak/api.query";
 import { Card, Subtitle, Title, Scrollable } from "@/components/common";
 import { RankingItem } from "@/components/ranking";
 import { StreakBoard } from "@/components/streak";
@@ -15,6 +16,7 @@ export default function HomePage() {
   const { push } = useFlow();
   const { setProfile, setName } = useUserStore();
   const { data } = useQuery(userQueries.getUserProfileQuery());
+  const { data: streakDetail } = useQuery(streakQueries.getStreakDetailQuery());
 
   useEffect(() => {
     const profile = data?.data ?? null;
@@ -52,8 +54,17 @@ export default function HomePage() {
               <Title>
                 연속 스트릭 <span className="font-tossface">🔥</span>
               </Title>
-              <Subtitle className="mb-3">현재 n일째 공부 중이에요 </Subtitle>
-              <StreakBoard />
+              <Subtitle className="mb-3">
+                현재{" "}
+                {streakDetail?.data?.currentStreakDays != null
+                  ? streakDetail.data.currentStreakDays
+                  : 0}
+                일째 공부 중이에요
+              </Subtitle>
+              <StreakBoard
+                currentStreakDays={streakDetail?.data?.currentStreakDays ?? 0}
+                longestStreakDays={streakDetail?.data?.longestStreakDays ?? 0}
+              />
             </Card>
           </button>
           <div className="gap-colgap-small flex w-full">
