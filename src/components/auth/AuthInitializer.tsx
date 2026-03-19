@@ -8,6 +8,12 @@ interface AuthInitializerProps {
   children: ReactNode;
 }
 
+const ONBOARDING_ACTIVITIES = new Set([
+  "OnboardingNamePage",
+  "OnboardingInterestPage",
+  "OnboardingCompletePage",
+]);
+
 export function AuthInitializer({ children }: AuthInitializerProps) {
   const { replace } = useFlow();
   const stack = useStack();
@@ -34,7 +40,7 @@ export function AuthInitializer({ children }: AuthInitializerProps) {
     }
 
     if (!nextInitialized) {
-      if (currentActivity !== "OnboardingNamePage") {
+      if (!ONBOARDING_ACTIVITIES.has(currentActivity)) {
         replace("OnboardingNamePage", {}, { animate: false });
       }
       return;
@@ -54,7 +60,9 @@ export function AuthInitializer({ children }: AuthInitializerProps) {
     ? "LoginPage"
     : isInitialized
       ? null
-      : "OnboardingNamePage";
+      : ONBOARDING_ACTIVITIES.has(currentActivity ?? "")
+        ? null
+        : "OnboardingNamePage";
 
   const isRedirecting = Boolean(
     target && currentActivity && currentActivity !== target,
