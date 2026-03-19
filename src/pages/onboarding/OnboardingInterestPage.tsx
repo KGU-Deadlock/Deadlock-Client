@@ -34,7 +34,10 @@ const OnboardingInterestPage: ActivityComponentType<
   };
 
   const handleComplete = () => {
-    push("OnboardingCompletePage", { name, interest: selectedInterest });
+    push("OnboardingQuizLevelPage", {
+      name,
+      interest: selectedInterest,
+    });
   };
 
   return (

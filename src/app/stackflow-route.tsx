@@ -9,6 +9,7 @@ import StreakPage from "@/pages/streak/StreakPage";
 import UserPage from "@/pages/user/UserPage";
 import type { ActivityEntry } from "./stackflow-util";
 import OnboardingCompletePage from "@/pages/onboarding/OnboardingCompletePage";
+import OnboardingQuizLevelPage from "@/pages/onboarding/OnboardingQuizLevelPage";
 
 export const Route: ActivityEntry[] = [
   {
@@ -30,6 +31,11 @@ export const Route: ActivityEntry[] = [
     name: "OnboardingInterestPage",
     component: OnboardingInterestPage,
     path: "/onboarding/interest",
+  },
+  {
+    name: "OnboardingQuizLevelPage",
+    component: OnboardingQuizLevelPage,
+    path: "/onboarding/quiz-level",
   },
   {
     name: "OnboardingCompletePage",

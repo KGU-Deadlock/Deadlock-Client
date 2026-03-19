@@ -11,6 +11,7 @@ interface AuthInitializerProps {
 const ONBOARDING_ACTIVITIES = new Set([
   "OnboardingNamePage",
   "OnboardingInterestPage",
+  "OnboardingQuizLevelPage",
   "OnboardingCompletePage",
 ]);
 
