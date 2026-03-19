@@ -13,7 +13,7 @@ const buttonVariant = cva(
       },
       state: {
         kakao: ["bg-kakao text-black text-base rounded-xl border-none "],
-        active: ["bg-blue-004 text-white border-none "],
+        active: ["bg-blue-004 text-white border-none"],
         outline: ["bg-blue-002/25 border-1 border-blue-004"],
         disabled: ["bg-gray-002 text-gray-005 cursor-not-allowed border-none"],
         disabled_outline: ["bg-white text-gray-004 border-1 border-gray-004"],
