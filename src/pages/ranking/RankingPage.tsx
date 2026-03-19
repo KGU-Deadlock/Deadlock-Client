@@ -47,12 +47,12 @@ export default function RankingPage() {
             <div className="divide-gray-003 mt-3 divide-y px-4">
               {ranking.filter((item) => item.rank >= 4).map((item) => (
                 <div key={item.rank} className="py-1">
-                  <RankingItem {...item} />
+                  <RankingItem rank={item.rank} nickname={item.name} score={item.score} university={item.university} interest={item.interest} />
                 </div>
               ))}
             </div>
             <div className="bg-blue-003 mt-2 w-full rounded-xl px-4">
-              <RankingItem {...me} tone="inverse" />
+              <RankingItem rank={me.rank} nickname={me.name} score={me.score} university={me.university} interest={me.interest} tone="inverse" />
             </div>
             <div className="mt-4">
               <Subtitle className="text-gray-006 text-center">

@@ -2,20 +2,21 @@ import { cn } from "@/utils/cn";
 
 interface RankingItemProps {
   rank: number;
-  name: string;
-  university: string;
-  interest: string;
+  nickname: string;
   score: number;
+  profileImage?: string;
+  university?: string;
+  interest?: string;
   className?: string;
   tone?: "default" | "inverse";
 }
 
 export default function RankingItem({
   rank,
-  name,
+  nickname,
+  score,
   university,
   interest,
-  score,
   className,
   tone = "default",
 }: RankingItemProps) {
@@ -53,7 +54,7 @@ export default function RankingItem({
             tone === "inverse" ? "text-white" : "text-black",
           )}
         >
-          {name}
+          {nickname}
         </span>
         <span
           className={cn(
@@ -61,7 +62,7 @@ export default function RankingItem({
             tone === "inverse" ? "text-gray-002" : "text-gray-006",
           )}
         >
-          {university} · {interest}
+          {university ?? "경기대학교"} · {interest ?? "CS"}
         </span>
       </div>
       <span

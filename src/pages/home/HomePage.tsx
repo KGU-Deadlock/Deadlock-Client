@@ -2,10 +2,10 @@ import { useFlow } from "@/app/stackflow";
 import type { ActivityEntry } from "@/app/stackflow-util";
 import { userQueries } from "@/api/user/api.query";
 import { streakQueries } from "@/api/streak/api.query";
+import { rankingQueries } from "@/api/ranking/api.query";
 import { Card, Subtitle, Title, Scrollable } from "@/components/common";
 import { RankingItem } from "@/components/ranking";
 import { StreakBoard } from "@/components/streak";
-import { ranking as rankingData } from "@/constants/ranking/ranking";
 import { useUserStore } from "@/model/user/user-store";
 import { AppScreen } from "@stackflow/plugin-basic-ui";
 import { useQuery } from "@tanstack/react-query";
@@ -17,6 +17,9 @@ export default function HomePage() {
   const { setProfile, setName } = useUserStore();
   const { data } = useQuery(userQueries.getUserProfileQuery());
   const { data: streakDetail } = useQuery(streakQueries.getStreakDetailQuery());
+  const { data: rankingSummary } = useQuery(
+    rankingQueries.getRankingSummaryQuery(),
+  );
 
   useEffect(() => {
     const profile = data?.data ?? null;
@@ -100,13 +103,26 @@ export default function HomePage() {
             <Title>실시간 랭킹</Title>
             <Subtitle>내 위치는 어디일까요?</Subtitle>
           </button>
-          <div className="pb-footer divide-gray-002 flex flex-col gap-1 divide-y px-[calc(var(--spacing-gutter)*1.5)] pt-4">
-            {rankingData
-              .filter((item) => item.rank <= 4)
-              .map((item) => (
-                <RankingItem key={item.rank} {...item} />
+          {rankingSummary?.data?.top5 && (
+            <div className="pb-footer divide-gray-002 flex flex-col gap-1 divide-y px-[calc(var(--spacing-gutter)*1.5)] pt-4">
+              {rankingSummary.data.top5.length === 0 && (
+                <div className="flex flex-col items-center justify-center gap-2 py-8">
+                  <span className="font-tossface text-5xl">🤔</span>
+                  <span className="text-gray-005 font-regular text-center text-sm">
+                    랭킹 데이터가 없어요!
+                  </span>
+                </div>
+              )}
+              {rankingSummary.data.top5.map((item, index) => (
+                <RankingItem
+                  key={item.rank ?? index}
+                  rank={item.rank ?? index + 1}
+                  nickname={item.nickname ?? "익명"}
+                  score={item.score ?? 0}
+                />
               ))}
-          </div>
+            </div>
+          )}
         </div>
       </Scrollable>
     </AppScreen>
