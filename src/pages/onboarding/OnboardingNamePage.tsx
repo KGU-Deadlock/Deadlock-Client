@@ -13,8 +13,12 @@ export default function OnboardingNamePage() {
   const { push } = useFlow();
   const [name, setName] = useState("");
 
+  const formatName = (name: string) => {
+    return name.trim().replace(/[^a-zA-Z0-9ㄱ-ㅎㅏ-ㅣ가-힣]/g, "");
+  };
+
   const handleNext = () => {
-    push("OnboardingInterestPage", {});
+    push("OnboardingInterestPage", { name });
   };
 
   return (
@@ -30,8 +34,13 @@ export default function OnboardingNamePage() {
           className="border-gray-003 w-full border-b pb-2 text-lg focus:outline-none"
           placeholder="최대 13자 / 공백, 특수기호 불가"
           value={name}
-          onChange={(e) => setName(e.target.value)}
+          maxLength={13}
+          onChange={(e) => setName(formatName(e.target.value))}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") handleNext();
+          }}
         />
+        <p className="text-gray-005 text-end text-sm">{name.length}/13</p>
       </div>
       <Footer>
         <Button
