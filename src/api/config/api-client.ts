@@ -10,6 +10,7 @@ const baseURL = import.meta.env.VITE_API_BASE_URL;
 
 export const baseApiClient = ky.extend({
   prefixUrl: baseURL,
+  credentials: "include",
   headers: {
     "Content-Type": "application/json",
   },
