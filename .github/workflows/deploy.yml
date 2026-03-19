@@ -33,7 +33,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          COMPOSE="/home/salamander011017/actions-runner-org/_work/DeadLock-Server/DeadLock-Server/docker-compose.yml"
+          COMPOSE="/home/salamander011017/actions-runner-server/_work/DeadLock-Server/DeadLock-Server/docker-compose.yml"
           docker compose -f "$COMPOSE" up -d nginx
           docker compose -f "$COMPOSE" ps
 
