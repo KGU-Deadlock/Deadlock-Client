@@ -13,7 +13,7 @@ import { useState } from "react";
 
 const quizMethod = {
   VOICE: "voice",
-  NORMAL: "normal",
+  STANDARD: "standard",
 } as const;
 
 type QuizMethod = (typeof quizMethod)[keyof typeof quizMethod];
@@ -28,9 +28,9 @@ export default function QuizHomePage() {
 
   const handleStartQuiz = () => {
     if (selectedMethod === quizMethod.VOICE) {
-      push("QuizVoicePage", {});
+      push("QuizSubjectPage", { mode: "VOICE" });
     } else {
-      push("QuizNormalPage", {});
+      push("QuizSubjectPage", { mode: "STANDARD" });
     }
   };
 
@@ -45,10 +45,10 @@ export default function QuizHomePage() {
       <div className="px-gutter mt-20 flex w-full flex-col gap-4">
         <Button
           size="large"
-          onClick={() => handleSelectMethod(quizMethod.NORMAL)}
+          onClick={() => handleSelectMethod(quizMethod.STANDARD)}
           className="py-gutter flex h-fit flex-col items-center justify-center gap-1"
           state={
-            selectedMethod === quizMethod.NORMAL
+            selectedMethod === quizMethod.STANDARD
               ? "outline"
               : "disabled_outline"
           }
