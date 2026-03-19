@@ -48,7 +48,7 @@ export default function HomePage() {
             onClick={handleNavigation("UserPage")}
             className="bg-gray-001 grid h-10 w-10 cursor-pointer place-items-center rounded-full border-none"
           >
-            <RiUser3Fill className="text-gray-006" />
+            <RiUser3Fill className="text-gray-004" />
           </button>
         </div>
         <div className="px-gutter gap-colgap-small flex w-full flex-col">

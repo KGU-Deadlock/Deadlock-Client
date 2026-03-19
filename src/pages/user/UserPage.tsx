@@ -10,6 +10,7 @@ import { quizQueries } from "@/api/quiz/api.query";
 import { useUserStore } from "@/model/user/user-store";
 import { AppScreen } from "@stackflow/plugin-basic-ui";
 import { useQuery } from "@tanstack/react-query";
+import { RiUser3Fill } from "react-icons/ri";
 
 export default function UserPage() {
   const { profile, name, interest } = useUserStore();
@@ -40,7 +41,9 @@ export default function UserPage() {
         />
         <section className="px-gutter pt-header gap-colgap flex flex-col">
           <div className="flex w-full flex-col items-center justify-center gap-3">
-            <div className="bg-gray-002 size-[100px] rounded-full" />
+            <div className="bg-gray-002 grid size-[100px] place-items-center rounded-full">
+              <RiUser3Fill className="text-gray-004" size={32} />
+            </div>
             <div className="flex flex-col items-center justify-center gap-1">
               <Title>{profile?.nickname ?? name ?? "사용자"}</Title>
               <Subtitle>
