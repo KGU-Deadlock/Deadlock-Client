@@ -35,11 +35,9 @@ const QuizVoicePage: ActivityComponentType<QuizVoicePageProps> = ({
     isListening,
     hasTranscript,
     transcript,
-    language,
     handleToggleListening,
     handleCancel,
     handleSubmitVoice,
-    toggleLanguage,
   } = useVoiceQuiz({
     voiceQuizzes,
     onComplete: (answers) => {
@@ -71,14 +69,6 @@ const QuizVoicePage: ActivityComponentType<QuizVoicePageProps> = ({
               </Button>
             </div>
             <div className="relative flex items-center justify-center">
-              <Button
-                size="small"
-                state="ghost_background"
-                className="absolute -top-10 right-0"
-                onClick={toggleLanguage}
-              >
-                {language === "ko-KR" ? "KO" : "EN"}
-              </Button>
               {isListening ? (
                 <p className="text-gray-005 absolute -top-10 text-sm text-red-500">
                   듣고 있어요...

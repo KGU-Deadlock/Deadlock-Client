@@ -44,7 +44,6 @@ export function useVoiceQuiz({ voiceQuizzes, onComplete }: UseVoiceQuizParams) {
   const [transcript, setTranscript] = useState("");
   const [isListening, setIsListening] = useState(false);
   const [voiceAnswers, setVoiceAnswers] = useState<VoiceAnswer[]>([]);
-  const [language, setLanguage] = useState<"ko-KR" | "en-US">("ko-KR");
   const recognitionRef = useRef<SpeechRecognitionLike | null>(null);
 
   const currentQuiz = voiceQuizzes[currentIndex];
@@ -62,7 +61,7 @@ export function useVoiceQuiz({ voiceQuizzes, onComplete }: UseVoiceQuizParams) {
     }
 
     const recognition = new SpeechRecognition();
-    recognition.lang = language;
+    recognition.lang = "ko-KR";
     recognition.continuous = true;
     recognition.interimResults = true;
 
@@ -88,7 +87,7 @@ export function useVoiceQuiz({ voiceQuizzes, onComplete }: UseVoiceQuizParams) {
     return () => {
       recognition.stop();
     };
-  }, [language]);
+  }, []);
 
   const stopListening = () => {
     if (isListening && recognitionRef.current) {
@@ -145,11 +144,6 @@ export function useVoiceQuiz({ voiceQuizzes, onComplete }: UseVoiceQuizParams) {
     moveToNextQuiz();
   };
 
-  const toggleLanguage = () => {
-    stopListening();
-    setLanguage((prev) => (prev === "ko-KR" ? "en-US" : "ko-KR"));
-  };
-
   return {
     currentQuiz,
     currentQuizNumber,
@@ -157,10 +151,8 @@ export function useVoiceQuiz({ voiceQuizzes, onComplete }: UseVoiceQuizParams) {
     hasTranscript,
     transcript,
     isLastQuiz,
-    language,
     handleToggleListening,
     handleCancel,
     handleSubmitVoice,
-    toggleLanguage,
   };
 }
