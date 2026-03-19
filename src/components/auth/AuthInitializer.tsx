@@ -2,7 +2,7 @@ import { useFlow } from "@/app/stackflow";
 import { useStack } from "@stackflow/react";
 import { useEffect, type ReactNode } from "react";
 import { useAuthStore } from "@/model/auth/auth-store";
-import { Route } from "@/app/stackflow-route";
+import { isStackflowRoute } from "@/app/route-match";
 
 interface AuthInitializerProps {
   children: ReactNode;
@@ -15,8 +15,7 @@ export function AuthInitializer({ children }: AuthInitializerProps) {
   const { accessToken, isInitialized } = useAuthStore();
 
   const currentActivity = stack.activities[stack.activities.length - 1]?.name;
-  const currentPath = window.location.pathname;
-  const isAppRoute = Route.some(({ path }) => path === currentPath);
+  const isAppRoute = isStackflowRoute(window.location.pathname);
 
   useEffect(() => {
     if (!isAppRoute) return;
