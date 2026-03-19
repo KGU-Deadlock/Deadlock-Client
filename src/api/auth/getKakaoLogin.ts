@@ -9,10 +9,12 @@ import type { KakaoLoginResponse } from "./api.model";
  */
 export function getKakaoLogin(
   code: string,
+  state: string,
 ): Promise<ApiResult<KakaoLoginResponse>> {
   return baseApi.get<KakaoLoginResponse>(END_POINTS.AUTH.TOKEN, {
     searchParams: {
       code,
+      state,
     },
   });
 }

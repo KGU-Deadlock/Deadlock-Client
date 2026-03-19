@@ -12,9 +12,10 @@ export default function LoginPage() {
   const { replace } = useFlow();
   const { setAccessToken, setIsInitialized } = useAuthStore();
   const code = new URLSearchParams(window.location.search).get("code");
+  const state = new URLSearchParams(window.location.search).get("state");
 
   const { data, refetch, isPending } = useQuery(
-    authQueries.kakaoLoginQuery(code ?? ""),
+    authQueries.kakaoLoginQuery(code ?? "", state ?? ""),
   );
 
   const handleKakaoLogin = () => {
@@ -23,7 +24,7 @@ export default function LoginPage() {
   };
 
   useEffect(() => {
-    if (code) {
+    if (code && state) {
       refetch();
       if (data) {
         setAccessToken(data.accessToken);

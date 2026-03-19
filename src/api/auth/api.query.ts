@@ -14,11 +14,11 @@ export const authKeys = {
 export const authQueries = {
   keys: authKeys,
 
-  kakaoLoginQuery: (code: string) =>
+  kakaoLoginQuery: (code: string, state: string) =>
     queryOptions({
       queryKey: authKeys.kakaoLogin(),
       queryFn: async () => {
-        const res = await getKakaoLogin(code);
+        const res = await getKakaoLogin(code, state);
         if (!res.ok) throw new Error("카카오 로그인 시작에 실패했습니다.");
         return res.data;
       },
