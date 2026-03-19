@@ -1,0 +1,54 @@
+name: Deploy Frontend to GCP VM
+
+on:
+  push:
+    branches: [main, develop]
+  workflow_dispatch: {}
+
+concurrency:
+  group: deploy-frontend-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Prepare .env
+        shell: bash
+        run: |
+          {
+            echo "VITE_API_BASE_URL=${{ secrets.VITE_API_BASE_URL }}"
+            echo "API_SWAGGER_URL=${{ secrets.API_SWAGGER_URL }}"
+          } > .env
+
+      - name: Build image
+        shell: bash
+        run: |
+          docker build -t deadlock-client:latest .
+
+      - name: Deploy
+        shell: bash
+        run: |
+          set -euo pipefail
+          COMPOSE="/home/salamander011017/actions-runner/_work/DeadLock-Server/DeadLock-Server/docker-compose.yml"
+          docker compose -f "$COMPOSE" up -d nginx
+          docker compose -f "$COMPOSE" ps
+
+      - name: Notify Discord (success)
+        if: success()
+        shell: bash
+        run: |
+          curl -fsS -H 'Content-Type: application/json' \
+            -d "{\"content\":\"✅ [Frontend] Deploy success: \`${{ github.repository }}@${{ github.sha }}\` (${GITHUB_REF_NAME})\"}" \
+            "${{ secrets.DISCORD_WEBHOOK_URL }}"
+
+      - name: Notify Discord (failure)
+        if: failure()
+        shell: bash
+        run: |
+          curl -fsS -H 'Content-Type: application/json' \
+            -d "{\"content\":\"❌ [Frontend] Deploy failed: \`${{ github.repository }}@${{ github.sha }}\`\\nActions: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}\"}" \
+            "${{ secrets.DISCORD_WEBHOOK_URL }}"
