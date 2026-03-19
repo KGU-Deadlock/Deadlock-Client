@@ -1,14 +1,27 @@
 import { useFlow } from "@/app/stackflow";
 import type { ActivityEntry } from "@/app/stackflow-util";
+import { userQueries } from "@/api/user/api.query";
 import { Card, Subtitle, Title, Scrollable } from "@/components/common";
 import { RankingItem } from "@/components/ranking";
 import { StreakBoard } from "@/components/streak";
 import { ranking as rankingData } from "@/constants/ranking/ranking";
+import { useUserStore } from "@/model/user/user-store";
 import { AppScreen } from "@stackflow/plugin-basic-ui";
+import { useQuery } from "@tanstack/react-query";
+import { useEffect } from "react";
 import { RiUser3Fill } from "react-icons/ri";
 
 export default function HomePage() {
   const { push } = useFlow();
+  const { setProfile, setName } = useUserStore();
+  const { data } = useQuery(userQueries.getUserProfileQuery());
+
+  useEffect(() => {
+    const profile = data?.data ?? null;
+    if (!profile) return;
+    setProfile(profile);
+    setName(profile.nickname ?? "");
+  }, [data, setName, setProfile]);
 
   const handleNavigation = (path: ActivityEntry["name"]) => () => {
     push(path, {});
@@ -20,7 +33,7 @@ export default function HomePage() {
         <div className="px-gutter pt-header flex items-center justify-between">
           <div>
             <span className="text-xl leading-6 font-bold text-black">
-              한유진
+              {data?.data?.nickname ?? ""}
             </span>
             <span className="text-lg leading-5 font-medium text-black">
               님 안녕하세요!
@@ -80,8 +93,8 @@ export default function HomePage() {
             {rankingData
               .filter((item) => item.rank <= 4)
               .map((item) => (
-              <RankingItem key={item.rank} {...item} />
-            ))}
+                <RankingItem key={item.rank} {...item} />
+              ))}
           </div>
         </div>
       </Scrollable>
