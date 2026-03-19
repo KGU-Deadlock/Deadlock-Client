@@ -3,6 +3,7 @@ import { END_POINTS } from "@/api/config/api-endpoints";
 import { useFlow } from "@/app/stackflow";
 import { Button, Footer } from "@/components/common";
 import { useAuthStore } from "@/model/auth/auth-store";
+import { toastError } from "@/utils/toast";
 import { AppScreen } from "@stackflow/plugin-basic-ui";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
@@ -25,18 +26,23 @@ export default function LoginPage() {
 
   useEffect(() => {
     if (code && state) {
-      refetch().then((res) => {
-        if (res.data) {
-          setAccessToken(res.data.accessToken);
-          if (res.data.isUser) {
-            setIsInitialized(true);
-            replace("HomePage", {}, { animate: false });
-          } else {
-            setIsInitialized(false);
-            replace("OnboardingNamePage", {}, { animate: false });
+      refetch()
+        .then((res) => {
+          if (res.data) {
+            setAccessToken(res.data.accessToken);
+            if (res.data.isUser) {
+              setIsInitialized(true);
+              replace("HomePage", {}, { animate: false });
+            } else {
+              setIsInitialized(false);
+              replace("OnboardingNamePage", {}, { animate: false });
+            }
           }
-        }
-      });
+        })
+        .catch((error) => {
+          toastError(error.message);
+          replace("LoginPage", {}, { animate: false });
+        });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [code, refetch]);
