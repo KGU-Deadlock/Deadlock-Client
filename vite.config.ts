@@ -14,4 +14,13 @@ export default defineConfig({
       "@": path.resolve(__dirname, "src"),
     },
   },
+  server: {
+    proxy: {
+      "/swagger-ui": {
+        target: "https://hellocs.site",
+        changeOrigin: true,
+        secure: true,
+      },
+    },
+  },
 });
