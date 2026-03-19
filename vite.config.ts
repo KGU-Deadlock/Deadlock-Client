@@ -16,6 +16,16 @@ export default defineConfig({
   },
   server: {
     proxy: {
+      "/api": {
+        target: "https://hellocs.site",
+        changeOrigin: true,
+        secure: true,
+      },
+      "/v3": {
+        target: "https://hellocs.site",
+        changeOrigin: true,
+        secure: true,
+      },
       "/swagger-ui": {
         target: "https://hellocs.site",
         changeOrigin: true,
