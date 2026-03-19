@@ -1,4 +1,5 @@
 import { useFlow } from "@/app/stackflow";
+import { quizQueries } from "@/api/quiz/api.query";
 import {
   BackButton,
   Button,
@@ -7,31 +8,33 @@ import {
   PageTitle,
 } from "@/components/common";
 import { AppScreen } from "@stackflow/plugin-basic-ui";
+import type { ActivityComponentType } from "@stackflow/react";
+import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 
-const interests = [
-  { id: 1, name: "알고리즘" },
-  { id: 2, name: "웹 개발" },
-  { id: 3, name: "모바일 개발" },
-  { id: 4, name: "시스템/운영체제" },
-  { id: 5, name: "네트워크" },
-  { id: 6, name: "정보보안" },
-  { id: 7, name: "데이터베이스" },
-  { id: 8, name: "인공지능/머신러닝" },
-  { id: 9, name: "클라우드/인프라" },
-  { id: 10, name: "임베디드/IoT" },
-];
+interface OnboardingInterestPageProps {
+  name: string;
+}
 
-export default function OnboardingInterestPage() {
+const OnboardingInterestPage: ActivityComponentType<
+  OnboardingInterestPageProps
+> = ({ params }) => {
+  const { name } = params;
   const { push } = useFlow();
-  const [selectedInterest, setSelectedInterest] = useState<string | null>(null);
+  const [selectedInterest, setSelectedInterest] = useState<number | null>(null);
+  const {
+    data: topicResponse,
+    isPending,
+    isError,
+  } = useQuery(quizQueries.getQuizTopicQuery());
+  const interests = topicResponse?.data ?? [];
 
-  const handleSelectInterest = (interest: string) => {
+  const handleSelectInterest = (interest: number) => {
     setSelectedInterest(interest);
   };
 
   const handleComplete = () => {
-    push("OnboardingCompletePage", {});
+    push("OnboardingCompletePage", { name, interest: selectedInterest });
   };
 
   return (
@@ -43,18 +46,26 @@ export default function OnboardingInterestPage() {
       </PageTitle>
       <div className="px-gutter mt-20 flex w-full flex-col gap-6">
         <label className="text-gray-005 text-sm">관심 분야</label>
+        {isPending && (
+          <p className="text-gray-005 text-sm">관심 분야를 불러오는 중...</p>
+        )}
+        {isError && (
+          <p className="text-red text-sm">
+            관심 분야를 불러오지 못했어요. 잠시 후 다시 시도해주세요.
+          </p>
+        )}
         <div className="grid w-full grid-cols-2 gap-4">
           {interests.map((interest) => (
             <Button
-              key={interest.id}
+              key={`${interest.id}-${interest.name}`}
               size="large"
               className="h-[60px]"
               state={
-                selectedInterest === interest.name
+                selectedInterest === interest.id
                   ? "outline"
                   : "disabled_outline"
               }
-              onClick={() => handleSelectInterest(interest.name)}
+              onClick={() => handleSelectInterest(interest.id!)}
             >
               {interest.name}
             </Button>
@@ -72,4 +83,6 @@ export default function OnboardingInterestPage() {
       </Footer>
     </AppScreen>
   );
-}
+};
+
+export default OnboardingInterestPage;

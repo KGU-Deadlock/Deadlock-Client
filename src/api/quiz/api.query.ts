@@ -4,12 +4,14 @@ import { postQuizList } from "./postQuizList";
 import { postQuizGrade } from "./postQuizGrade";
 import { getQuizGradeLog } from "./getQuizGradeLog";
 import { getQuizGradeLogDetail } from "./getQuizGradeLogDetail";
+import { getQuizTopic } from "./getQuizTopic";
 import type { GetQuizRequest } from "./api.model";
 
 const quizQueryKey = ["quiz"] as const;
 
 export const quizKeys = {
   all: quizQueryKey,
+  topic: () => [...quizQueryKey, "topic"] as const,
   list: (params: GetQuizRequest) => [...quizQueryKey, "list", params] as const,
   gradingLog: (gradingLogId: string) =>
     [...quizQueryKey, "grading-log", gradingLogId] as const,
@@ -19,6 +21,16 @@ export const quizKeys = {
 
 export const quizQueries = {
   keys: quizKeys,
+
+  getQuizTopicQuery: () =>
+    queryOptions({
+      queryKey: quizKeys.topic(),
+      queryFn: async () => {
+        const res = await getQuizTopic();
+        if (!res.ok) throw new Error("토픽 조회에 실패했습니다.");
+        return res.data;
+      },
+    }),
 
   postQuizListQuery: (params: GetQuizRequest) =>
     queryOptions({
