@@ -33,7 +33,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          COMPOSE="/home/salamander011017/actions-runner/_work/DeadLock-Server/DeadLock-Server/docker-compose.yml"
+          COMPOSE="/home/salamander011017/actions-runner-org/_work/DeadLock-Server/DeadLock-Server/docker-compose.yml"
           docker compose -f "$COMPOSE" up -d nginx
           docker compose -f "$COMPOSE" ps
 
@@ -52,4 +52,3 @@ jobs:
           curl -fsS -H 'Content-Type: application/json' \
             -d "{\"content\":\"❌ [Frontend] Deploy failed: \`${{ github.repository }}@${{ github.sha }}\`\\nActions: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}\"}" \
             "${{ secrets.DISCORD_WEBHOOK_URL }}"
-            
