@@ -1,0 +1,43 @@
+---
+alwaysApply: false
+---
+
+## 사용자 요청 템플릿 (여기부터 채워서 사용)
+
+다음 요구사항에 맞춰 **Deadlock-Client** 규칙으로 구현해줘.
+
+- **도메인 이름**: `[예: inventory]`
+- **페이지 목록**: `[예: 목록 InventoryListPage, 상세 InventoryDetailPage]`
+- **URL 경로**: `[예: /inventory, /inventory/:id 또는 stackflow params 설명]`
+- **필요한 API**: `[예: GET /api/v1/inventories — api-models.ts에 있다고 가정]`
+- **이전 화면에서 진입**: `[예: HomePage에서 버튼으로 push]`
+- **전역 상태/인증**: `[필요 시 zustand store 여부]`
+
+구현 시 반드시:
+
+1. `pages/[도메인]/` 아래에 페이지 컴포넌트 생성 (`ActivityComponentType` + `params` 타입 명시).
+2. `stackflow-route.tsx`에 `Route` 항목 추가 및 import 정리.
+3. API가 필요하면 `END_POINTS` + `api/[도메인]/` 파일 + 필요 시 `api.query.ts` 패턴 유지.
+4. 도메인 전용 상수는 `constants/[도메인]/`에 추가.
+5. 복잡한 화면 로직은 `model/[도메인]/useXxx.ts`로 분리.
+6. UI 재사용 블록은 `components/[도메인]/` 또는 `components/common/`에 배치.
+7. 한국어 UI 문구, 기존 페이지와 동일한 레이아웃 패턴 유지.
+
+---
+
+## 빠른 체크리스트
+
+- [ ] `src/pages/{domain}/*Page.tsx` 생성
+- [ ] `src/app/stackflow-route.tsx` 등록 (`name` / `path` / `component`)
+- [ ] `END_POINTS` 및 `api/{domain}/` (해당 시)
+- [ ] `constants/{domain}/` (해당 시)
+- [ ] `model/{domain}/` (해당 시)
+- [ ] `components/{domain}/` (해당 시)
+- [ ] 진입점 `push`/`replace` 연결
+- [ ] `pnpm lint` / 타입 에러 없음
+
+---
+
+## 참고: 현재 등록된 페이지 경로 예시
+
+- 홈 `/`, 로그인 `/login`, 온보딩 `/onboarding/*`, 랭킹 `/ranking`, 스트릭 `/streak`, 유저 `/user`, 퀴즈 `/quiz/*`, 인터뷰 `/interview` 등은 `stackflow-route.tsx`의 `Route` 배열이 단일 소스다.
