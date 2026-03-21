@@ -31,10 +31,19 @@ function isMyRankingEntry(
   );
 }
 
+type RankingFilterType = "ALL" | "INTEREST";
+
+const FILTER_LABEL: Record<RankingFilterType, string> = {
+  ALL: "전체",
+  INTEREST: "관심사별",
+};
+
 export default function RankingPage() {
+  const [filterType, setFilterType] = useState<RankingFilterType>("ALL");
   const [isOpen, setIsOpen] = useState(false);
+
   const { data } = useQuery(
-    rankingQueries.getRankingDetailQuery({ filterType: "ALL", size: 20 }),
+    rankingQueries.getRankingDetailQuery({ filterType, size: 20 }),
   );
 
   const rankings = data?.data?.rankings ?? [];
@@ -62,12 +71,33 @@ export default function RankingPage() {
           className="right-gutter top-header border-gray-003 text-gray-005 absolute mt-4 flex items-center gap-2 border-b pb-1 text-sm font-medium"
           onClick={handleToggle}
         >
-          전체 {isOpen ? <CgChevronUp /> : <CgChevronDown />}
+          {FILTER_LABEL[filterType]}{" "}
+          {isOpen ? <CgChevronUp /> : <CgChevronDown />}
         </button>
         {isOpen && (
-          <div className="right-gutter divide-gray-003 border-gray-003 absolute top-[calc(70px+var(--spacing-gutter))] z-999 flex flex-col divide-y rounded-lg border bg-white p-4 text-sm shadow-xl">
-            <span className="py-2">학교별</span>
-            <span className="py-2">관심사별</span>
+          <div
+            role="menu"
+            className="right-gutter border-gray-003 absolute top-[calc(70px+var(--spacing-gutter))] z-999 flex min-w-[120px] flex-col rounded-lg border bg-white p-1 text-sm shadow-xl"
+          >
+            {(Object.keys(FILTER_LABEL) as RankingFilterType[]).map((key) => (
+              <button
+                key={key}
+                type="button"
+                role="menuitem"
+                className={cn(
+                  "w-full rounded-md px-3 py-2 text-left",
+                  filterType === key
+                    ? "bg-blue-001 text-blue-005 font-medium"
+                    : "text-gray-006 hover:bg-gray-001",
+                )}
+                onClick={() => {
+                  setFilterType(key);
+                  setIsOpen(false);
+                }}
+              >
+                {FILTER_LABEL[key]}
+              </button>
+            ))}
           </div>
         )}
 
