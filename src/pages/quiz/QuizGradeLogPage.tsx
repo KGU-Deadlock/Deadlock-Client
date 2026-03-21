@@ -24,7 +24,7 @@ const QuizGradeLogPage: ActivityComponentType<QuizGradeLogPageProps> = ({
   params,
 }) => {
   const { gradingLogId } = params;
-  const { push, replace } = useFlow();
+  const { push, pop } = useFlow();
 
   const { data, isPending, isError } = useQuery(
     quizQueries.getQuizGradeLogQuery(gradingLogId),
@@ -106,10 +106,7 @@ const QuizGradeLogPage: ActivityComponentType<QuizGradeLogPageProps> = ({
         </div>
 
         <Footer>
-          <Button
-            size="large"
-            onClick={() => replace("HomePage", {}, { animate: false })}
-          >
+          <Button size="large" onClick={() => pop({ animate: false })}>
             홈으로
           </Button>
         </Footer>

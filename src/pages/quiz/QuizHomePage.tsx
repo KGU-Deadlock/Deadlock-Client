@@ -23,7 +23,7 @@ const quizMethod = {
 type QuizMethod = (typeof quizMethod)[keyof typeof quizMethod];
 
 export default function QuizHomePage() {
-  const { push } = useFlow();
+  const { replace } = useFlow();
   const [selectedMethod, setSelectedMethod] = useState<QuizMethod | null>(null);
 
   const handleSelectMethod = (method: QuizMethod) => {
@@ -32,9 +32,9 @@ export default function QuizHomePage() {
 
   const handleStartQuiz = () => {
     if (selectedMethod === quizMethod.VOICE) {
-      push("QuizSubjectPage", { mode: QUIZ_MODE.VOICE });
+      replace("QuizSubjectPage", { mode: QUIZ_MODE.VOICE });
     } else {
-      push("QuizSubjectPage", { mode: QUIZ_MODE.STANDARD });
+      replace("QuizSubjectPage", { mode: QUIZ_MODE.STANDARD });
     }
   };
 

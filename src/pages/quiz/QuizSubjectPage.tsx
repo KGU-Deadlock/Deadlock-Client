@@ -19,7 +19,6 @@ import { toastError } from "@/utils/toast";
 
 import { QUIZ_MODE, type QuizMode } from "@/constants/quiz/quiz";
 
-
 interface QuizSubjectPageProps {
   mode: QuizMode;
 }
@@ -28,7 +27,7 @@ const QuizSubjectPage: ActivityComponentType<QuizSubjectPageProps> = ({
   params,
 }) => {
   const { mode } = params;
-  const { push } = useFlow();
+  const { replace } = useFlow();
   const [selectedTopic, setSelectedTopic] = useState<number | null>(null);
   const {
     data: topicResponse,
@@ -55,7 +54,7 @@ const QuizSubjectPage: ActivityComponentType<QuizSubjectPageProps> = ({
 
       const targetPage =
         mode === QUIZ_MODE.VOICE ? "QuizVoicePage" : "QuizSolvePage";
-      push(targetPage, {
+      replace(targetPage, {
         topic: selectedTopic,
         mode,
         quizData: JSON.stringify(quizResponse.data),

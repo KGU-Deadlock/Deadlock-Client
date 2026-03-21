@@ -53,11 +53,7 @@ const QuizCompletePage: ActivityComponentType<QuizCompletePageProps> = ({
         replace("HomePage", {}, { animate: false });
         return;
       }
-      replace(
-        "QuizGradeLogPage",
-        { gradingLogId },
-        { animate: false },
-      );
+      replace("QuizGradeLogPage", { gradingLogId });
     } catch (error) {
       const message =
         error instanceof Error

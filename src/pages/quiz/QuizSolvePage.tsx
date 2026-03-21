@@ -34,13 +34,13 @@ interface QuizSolvePageProps {
 const QuizSolvePage: ActivityComponentType<QuizSolvePageProps> = ({
   params,
 }) => {
-  const { push } = useFlow();
+  const { replace } = useFlow();
 
   const onComplete = useCallback(
     (answers: UserAnswerString[]) => {
-      push("QuizCompletePage", { userAnswers: JSON.stringify(answers) });
+      replace("QuizCompletePage", { userAnswers: JSON.stringify(answers) });
     },
-    [push],
+    [replace],
   );
 
   const { uiKind, nothingToSolve } = useQuizSolve({
