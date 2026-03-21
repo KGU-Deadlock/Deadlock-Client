@@ -7,7 +7,7 @@ import { useFlow } from "@/app/stackflow";
 
 import { Button, Footer } from "@/components/common";
 
-import { useAuthStore } from "@/model/auth/auth-store";
+import { useAuthStore } from "@/model/auth/useAuthStore";
 
 import { authQueries } from "@/api/auth/api.query";
 import { END_POINTS } from "@/api/config/api-endpoints";

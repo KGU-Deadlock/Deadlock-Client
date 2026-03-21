@@ -7,13 +7,12 @@ import { useFlow } from "@/app/stackflow";
 
 import { Button, Footer, LoadingSpinner, Title } from "@/components/common";
 
-import { useAuthStore } from "@/model/auth/auth-store";
+import { useAuthStore } from "@/model/auth/useAuthStore";
 
 import { userQueries } from "@/api/user/api.query";
 import type { QuizLevel } from "@/api/user/api.type";
 
 import { toastError } from "@/utils/toast";
-
 
 interface OnboardingCompletePageProps {
   name: string;

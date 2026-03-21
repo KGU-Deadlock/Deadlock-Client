@@ -5,7 +5,7 @@ import ky, {
   type NormalizedOptions,
 } from "ky";
 
-import { useAuthStore } from "@/model/auth/auth-store";
+import { useAuthStore } from "@/model/auth/useAuthStore";
 
 const baseURL = import.meta.env.VITE_API_BASE_URL;
 
