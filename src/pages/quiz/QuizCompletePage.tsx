@@ -16,6 +16,7 @@ import {
 
 import { quizQueries } from "@/api/quiz/api.query";
 
+import { formatQuizAnswerDisplay } from "@/utils/formatQuizAnswerDisplay";
 import { toastError } from "@/utils/toast";
 
 interface QuizCompletePageProps {
@@ -45,8 +46,18 @@ const QuizCompletePage: ActivityComponentType<QuizCompletePageProps> = ({
     }
 
     try {
-      await submitGrading(parsedUserAnswers);
-      replace("HomePage", {}, { animate: false });
+      const res = await submitGrading(parsedUserAnswers);
+      const gradingLogId = res.data?.gradingLogId;
+      if (!gradingLogId) {
+        toastError("채점 결과 ID를 받지 못했어요.");
+        replace("HomePage", {}, { animate: false });
+        return;
+      }
+      replace(
+        "QuizGradeLogPage",
+        { gradingLogId },
+        { animate: false },
+      );
     } catch (error) {
       const message =
         error instanceof Error
@@ -73,7 +84,9 @@ const QuizCompletePage: ActivityComponentType<QuizCompletePageProps> = ({
               className="border-gray-003 bg-gray-001 rounded-xl border px-4 py-3"
             >
               <p className="text-gray-005 text-xs">문항 {index + 1}</p>
-              <p className="mt-1 text-sm">{item.answer}</p>
+              <p className="mt-1 text-sm">
+                {formatQuizAnswerDisplay(item.answer) || "-"}
+              </p>
             </div>
           ))}
         </div>

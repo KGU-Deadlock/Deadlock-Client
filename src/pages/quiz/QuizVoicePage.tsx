@@ -18,6 +18,7 @@ import type { GetQuizResult } from "@/api/quiz/api.model";
 import { QUIZ_MODE } from "@/constants/quiz/quiz";
 
 import { cn } from "@/utils/cn";
+import { formatQuizAnswerDisplay } from "@/utils/formatQuizAnswerDisplay";
 
 interface QuizVoicePageProps {
   topic: string;
@@ -133,7 +134,8 @@ const QuizVoicePage: ActivityComponentType<QuizVoicePageProps> = ({
                 transcript.length > 0 ? "text-black" : "text-gray-005",
               )}
             >
-              {transcript || "아직 인식된 내용이 없어요."}
+              {formatQuizAnswerDisplay(transcript) ||
+                "아직 인식된 내용이 없어요."}
             </p>
           </div>
         </>
