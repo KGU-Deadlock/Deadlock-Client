@@ -10,10 +10,11 @@ import {
 } from "@/components/common";
 import QuizLayout from "@/components/quiz/QuizLayout";
 
+import type { QuizSolveStoreState } from "@/model/quiz/useQuizStore";
 import {
   QUIZ_SOLVE_TOTAL_COUNT,
   useQuizSolveStore,
-} from "@/model/quiz/quiz-solve-store";
+} from "@/model/quiz/useQuizStore";
 
 /** 단답형 문항이 있을 때 */
 export function QuizTextInputSection() {
@@ -26,7 +27,7 @@ export function QuizTextInputSection() {
     isLastQuiz,
     canGoNext,
   } = useQuizSolveStore(
-    useShallow((s) => {
+    useShallow((s: QuizSolveStoreState) => {
       const q = s.shortQuizzes[s.textIndex];
       const isLastText = s.textIndex >= s.shortQuizzes.length - 1;
       const textQuizNumber = s.priorUserAnswersBase.length + s.textIndex + 1;
@@ -78,7 +79,9 @@ export function QuizTextInputSection() {
 
 /** OX·객관식만 있고 단답형이 없을 때 제출 유도 */
 export function QuizTextEmptySection() {
-  const submitTextEmpty = useQuizSolveStore((s) => s.submitTextEmpty);
+  const submitTextEmpty = useQuizSolveStore(
+    (s: QuizSolveStoreState) => s.submitTextEmpty,
+  );
 
   return (
     <AppScreen className="relative">

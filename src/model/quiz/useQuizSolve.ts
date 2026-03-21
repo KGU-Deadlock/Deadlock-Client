@@ -4,12 +4,12 @@ import {
   type QuizSolveStoreState,
   type UserAnswerString,
   useQuizSolveStore,
-} from "@/model/quiz/quiz-solve-store";
+} from "@/model/quiz/useQuizStore";
 
-export type { UserAnswerString } from "@/model/quiz/quiz-solve-store";
-export type { QuizSolvePhase } from "@/model/quiz/quiz-solve-store";
+export type { UserAnswerString } from "@/model/quiz/useQuizStore";
+export type { QuizSolvePhase } from "@/model/quiz/useQuizStore";
 
-export { QUIZ_SOLVE_TOTAL_COUNT } from "@/model/quiz/quiz-solve-store";
+export { QUIZ_SOLVE_TOTAL_COUNT } from "@/model/quiz/useQuizStore";
 
 /** `QuizSolvePage`에서 어떤 섹션을 그릴지 — 데이터는 전부 `useQuizSolveStore` */
 export type QuizSolveUiKind =
@@ -69,9 +69,11 @@ export function useQuizSolve({
   const onCompleteRef = useRef(onComplete);
   onCompleteRef.current = onComplete;
 
-  const init = useQuizSolveStore((st) => st.init);
-  const reset = useQuizSolveStore((st) => st.reset);
-  const completionPayload = useQuizSolveStore((st) => st.completionPayload);
+  const init = useQuizSolveStore((st: QuizSolveStoreState) => st.init);
+  const reset = useQuizSolveStore((st: QuizSolveStoreState) => st.reset);
+  const completionPayload = useQuizSolveStore(
+    (st: QuizSolveStoreState) => st.completionPayload,
+  );
 
   useEffect(() => {
     init(quizDataJson);
@@ -83,10 +85,12 @@ export function useQuizSolve({
     reset();
   }, [completionPayload, reset]);
 
-  const uiKind = useQuizSolveStore((st) => getQuizSolveUiKind(st));
+  const uiKind = useQuizSolveStore((st: QuizSolveStoreState) =>
+    getQuizSolveUiKind(st),
+  );
 
   const nothingToSolve = useQuizSolveStore(
-    (st) =>
+    (st: QuizSolveStoreState) =>
       Boolean(st.quizData) &&
       st.oxQuizzes.length === 0 &&
       st.mcQuizzes.length === 0 &&

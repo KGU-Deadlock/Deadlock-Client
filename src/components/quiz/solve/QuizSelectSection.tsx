@@ -3,10 +3,11 @@ import { useShallow } from "zustand/react/shallow";
 import { Button, Footer, PageTitle } from "@/components/common";
 import QuizLayout from "@/components/quiz/QuizLayout";
 
+import type { QuizSolveStoreState } from "@/model/quiz/useQuizStore";
 import {
   QUIZ_SOLVE_TOTAL_COUNT,
   useQuizSolveStore,
-} from "@/model/quiz/quiz-solve-store";
+} from "@/model/quiz/useQuizStore";
 
 export function QuizSelectSection() {
   const {
@@ -18,7 +19,7 @@ export function QuizSelectSection() {
     handleSelectNext,
     canNext,
   } = useQuizSolveStore(
-    useShallow((s) => {
+    useShallow((s: QuizSolveStoreState) => {
       const q = s.mcQuizzes[s.selectIndex];
       const completedOxCount = s.oxQuizzes.length;
       return {
@@ -53,7 +54,7 @@ export function QuizSelectSection() {
         {question}
       </PageTitle>
       <div className="flex flex-col gap-3">
-        {choices.map((choice, choiceIndex) => (
+        {choices.map((choice: string, choiceIndex: number) => (
           <Button
             key={`${choiceIndex}-${choice}`}
             size="large"
