@@ -9,8 +9,9 @@ interface AuthState {
 }
 
 export const useAuthStore = create<AuthState>((set) => ({
-  accessToken: undefined,
-  isInitialized: false,
+  accessToken:
+    "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI0ODAzODQzMzk5IiwidHlwZSI6ImFjY2VzcyIsImlhdCI6MTc3NDA5NTY5NCwiZXhwIjoxNzc0MDk5Mjk0LCJyb2xlIjoiVVNFUiJ9._26o9m7oRaQiABalHRpnK3QUZvs3ZZ09I665cC75cLU",
+  isInitialized: true,
   setAccessToken: (accessToken) => set({ accessToken }),
   setIsInitialized: (isInitialized) => set({ isInitialized }),
   logout: () =>
