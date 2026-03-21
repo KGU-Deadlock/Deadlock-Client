@@ -34,7 +34,18 @@ interface QuizSolvePageProps {
 const QuizSolvePage: ActivityComponentType<QuizSolvePageProps> = ({
   params,
 }) => {
-  const { replace } = useFlow();
+  const { replace, pop } = useFlow();
+
+  const goToPreviousQuestion = useQuizSolveStore(
+    (s: QuizSolveStoreState) => s.goToPreviousQuestion,
+  );
+
+  const handleBack = useCallback(() => {
+    const moved = goToPreviousQuestion();
+    if (!moved) {
+      pop();
+    }
+  }, [goToPreviousQuestion, pop]);
 
   const onComplete = useCallback(
     (answers: UserAnswerString[]) => {
@@ -70,6 +81,7 @@ const QuizSolvePage: ActivityComponentType<QuizSolvePageProps> = ({
       current={layoutCurrent}
       total={QUIZ_SOLVE_TOTAL_COUNT}
       footer={<QuizSolveFooter />}
+      onBack={handleBack}
     >
       {uiKind === "ox" && <QuizOxSection />}
       {uiKind === "select" && <QuizSelectSection />}

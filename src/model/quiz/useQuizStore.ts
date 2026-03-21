@@ -82,6 +82,8 @@ export type QuizSolveStoreState = {
   handleTextNext: () => void;
   /** 단답형 문항 없을 때 prior 만으로 제출 */
   submitTextEmpty: () => void;
+  /** 이전 문항으로 이동. 첫 문항이면 false → pop 처리 */
+  goToPreviousQuestion: () => boolean;
 };
 
 const emptyState = (): Omit<
@@ -96,6 +98,7 @@ const emptyState = (): Omit<
   | "handleSelectNext"
   | "handleTextNext"
   | "submitTextEmpty"
+  | "goToPreviousQuestion"
 > => ({
   quizData: null,
   oxQuizzes: [],
@@ -266,6 +269,105 @@ export const useQuizSolveStore = create<QuizSolveStoreState>((set, get) => ({
   submitTextEmpty: () => {
     const s = get();
     set({ completionPayload: s.priorUserAnswersBase });
+  },
+
+  goToPreviousQuestion: () => {
+    const s = get();
+
+    if (s.phase === "ox") {
+      if (s.oxIndex <= 0) return false;
+      const prevIndex = s.oxIndex - 1;
+      const prevQuiz = s.oxQuizzes[prevIndex];
+      if (prevQuiz?.id === undefined) return false;
+      const prevAnswer = s.oxAnswers.find((a) => a.quizId === prevQuiz.id);
+      set({
+        oxIndex: prevIndex,
+        selectedOxAnswer: prevAnswer?.answer ?? null,
+      });
+      return true;
+    }
+
+    if (s.phase === "select") {
+      if (s.selectIndex > 0) {
+        const prevIndex = s.selectIndex - 1;
+        const prevQuiz = s.mcQuizzes[prevIndex];
+        if (prevQuiz?.id === undefined) return false;
+        const prevAnswer = s.mcAnswers.find((a) => a.quizId === prevQuiz.id);
+        set({
+          selectIndex: prevIndex,
+          selectedChoiceIndex:
+            prevAnswer != null ? Number(prevAnswer.answer) : null,
+        });
+        return true;
+      }
+      if (s.oxQuizzes.length > 0) {
+        const lastOxIdx = s.oxQuizzes.length - 1;
+        const lastQuiz = s.oxQuizzes[lastOxIdx];
+        if (lastQuiz?.id === undefined) return false;
+        const prevAnswer = s.oxAnswers.find((a) => a.quizId === lastQuiz.id);
+        set({
+          phase: "ox",
+          oxIndex: lastOxIdx,
+          selectedOxAnswer: prevAnswer?.answer ?? null,
+          mcAnswers: [],
+        });
+        return true;
+      }
+      return false;
+    }
+
+    if (s.phase === "text") {
+      if (s.shortQuizzes.length === 0) return false;
+
+      if (s.textIndex > 0) {
+        const prevIndex = s.textIndex - 1;
+        const prevQuiz = s.shortQuizzes[prevIndex];
+        if (prevQuiz?.id === undefined) return false;
+        const prevAnswer = s.shortAnswerList.find(
+          (a) => a.quizId === prevQuiz.id,
+        );
+        set({
+          textIndex: prevIndex,
+          inputValue: prevAnswer?.answer ?? "",
+        });
+        return true;
+      }
+
+      if (s.mcQuizzes.length > 0) {
+        const lastMcIdx = s.mcQuizzes.length - 1;
+        const lastQuiz = s.mcQuizzes[lastMcIdx];
+        if (lastQuiz?.id === undefined) return false;
+        const prevAnswer = s.mcAnswers.find((a) => a.quizId === lastQuiz.id);
+        set({
+          phase: "select",
+          selectIndex: lastMcIdx,
+          selectedChoiceIndex:
+            prevAnswer != null ? Number(prevAnswer.answer) : null,
+          shortAnswerList: [],
+          inputValue: "",
+        });
+        return true;
+      }
+
+      if (s.oxQuizzes.length > 0) {
+        const lastOxIdx = s.oxQuizzes.length - 1;
+        const lastQuiz = s.oxQuizzes[lastOxIdx];
+        if (lastQuiz?.id === undefined) return false;
+        const prevAnswer = s.oxAnswers.find((a) => a.quizId === lastQuiz.id);
+        set({
+          phase: "ox",
+          oxIndex: lastOxIdx,
+          selectedOxAnswer: prevAnswer?.answer ?? null,
+          shortAnswerList: [],
+          inputValue: "",
+        });
+        return true;
+      }
+
+      return false;
+    }
+
+    return false;
   },
 }));
 

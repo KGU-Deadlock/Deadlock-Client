@@ -10,6 +10,7 @@ interface QuizLayoutProps {
   total: number;
   children: ReactNode;
   footer?: ReactNode;
+  onBack?: () => void;
 }
 
 export default function QuizLayout({
@@ -17,10 +18,11 @@ export default function QuizLayout({
   total,
   children,
   footer,
+  onBack,
 }: QuizLayoutProps) {
   return (
     <AppScreen className="relative">
-      <Header left={<BackButton />} />
+      <Header left={<BackButton onClick={onBack} />} />
       <div className="px-gutter mt-header">
         <QuizProgressBar current={current} total={total} />
       </div>
