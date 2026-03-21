@@ -3,6 +3,7 @@ import { useMemo, useState } from "react";
 
 import { Button, Modal, Subtitle } from "@/components/common";
 
+import { useModalClose } from "@/model/common";
 import { useUserStore } from "@/model/user/user-store";
 
 import { quizQueries } from "@/api/quiz/api.query";
@@ -56,7 +57,7 @@ export default function UserProfileEditModal({
     userQueries.patchUserProfileMutation(),
   );
 
-  const handleSubmit = () => {
+  const handleSubmit = (close: () => void) => {
     const trimmed = nickname.trim();
     const topicIdToSend =
       selectedTopicId ?? (interest > 0 ? interest : resolvedTopicIdFromProfile);
@@ -100,7 +101,7 @@ export default function UserProfileEditModal({
             if (topicIdToSend != null) setInterest(topicIdToSend);
           }
           toastSuccess("프로필이 수정되었어요.");
-          onClose();
+          close();
         },
         onError: (error) => {
           toastError(
@@ -117,30 +118,14 @@ export default function UserProfileEditModal({
 
   return (
     <Modal
-      open
       onClose={onClose}
       title="프로필 수정"
       footer={
-        <div className="flex gap-2">
-          <Button
-            size="large"
-            state="ghost_background"
-            className="flex-1"
-            onClick={onClose}
-            disabled={isPending}
-          >
-            취소
-          </Button>
-          <Button
-            size="large"
-            state={canSave ? "active" : "disabled"}
-            className="flex-1"
-            onClick={handleSubmit}
-            disabled={!canSave}
-          >
-            {isPending ? "저장 중..." : "저장"}
-          </Button>
-        </div>
+        <UserProfileEditModalFooter
+          canSave={canSave}
+          isPending={isPending}
+          onSubmit={handleSubmit}
+        />
       }
     >
       <div className="flex flex-col gap-6">
@@ -205,5 +190,40 @@ export default function UserProfileEditModal({
         </div>
       </div>
     </Modal>
+  );
+}
+
+function UserProfileEditModalFooter({
+  canSave,
+  isPending,
+  onSubmit,
+}: {
+  canSave: boolean;
+  isPending: boolean;
+  onSubmit: (close: () => void) => void;
+}) {
+  const close = useModalClose();
+
+  return (
+    <div className="flex gap-2">
+      <Button
+        size="large"
+        state="ghost_background"
+        className="flex-1"
+        onClick={close}
+        disabled={isPending}
+      >
+        취소
+      </Button>
+      <Button
+        size="large"
+        state={canSave ? "active" : "disabled"}
+        className="flex-1"
+        onClick={() => onSubmit(close)}
+        disabled={!canSave}
+      >
+        {isPending ? "저장 중..." : "저장"}
+      </Button>
+    </div>
   );
 }
