@@ -1,5 +1,6 @@
 import { AppScreen } from "@stackflow/plugin-basic-ui";
 import { useQuery } from "@tanstack/react-query";
+import { useMemo, useState } from "react";
 import { RiUser3Fill } from "react-icons/ri";
 
 import {
@@ -10,13 +11,20 @@ import {
   Title,
 } from "@/components/common";
 import { BackButton } from "@/components/common";
+import { UserProfileEditModal } from "@/components/user";
 
 import { useUserStore } from "@/model/user/user-store";
 
 import { quizQueries } from "@/api/quiz/api.query";
 
+import {
+  formatNicknameInput,
+  NICKNAME_MAX_LENGTH,
+} from "@/utils/formatNicknameInput";
+
 export default function UserPage() {
   const { profile, name, interest } = useUserStore();
+  const [editOpen, setEditOpen] = useState(false);
 
   const handleLogout = () => {
     window.location.replace("/login");
@@ -33,6 +41,21 @@ export default function UserPage() {
     (profile?.interests && profile.interests.length > 0
       ? profile.interests.join(", ")
       : undefined);
+
+  const resolvedTopicIdFromProfile = useMemo(() => {
+    const first = profile?.interests?.[0];
+    if (!first) return null;
+    const list = topicResponse?.data ?? [];
+    return list.find((t) => t.name === first)?.id ?? null;
+  }, [profile?.interests, topicResponse?.data]);
+
+  const editInitialNickname =
+    formatNicknameInput(profile?.nickname ?? name ?? "").slice(
+      0,
+      NICKNAME_MAX_LENGTH,
+    ) || "";
+  const editInitialTopicId =
+    interest > 0 ? interest : resolvedTopicIdFromProfile;
 
   return (
     <AppScreen>
@@ -57,10 +80,22 @@ export default function UserPage() {
                     : (interestName ?? "관심 분야를 설정해 주세요")}
               </Subtitle>
             </div>
-            <Button size="small" state="ghost_background" className="mt-2">
+            <Button
+              size="small"
+              state="ghost_background"
+              className="mt-2"
+              onClick={() => setEditOpen(true)}
+            >
               프로필 수정
             </Button>
           </div>
+          {editOpen ? (
+            <UserProfileEditModal
+              onClose={() => setEditOpen(false)}
+              initialNickname={editInitialNickname}
+              initialTopicId={editInitialTopicId}
+            />
+          ) : null}
           <div className="gap-colgap-small flex flex-col">
             <Title>활동</Title>
             <div className="divide-gray-002 flex flex-col divide-y">

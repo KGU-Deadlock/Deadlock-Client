@@ -11,13 +11,14 @@ import {
   PageTitle,
 } from "@/components/common";
 
+import {
+  formatNicknameInput,
+  NICKNAME_MAX_LENGTH,
+} from "@/utils/formatNicknameInput";
+
 export default function OnboardingNamePage() {
   const { push } = useFlow();
   const [name, setName] = useState("");
-
-  const formatName = (name: string) => {
-    return name.trim().replace(/[^a-zA-Z0-9ㄱ-ㅎㅏ-ㅣ가-힣]/g, "");
-  };
 
   const handleNext = () => {
     push("OnboardingInterestPage", { name });
@@ -36,13 +37,19 @@ export default function OnboardingNamePage() {
           className="border-gray-003 w-full border-b pb-2 text-lg focus:outline-none"
           placeholder="최대 13자 / 공백, 특수기호 불가"
           value={name}
-          maxLength={13}
-          onChange={(e) => setName(formatName(e.target.value))}
+          maxLength={NICKNAME_MAX_LENGTH}
+          onChange={(e) =>
+            setName(
+              formatNicknameInput(e.target.value).slice(0, NICKNAME_MAX_LENGTH),
+            )
+          }
           onKeyDown={(e) => {
             if (e.key === "Enter") handleNext();
           }}
         />
-        <p className="text-gray-005 text-end text-sm">{name.length}/13</p>
+        <p className="text-gray-005 text-end text-sm">
+          {name.length}/{NICKNAME_MAX_LENGTH}
+        </p>
       </div>
       <Footer>
         <Button
