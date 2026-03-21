@@ -4,6 +4,7 @@ export { default as LoadingSpinner } from "./LoadingSpinner";
 export { default as Card } from "./Card";
 export { default as Footer } from "./Footer";
 export { default as Header } from "./Header";
+export { default as HighlightMarkupText } from "./HighlightMarkupText";
 export { default as PageTitle } from "./PageTitle";
 export { default as Scrollable } from "./Scrollable";
 export { default as Subtitle } from "./Subtitle";
