@@ -1,4 +1,5 @@
 import type { RankingEntryResult } from "@/api/ranking/api.model";
+import { cn } from "@/utils/cn";
 
 function userByRank(
   users: readonly RankingEntryResult[],
@@ -30,7 +31,17 @@ function PodiumSlot({
   return (
     <div className="flex w-[105px] flex-col items-center">
       <div className={`relative ${size} rounded-full bg-white ${ring}`}>
-        <div className="bg-gray-002 absolute inset-[6px] rounded-full" />
+        <img
+          className={cn(
+            size,
+            "bg-gray-002 absolute inset-0 shrink-0 rounded-full object-cover object-center",
+          )}
+          src={user.profileImage}
+          alt={user.nickname}
+          onError={(e) => {
+            e.currentTarget.src = `/images/default-profile-${rank}.png`;
+          }}
+        />
         <div
           className={`absolute bottom-[-10px] left-1/2 grid h-5 w-5 -translate-x-1/2 place-items-center rounded-full text-[11px] font-semibold ${
             isFirst ? "bg-yellow-400 text-white" : "bg-blue-003 text-white"
