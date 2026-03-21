@@ -1,5 +1,5 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { StrictMode } from "react";
+import { StrictMode, Suspense } from "react";
 import { createRoot } from "react-dom/client";
 import "./index.css";
 import "@stackflow/plugin-basic-ui/index.css";
@@ -17,7 +17,9 @@ if (rootElement && shouldMountStackflow) {
   createRoot(rootElement).render(
     <QueryClientProvider client={queryClient}>
       <StrictMode>
-        <Stack />
+        <Suspense fallback={null}>
+          <Stack />
+        </Suspense>
         <Toaster
           position="bottom-center"
           toastOptions={{

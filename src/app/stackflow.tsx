@@ -3,11 +3,9 @@ import { historySyncPlugin } from "@stackflow/plugin-history-sync";
 import { basicRendererPlugin } from "@stackflow/plugin-renderer-basic";
 import { stackflow } from "@stackflow/react";
 
-import { AuthInitializer } from "@/components/auth/AuthInitializer";
-
+import { StackflowAuthShell } from "./stackflow-auth-shell";
 import { Route } from "./stackflow-route";
 import { routeToActivityMap, routeToPathMap } from "./stackflow-util";
-
 
 export const { Stack, useFlow } = stackflow({
   transitionDuration: 350,
@@ -27,7 +25,7 @@ export const { Stack, useFlow } = stackflow({
       return {
         key: "auth-initializer",
         wrapStack: ({ stack }) => {
-          return <AuthInitializer>{stack.render()}</AuthInitializer>;
+          return <StackflowAuthShell>{stack.render()}</StackflowAuthShell>;
         },
       };
     },
