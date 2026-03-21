@@ -8,61 +8,25 @@ import {
   Header,
   PageTitle,
 } from "@/components/common";
-import QuizLayout from "@/components/quiz/QuizLayout";
 
 import type { QuizSolveStoreState } from "@/model/quiz/useQuizStore";
-import {
-  QUIZ_SOLVE_TOTAL_COUNT,
-  useQuizSolveStore,
-} from "@/model/quiz/useQuizStore";
+import { useQuizSolveStore } from "@/model/quiz/useQuizStore";
 
-/** 단답형 문항이 있을 때 */
+/** 단답형 문항이 있을 때 (본문만 — QuizLayout은 QuizSolvePage) */
 export function QuizTextInputSection() {
-  const {
-    question,
-    current,
-    inputValue,
-    setInputValue,
-    handleTextNext,
-    isLastQuiz,
-    canGoNext,
-  } = useQuizSolveStore(
+  const { question, inputValue, setInputValue } = useQuizSolveStore(
     useShallow((s: QuizSolveStoreState) => {
       const q = s.shortQuizzes[s.textIndex];
-      const isLastText = s.textIndex >= s.shortQuizzes.length - 1;
-      const textQuizNumber = s.priorUserAnswersBase.length + s.textIndex + 1;
-      const canGoNext =
-        s.shortQuizzes.length === 0 ||
-        Boolean(q && s.inputValue.trim() !== "");
-
       return {
         question: q?.content ?? "",
-        current: textQuizNumber,
         inputValue: s.inputValue,
         setInputValue: s.setInputValue,
-        handleTextNext: s.handleTextNext,
-        isLastQuiz: isLastText,
-        canGoNext,
       };
     }),
   );
 
   return (
-    <QuizLayout
-      current={current}
-      total={QUIZ_SOLVE_TOTAL_COUNT}
-      footer={
-        <Footer>
-          <Button
-            size="large"
-            state={canGoNext ? "active" : "disabled"}
-            onClick={handleTextNext}
-          >
-            {isLastQuiz ? "완료" : "다음 문제"}
-          </Button>
-        </Footer>
-      }
-    >
+    <>
       <PageTitle className="m-0 flex flex-wrap px-0! wrap-break-word whitespace-normal">
         {question}
       </PageTitle>
@@ -73,11 +37,11 @@ export function QuizTextInputSection() {
         className="border-gray-004 focus:border-blue-004 h-[200px] resize-none rounded-xl border bg-white px-4 py-3 text-base outline-none"
         autoFocus
       />
-    </QuizLayout>
+    </>
   );
 }
 
-/** OX·객관식만 있고 단답형이 없을 때 제출 유도 */
+/** OX·객관식만 있고 단답형이 없을 때 제출 유도 (별도 풀스크린) */
 export function QuizTextEmptySection() {
   const submitTextEmpty = useQuizSolveStore(
     (s: QuizSolveStoreState) => s.submitTextEmpty,

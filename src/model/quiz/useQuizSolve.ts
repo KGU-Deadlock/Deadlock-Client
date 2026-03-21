@@ -57,6 +57,19 @@ export function getQuizSolveUiKind(s: QuizSolveStoreState): QuizSolveUiKind {
   return "blank";
 }
 
+/** QuizLayout 진행 바용 현재 문항 번호 */
+export function getQuizSolveProgressCurrent(
+  s: QuizSolveStoreState,
+): number {
+  const kind = getQuizSolveUiKind(s);
+  if (kind === "ox") return s.oxIndex + 1;
+  if (kind === "select")
+    return s.oxQuizzes.length + s.selectIndex + 1;
+  if (kind === "text-input")
+    return s.priorUserAnswersBase.length + s.textIndex + 1;
+  return 1;
+}
+
 type UseQuizSolveParams = {
   quizDataJson: string | undefined;
   onComplete: (answers: UserAnswerString[]) => void;
