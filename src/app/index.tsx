@@ -1,11 +1,12 @@
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "./index.css";
 import "@stackflow/plugin-basic-ui/index.css";
-import { Stack } from "./stackflow";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { isStackflowRoute } from "./route-match";
 import { Toaster } from "sonner";
+
+import { isStackflowRoute } from "./route-match";
+import { Stack } from "./stackflow";
 
 const queryClient = new QueryClient();
 

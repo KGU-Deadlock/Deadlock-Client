@@ -1,13 +1,19 @@
-import { useFlow } from "@/app/stackflow";
-import { userQueries } from "@/api/user/api.query";
-import { Button, Footer, LoadingSpinner, Title } from "@/components/common";
-import { useAuthStore } from "@/model/auth/auth-store";
 import { AppScreen } from "@stackflow/plugin-basic-ui";
 import type { ActivityComponentType } from "@stackflow/react";
 import { useMutation } from "@tanstack/react-query";
-import type { QuizLevel } from "@/api/user/api.type";
-import { toastError } from "@/utils/toast";
 import { useEffect } from "react";
+
+import { useFlow } from "@/app/stackflow";
+
+import { Button, Footer, LoadingSpinner, Title } from "@/components/common";
+
+import { useAuthStore } from "@/model/auth/auth-store";
+
+import { userQueries } from "@/api/user/api.query";
+import type { QuizLevel } from "@/api/user/api.type";
+
+import { toastError } from "@/utils/toast";
+
 
 interface OnboardingCompletePageProps {
   name: string;

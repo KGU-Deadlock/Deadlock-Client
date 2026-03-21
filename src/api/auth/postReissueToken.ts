@@ -8,5 +8,8 @@ import type { ReissueResponse } from "./api.model";
  * refreshToken(HttpOnly cookie) 기반 accessToken 재발급
  */
 export function postReissueToken(): Promise<ApiResult<ReissueResponse>> {
-  return baseApi.post<ReissueResponse, undefined>(END_POINTS.AUTH.REISSUE, undefined);
+  return baseApi.post<ReissueResponse, undefined>(
+    END_POINTS.AUTH.REISSUE,
+    undefined,
+  );
 }

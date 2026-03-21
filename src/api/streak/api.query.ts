@@ -1,7 +1,10 @@
 import { queryOptions } from "@tanstack/react-query";
 
 import { getStreakDetail } from "./getStreakDetail";
-import { getStreakSummary, type GetStreakSummaryParams } from "./getStreakSummary";
+import {
+  getStreakSummary,
+  type GetStreakSummaryParams,
+} from "./getStreakSummary";
 
 const streakQueryKey = ["streak"] as const;
 

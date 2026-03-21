@@ -1,21 +1,22 @@
 import HomePage from "@/pages/home/HomePage";
 import InterviewPage from "@/pages/interview/InterviewPage";
 import LoginPage from "@/pages/login/LoginPage";
+import OnboardingCompletePage from "@/pages/onboarding/OnboardingCompletePage";
 import OnboardingInterestPage from "@/pages/onboarding/OnboardingInterestPage";
 import OnboardingNamePage from "@/pages/onboarding/OnboardingNamePage";
+import OnboardingQuizLevelPage from "@/pages/onboarding/OnboardingQuizLevelPage";
+import QuizCompletePage from "@/pages/quiz/QuizCompletePage";
 import QuizHomePage from "@/pages/quiz/QuizHomePage";
+import QuizOXPage from "@/pages/quiz/QuizOXPage";
+import QuizSelectPage from "@/pages/quiz/QuizSelectPage";
+import QuizSubjectPage from "@/pages/quiz/QuizSubjectPage";
+import QuizTextPage from "@/pages/quiz/QuizTextPage";
+import QuizVoicePage from "@/pages/quiz/QuizVoicePage";
 import RankingPage from "@/pages/ranking/RankingPage";
 import StreakPage from "@/pages/streak/StreakPage";
 import UserPage from "@/pages/user/UserPage";
+
 import type { ActivityEntry } from "./stackflow-util";
-import OnboardingCompletePage from "@/pages/onboarding/OnboardingCompletePage";
-import OnboardingQuizLevelPage from "@/pages/onboarding/OnboardingQuizLevelPage";
-import QuizSubjectPage from "@/pages/quiz/QuizSubjectPage";
-import QuizOXPage from "@/pages/quiz/QuizOXPage";
-import QuizVoicePage from "@/pages/quiz/QuizVoicePage";
-import QuizSelectPage from "@/pages/quiz/QuizSelectPage";
-import QuizTextPage from "@/pages/quiz/QuizTextPage";
-import QuizCompletePage from "@/pages/quiz/QuizCompletePage";
 
 export const Route: ActivityEntry[] = [
   {

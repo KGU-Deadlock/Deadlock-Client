@@ -1,5 +1,10 @@
+import { AppScreen } from "@stackflow/plugin-basic-ui";
+import type { ActivityComponentType } from "@stackflow/react";
+import { useQuery } from "@tanstack/react-query";
+import { useState } from "react";
+
 import { useFlow } from "@/app/stackflow";
-import { quizQueries } from "@/api/quiz/api.query";
+
 import {
   BackButton,
   Button,
@@ -7,10 +12,8 @@ import {
   Header,
   PageTitle,
 } from "@/components/common";
-import { AppScreen } from "@stackflow/plugin-basic-ui";
-import type { ActivityComponentType } from "@stackflow/react";
-import { useQuery } from "@tanstack/react-query";
-import { useState } from "react";
+
+import { quizQueries } from "@/api/quiz/api.query";
 
 interface OnboardingInterestPageProps {
   name: string;

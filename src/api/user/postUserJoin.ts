@@ -7,5 +7,8 @@ import type { ApiResponseVoid, UserSignUpCommand } from "./api.model";
 export function postUserJoin(
   body: UserSignUpCommand,
 ): Promise<ApiResult<ApiResponseVoid>> {
-  return authApi.post<ApiResponseVoid, UserSignUpCommand>(END_POINTS.USER.JOIN, body);
+  return authApi.post<ApiResponseVoid, UserSignUpCommand>(
+    END_POINTS.USER.JOIN,
+    body,
+  );
 }

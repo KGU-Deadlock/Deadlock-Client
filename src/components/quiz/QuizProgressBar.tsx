@@ -3,7 +3,10 @@ interface QuizProgressBarProps {
   total: number;
 }
 
-export default function QuizProgressBar({ current, total }: QuizProgressBarProps) {
+export default function QuizProgressBar({
+  current,
+  total,
+}: QuizProgressBarProps) {
   const safeTotal = total > 0 ? total : 1;
   const clampedCurrent = Math.min(Math.max(current, 0), safeTotal);
   const progressPercent = (clampedCurrent / safeTotal) * 100;

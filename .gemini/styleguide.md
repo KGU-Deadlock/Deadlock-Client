@@ -34,7 +34,6 @@ src/
   - 프레임워크 특정 API(`createSignal`, `createEffect` 등)를 사용하지 않습니다.
   - 예: `types.ts`, `models.ts`, `validators.ts`, `domainLogic.ts`
 - **Application 계층** (`features/*/application/`):
-
   - 비즈니스 유즈케이스를 수행하고 상태 관리를 담당합니다.
   - **커스텀 훅(hooks)**: SolidJS의 반응성 시스템을 활용한 비즈니스 로직 훅을 정의합니다.
   - **서비스(services)**: 외부 API 호출 및 데이터 변환 로직을 담당합니다.
@@ -43,7 +42,6 @@ src/
   - 예: `useUserProfile.ts`, `userService.ts`, `userAdapter.ts`
 
 - **Presentation 계층** (`features/*/presentation/`):
-
   - UI 컴포넌트와 페이지를 담당합니다.
   - **컴포넌트 분리**: Presentational 컴포넌트와 Container 컴포넌트를 분리합니다.
   - **컴포넌트 순수성**: Presentation 계층의 컴포넌트는 Application 계층의 훅을 통해 비즈니스 로직에 접근합니다.

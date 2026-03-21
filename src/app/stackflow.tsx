@@ -1,10 +1,13 @@
-import { stackflow } from "@stackflow/react";
-import { basicRendererPlugin } from "@stackflow/plugin-renderer-basic";
 import { basicUIPlugin } from "@stackflow/plugin-basic-ui";
+import { historySyncPlugin } from "@stackflow/plugin-history-sync";
+import { basicRendererPlugin } from "@stackflow/plugin-renderer-basic";
+import { stackflow } from "@stackflow/react";
+
+import { AuthInitializer } from "@/components/auth/AuthInitializer";
+
 import { Route } from "./stackflow-route";
 import { routeToActivityMap, routeToPathMap } from "./stackflow-util";
-import { historySyncPlugin } from "@stackflow/plugin-history-sync";
-import { AuthInitializer } from "@/components/auth/AuthInitializer";
+
 
 export const { Stack, useFlow } = stackflow({
   transitionDuration: 350,

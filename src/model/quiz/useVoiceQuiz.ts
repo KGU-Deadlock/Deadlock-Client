@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+
 import { toastError } from "@/utils/toast";
 
 type SpeechRecognitionResultLike = {

@@ -8,4 +8,5 @@ export type MyRankingResult = components["schemas"]["MyRankingResult"];
 
 export type GetRankingSummaryResponse =
   components["schemas"]["ApiResponseRankingSummaryResult"];
-export type RankingSummaryResult = components["schemas"]["RankingSummaryResult"];
+export type RankingSummaryResult =
+  components["schemas"]["RankingSummaryResult"];

@@ -1,5 +1,10 @@
+import { AppScreen } from "@stackflow/plugin-basic-ui";
+import type { ActivityComponentType } from "@stackflow/react";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { useState } from "react";
+
 import { useFlow } from "@/app/stackflow";
-import { quizQueries } from "@/api/quiz/api.query";
+
 import {
   BackButton,
   Button,
@@ -7,11 +12,10 @@ import {
   Header,
   PageTitle,
 } from "@/components/common";
-import { AppScreen } from "@stackflow/plugin-basic-ui";
-import type { ActivityComponentType } from "@stackflow/react";
-import { useMutation, useQuery } from "@tanstack/react-query";
+
+import { quizQueries } from "@/api/quiz/api.query";
+
 import { toastError } from "@/utils/toast";
-import { useState } from "react";
 
 interface QuizSubjectPageProps {
   mode: "VOICE" | "STANDARD";
@@ -85,9 +89,7 @@ const QuizSubjectPage: ActivityComponentType<QuizSubjectPageProps> = ({
               size="large"
               className="h-[60px]"
               state={
-                selectedTopic === topic.id
-                  ? "outline"
-                  : "disabled_outline"
+                selectedTopic === topic.id ? "outline" : "disabled_outline"
               }
               onClick={() => handleSelectTopic(topic.id!)}
             >

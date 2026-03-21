@@ -4,4 +4,5 @@ export type UserSignUpCommand = components["schemas"]["UserSignUpCommand"];
 export type UpdateMyInfoCommand = components["schemas"]["UpdateMyInfoCommand"];
 
 export type ApiResponseVoid = components["schemas"]["ApiResponseVoid"];
-export type GetMyProfileResponse = components["schemas"]["ApiResponseProfileResult"];
+export type GetMyProfileResponse =
+  components["schemas"]["ApiResponseProfileResult"];

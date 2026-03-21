@@ -1,4 +1,8 @@
+import { AppScreen } from "@stackflow/plugin-basic-ui";
+import { useState } from "react";
+
 import { useFlow } from "@/app/stackflow";
+
 import {
   BackButton,
   Button,
@@ -6,8 +10,6 @@ import {
   Header,
   PageTitle,
 } from "@/components/common";
-import { AppScreen } from "@stackflow/plugin-basic-ui";
-import { useState } from "react";
 
 export default function OnboardingNamePage() {
   const { push } = useFlow();

@@ -1,11 +1,14 @@
-import { Header, Scrollable, Subtitle, Title } from "@/components/common";
-import { BackButton } from "@/components/common";
-import { RankingItem, RankingTopSection } from "@/components/ranking";
 import { AppScreen } from "@stackflow/plugin-basic-ui";
-import { rankingQueries } from "@/api/ranking/api.query";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { CgChevronDown, CgChevronUp } from "react-icons/cg";
+
+import { Header, Scrollable, Subtitle, Title } from "@/components/common";
+import { BackButton } from "@/components/common";
+import { RankingItem, RankingTopSection } from "@/components/ranking";
+
+import { rankingQueries } from "@/api/ranking/api.query";
+
 
 export default function RankingPage() {
   const [isOpen, setIsOpen] = useState(false);

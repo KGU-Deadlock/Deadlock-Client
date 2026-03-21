@@ -1,5 +1,6 @@
-import type { MyProfileData, QuizLevel } from "@/api/user/api.type";
 import { create } from "zustand";
+
+import type { MyProfileData, QuizLevel } from "@/api/user/api.type";
 
 interface UserState {
   profile: MyProfileData | null;

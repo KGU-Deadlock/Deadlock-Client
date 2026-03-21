@@ -1,13 +1,18 @@
-import { authQueries } from "@/api/auth/api.query";
-import { END_POINTS } from "@/api/config/api-endpoints";
-import { useFlow } from "@/app/stackflow";
-import { Button, Footer } from "@/components/common";
-import { useAuthStore } from "@/model/auth/auth-store";
-import { toastError } from "@/utils/toast";
 import { AppScreen } from "@stackflow/plugin-basic-ui";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
 import { RiKakaoTalkFill } from "react-icons/ri";
+
+import { useFlow } from "@/app/stackflow";
+
+import { Button, Footer } from "@/components/common";
+
+import { useAuthStore } from "@/model/auth/auth-store";
+
+import { authQueries } from "@/api/auth/api.query";
+import { END_POINTS } from "@/api/config/api-endpoints";
+
+import { toastError } from "@/utils/toast";
 
 export default function LoginPage() {
   const { replace } = useFlow();

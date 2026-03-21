@@ -1,13 +1,13 @@
-import {
-  Button,
-  Footer,
-  PageTitle,
-} from "@/components/common";
-import QuizLayout from "@/components/quiz/QuizLayout";
-import { useFlow } from "@/app/stackflow";
 import type { ActivityComponentType } from "@stackflow/react";
-import type { GetQuizResult } from "@/api/quiz/api.model";
 import { useMemo, useState } from "react";
+
+import { useFlow } from "@/app/stackflow";
+
+import { Button, Footer, PageTitle } from "@/components/common";
+import QuizLayout from "@/components/quiz/QuizLayout";
+
+import type { GetQuizResult } from "@/api/quiz/api.model";
+
 
 interface QuizOXPageProps {
   topic: string;
@@ -99,33 +99,31 @@ const QuizOXPage: ActivityComponentType<QuizOXPageProps> = ({ params }) => {
         </Footer>
       }
     >
-        {currentQuiz && (
-          <>
-            <PageTitle className="m-0 flex flex-wrap !px-0 break-words whitespace-normal">
-              {currentQuiz.content}
-            </PageTitle>
-            <div className="grid grid-cols-2 gap-3">
-              <Button
-                size="large"
-                state={selectedAnswer === true ? "outline" : "disabled_outline"}
-                className="h-[100px]"
-                onClick={() => handleSelectAnswer(true)}
-              >
-                <span className="font-tossface text-2xl">⭕️</span>
-              </Button>
-              <Button
-                size="large"
-                state={
-                  selectedAnswer === false ? "outline" : "disabled_outline"
-                }
-                className="h-[100px]"
-                onClick={() => handleSelectAnswer(false)}
-              >
-                <span className="font-tossface text-2xl">❌</span>
-              </Button>
-            </div>
-          </>
-        )}
+      {currentQuiz && (
+        <>
+          <PageTitle className="m-0 flex flex-wrap !px-0 break-words whitespace-normal">
+            {currentQuiz.content}
+          </PageTitle>
+          <div className="grid grid-cols-2 gap-3">
+            <Button
+              size="large"
+              state={selectedAnswer === true ? "outline" : "disabled_outline"}
+              className="h-[100px]"
+              onClick={() => handleSelectAnswer(true)}
+            >
+              <span className="font-tossface text-2xl">⭕️</span>
+            </Button>
+            <Button
+              size="large"
+              state={selectedAnswer === false ? "outline" : "disabled_outline"}
+              className="h-[100px]"
+              onClick={() => handleSelectAnswer(false)}
+            >
+              <span className="font-tossface text-2xl">❌</span>
+            </Button>
+          </div>
+        </>
+      )}
     </QuizLayout>
   );
 };

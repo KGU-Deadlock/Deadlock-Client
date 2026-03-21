@@ -1,9 +1,11 @@
-import { Card, Header, Title, Scrollable } from "@/components/common";
-import { BackButton } from "@/components/common";
-import { streakQueries } from "@/api/streak/api.query";
-import { StreakBoard, StreakCalendar } from "@/components/streak";
 import { AppScreen } from "@stackflow/plugin-basic-ui";
 import { useQuery } from "@tanstack/react-query";
+
+import { Card, Header, Title, Scrollable } from "@/components/common";
+import { BackButton } from "@/components/common";
+import { StreakBoard, StreakCalendar } from "@/components/streak";
+
+import { streakQueries } from "@/api/streak/api.query";
 
 export default function StreakPage() {
   const { data: streakDetail } = useQuery(streakQueries.getStreakDetailQuery());

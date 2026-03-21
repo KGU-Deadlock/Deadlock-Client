@@ -1,16 +1,20 @@
-import { useFlow } from "@/app/stackflow";
-import type { ActivityEntry } from "@/app/stackflow-util";
-import { userQueries } from "@/api/user/api.query";
-import { streakQueries } from "@/api/streak/api.query";
-import { rankingQueries } from "@/api/ranking/api.query";
-import { Card, Subtitle, Title, Scrollable } from "@/components/common";
-import { RankingItem } from "@/components/ranking";
-import { StreakBoard } from "@/components/streak";
-import { useUserStore } from "@/model/user/user-store";
 import { AppScreen } from "@stackflow/plugin-basic-ui";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
 import { RiUser3Fill } from "react-icons/ri";
+
+import { useFlow } from "@/app/stackflow";
+import type { ActivityEntry } from "@/app/stackflow-util";
+
+import { Card, Subtitle, Title, Scrollable } from "@/components/common";
+import { RankingItem } from "@/components/ranking";
+import { StreakBoard } from "@/components/streak";
+
+import { useUserStore } from "@/model/user/user-store";
+
+import { rankingQueries } from "@/api/ranking/api.query";
+import { streakQueries } from "@/api/streak/api.query";
+import { userQueries } from "@/api/user/api.query";
 
 export default function HomePage() {
   const { push } = useFlow();

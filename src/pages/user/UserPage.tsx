@@ -1,3 +1,7 @@
+import { AppScreen } from "@stackflow/plugin-basic-ui";
+import { useQuery } from "@tanstack/react-query";
+import { RiUser3Fill } from "react-icons/ri";
+
 import {
   Button,
   Header,
@@ -6,11 +10,10 @@ import {
   Title,
 } from "@/components/common";
 import { BackButton } from "@/components/common";
-import { quizQueries } from "@/api/quiz/api.query";
+
 import { useUserStore } from "@/model/user/user-store";
-import { AppScreen } from "@stackflow/plugin-basic-ui";
-import { useQuery } from "@tanstack/react-query";
-import { RiUser3Fill } from "react-icons/ri";
+
+import { quizQueries } from "@/api/quiz/api.query";
 
 export default function UserPage() {
   const { profile, name, interest } = useUserStore();

@@ -1,8 +1,10 @@
-import { useFlow } from "@/app/stackflow";
 import { useStack } from "@stackflow/react";
 import { useEffect, type ReactNode } from "react";
-import { useAuthStore } from "@/model/auth/auth-store";
+
 import { isStackflowRoute } from "@/app/route-match";
+import { useFlow } from "@/app/stackflow";
+
+import { useAuthStore } from "@/model/auth/auth-store";
 
 interface AuthInitializerProps {
   children: ReactNode;

@@ -1,5 +1,9 @@
-import type { QuizLevel } from "@/api/user/api.type";
+import { AppScreen } from "@stackflow/plugin-basic-ui";
+import type { ActivityComponentType } from "@stackflow/react";
+import { useState } from "react";
+
 import { useFlow } from "@/app/stackflow";
+
 import {
   BackButton,
   Button,
@@ -7,9 +11,8 @@ import {
   Header,
   PageTitle,
 } from "@/components/common";
-import { AppScreen } from "@stackflow/plugin-basic-ui";
-import type { ActivityComponentType } from "@stackflow/react";
-import { useState } from "react";
+
+import type { QuizLevel } from "@/api/user/api.type";
 
 interface OnboardingQuizLevelPageProps {
   name: string;

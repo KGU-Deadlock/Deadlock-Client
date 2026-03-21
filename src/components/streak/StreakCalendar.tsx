@@ -1,10 +1,10 @@
+import dayjs from "dayjs";
 import { useState } from "react";
 import Calendar from "react-calendar";
-import dayjs from "dayjs";
-
 import "react-calendar/dist/Calendar.css";
 import "./StreakCalendar.css";
 import { BiChevronLeft, BiChevronRight } from "react-icons/bi";
+
 import { Title } from "../common";
 
 interface StreakCalendarProps {
