@@ -86,7 +86,9 @@ export function useQuizSolve({ quizDataJson, onComplete }: UseQuizSolveParams) {
   useEffect(() => {
     if (completionPayload === null) return;
     onCompleteRef.current(completionPayload);
-    reset();
+    queueMicrotask(() => {
+      reset();
+    });
   }, [completionPayload, reset]);
 
   const uiKind = useQuizSolveStore((st: QuizSolveStoreState) =>
