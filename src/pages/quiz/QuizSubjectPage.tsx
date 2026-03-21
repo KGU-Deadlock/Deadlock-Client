@@ -54,7 +54,7 @@ const QuizSubjectPage: ActivityComponentType<QuizSubjectPageProps> = ({
       });
 
       const targetPage =
-        mode === QUIZ_MODE.VOICE ? "QuizVoicePage" : "QuizOXPage";
+        mode === QUIZ_MODE.VOICE ? "QuizVoicePage" : "QuizSolvePage";
       push(targetPage, {
         topic: selectedTopic,
         mode,

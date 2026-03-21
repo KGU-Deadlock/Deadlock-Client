@@ -24,10 +24,8 @@ const QuizGradeLogDetailPage = lazy(
 );
 const QuizGradeLogPage = lazy(() => import("@/pages/quiz/QuizGradeLogPage"));
 const QuizHomePage = lazy(() => import("@/pages/quiz/QuizHomePage"));
-const QuizOXPage = lazy(() => import("@/pages/quiz/QuizOXPage"));
-const QuizSelectPage = lazy(() => import("@/pages/quiz/QuizSelectPage"));
 const QuizSubjectPage = lazy(() => import("@/pages/quiz/QuizSubjectPage"));
-const QuizTextPage = lazy(() => import("@/pages/quiz/QuizTextPage"));
+const QuizSolvePage = lazy(() => import("@/pages/quiz/QuizSolvePage"));
 const QuizVoicePage = lazy(() => import("@/pages/quiz/QuizVoicePage"));
 const RankingPage = lazy(() => import("@/pages/ranking/RankingPage"));
 const StreakPage = lazy(() => import("@/pages/streak/StreakPage"));
@@ -90,24 +88,14 @@ export const Route: ActivityEntry[] = [
     path: "/quiz/subject",
   },
   {
-    name: "QuizOXPage",
-    component: QuizOXPage,
-    path: "/quiz/ox",
+    name: "QuizSolvePage",
+    component: QuizSolvePage,
+    path: "/quiz/solve",
   },
   {
     name: "QuizVoicePage",
     component: QuizVoicePage,
     path: "/quiz/voice",
-  },
-  {
-    name: "QuizSelectPage",
-    component: QuizSelectPage,
-    path: "/quiz/select",
-  },
-  {
-    name: "QuizTextPage",
-    component: QuizTextPage,
-    path: "/quiz/text",
   },
   {
     name: "QuizCompletePage",
