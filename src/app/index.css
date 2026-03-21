@@ -188,3 +188,66 @@ body {
   position: relative;
   overflow: hidden;
 }
+
+@keyframes login-hero-gradient-shift {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+.login-hero-gradient {
+  background: linear-gradient(
+    125deg,
+    #ffffff 0%,
+    #fafcff 24%,
+    #eef4ff 52%,
+    #f5f8fc 76%,
+    #ffffff 100%
+  );
+  background-size: 280% 280%;
+  animation: login-hero-gradient-shift 18s ease-in-out infinite;
+}
+
+.login-hero-grid {
+  background-image:
+    linear-gradient(rgba(9, 49, 124, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(9, 49, 124, 0.06) 1px, transparent 1px);
+  background-size: 26px 26px;
+  mask-image: radial-gradient(
+    ellipse 88% 76% at 50% 44%,
+    black 22%,
+    transparent 70%
+  );
+}
+
+/* 상·하단은 순백에 가깝게 고정해 네이티브 툴바/세이프에어리어와 자연스럽게 이어짐 */
+.login-hero-edge-fade {
+  background-image:
+    linear-gradient(to bottom, #ffffff 0%, rgba(255, 255, 255, 0) 20%),
+    linear-gradient(to top, #ffffff 0%, rgba(255, 255, 255, 0) 22%);
+}
+
+.login-hero-scan {
+  background: linear-gradient(
+    transparent 0%,
+    rgba(77, 143, 230, 0.045) 48%,
+    rgba(17, 216, 136, 0.03) 52%,
+    transparent 100%
+  );
+  background-size: 100% 220%;
+  animation: login-hero-scan 9s ease-in-out infinite;
+}
+
+@keyframes login-hero-scan {
+  0%,
+  100% {
+    background-position: 0% 0%;
+  }
+  50% {
+    background-position: 0% 100%;
+  }
+}

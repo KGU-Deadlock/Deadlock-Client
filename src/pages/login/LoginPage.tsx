@@ -52,7 +52,7 @@ function LoginTerminalHello() {
       aria-hidden
     >
       <div className="text-blue-004 flex min-h-5 items-center gap-0.5 whitespace-nowrap">
-        <span className="text-gray-004 mr-1 shrink-0 select-none">{"$"}</span>
+        <span className="text-blue-003 mr-1 shrink-0 select-none">{"$"}</span>
         <span className="h-[1.5em] shrink-0 text-lg">{display}</span>
         <motion.span
           className="bg-blue-004 inline-block h-[1.5em] w-1 shrink-0"
@@ -108,23 +108,41 @@ export default function LoginPage() {
   }, [code, refetch]);
 
   return (
-    <AppScreen className="relative">
-      <div className="absolute top-0 right-0 bottom-0 left-0 flex flex-col items-center justify-center">
-        <div className="relative flex flex-col items-center">
-          <div className="relative z-10 flex flex-col items-center">
-            <LoginTerminalHello />
-            <img src="/logo.svg" alt="" className="h-20" />
-            <p className="text-blue-004 mt-1 font-medium">
-              꾸준히 준비하는 CS 면접
-            </p>
-          </div>
+    <AppScreen className="relative overflow-hidden bg-white">
+      <div className="absolute top-0 right-0 bottom-0 left-0 flex flex-col items-center justify-center overflow-hidden bg-white">
+        <div className="login-hero-gradient absolute inset-0 z-0" aria-hidden />
+        <div className="login-hero-grid absolute inset-0 z-0" aria-hidden />
+        <motion.div
+          className="absolute inset-0 z-0 bg-[radial-gradient(ellipse_62%_52%_at_50%_40%,rgba(77,143,230,0.11),transparent_68%)]"
+          animate={{ opacity: [0.55, 0.92, 0.55] }}
+          transition={{
+            duration: 5.5,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
+          aria-hidden
+        />
+        <div
+          className="login-hero-scan pointer-events-none absolute inset-0 z-0 opacity-40"
+          aria-hidden
+        />
+        <div className="px-gutter relative z-10 flex flex-col items-center">
+          <LoginTerminalHello />
+          <img
+            src="/logo.svg"
+            alt=""
+            className="h-20 drop-shadow-[0_2px_14px_rgba(9,49,124,0.08)]"
+          />
+          <p className="text-blue-004 mt-1 text-center font-medium">
+            꾸준히 준비하는 CS 면접
+          </p>
         </div>
       </div>
       <Footer>
         <Button
           size="large"
           state="kakao"
-          className="mt-40"
+          className="z-999 mt-40"
           onClick={handleKakaoLogin}
           disabled={!isPending}
         >
