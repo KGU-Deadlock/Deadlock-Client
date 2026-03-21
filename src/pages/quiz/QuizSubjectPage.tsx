@@ -15,9 +15,10 @@ import {
 
 import { quizQueries } from "@/api/quiz/api.query";
 
+import { toastError } from "@/utils/toast";
+
 import { QUIZ_MODE, type QuizMode } from "@/constants/quiz/quiz";
 
-import { toastError } from "@/utils/toast";
 
 interface QuizSubjectPageProps {
   mode: QuizMode;
