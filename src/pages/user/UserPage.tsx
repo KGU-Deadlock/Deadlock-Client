@@ -11,7 +11,10 @@ import {
   Title,
 } from "@/components/common";
 import { BackButton } from "@/components/common";
-import { UserProfileEditModal } from "@/components/user";
+import {
+  UserProfileEditModal,
+  UserWithdrawConfirmModal,
+} from "@/components/user";
 
 import { useUserStore } from "@/model/user/user-store";
 
@@ -25,6 +28,7 @@ import {
 export default function UserPage() {
   const { profile, name, interest } = useUserStore();
   const [editOpen, setEditOpen] = useState(false);
+  const [withdrawOpen, setWithdrawOpen] = useState(false);
 
   const handleLogout = () => {
     window.location.replace("/login");
@@ -96,6 +100,9 @@ export default function UserPage() {
               initialTopicId={editInitialTopicId}
             />
           ) : null}
+          {withdrawOpen ? (
+            <UserWithdrawConfirmModal onClose={() => setWithdrawOpen(false)} />
+          ) : null}
           <div className="gap-colgap-small flex flex-col">
             <Title>활동</Title>
             <div className="divide-gray-002 flex flex-col divide-y">
@@ -119,7 +126,12 @@ export default function UserPage() {
               >
                 <span>로그아웃</span>
               </Button>
-              <Button size="large" state="ghost" className="flex justify-start">
+              <Button
+                size="large"
+                state="ghost"
+                className="flex justify-start"
+                onClick={() => setWithdrawOpen(true)}
+              >
                 <span>탈퇴하기</span>
               </Button>
             </div>

@@ -11,6 +11,7 @@ interface UserState {
   setName: (name: string) => void;
   setInterest: (interest: number) => void;
   setQuizLevel: (quizLevel: QuizLevel) => void;
+  reset: () => void;
 }
 
 export const useUserStore = create<UserState>((set) => ({
@@ -22,4 +23,11 @@ export const useUserStore = create<UserState>((set) => ({
   setName: (name) => set({ name }),
   setInterest: (interest) => set({ interest }),
   setQuizLevel: (quizLevel) => set({ quizLevel }),
+  reset: () =>
+    set({
+      profile: null,
+      name: "",
+      interest: 0,
+      quizLevel: "JUNIOR",
+    }),
 }));
