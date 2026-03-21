@@ -37,7 +37,9 @@ const QuizSelectPage: ActivityComponentType<QuizSelectPageProps> = ({
     [parsedQuizData?.multipleChoiceQuizzes],
   );
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [selectedChoice, setSelectedChoice] = useState<string | null>(null);
+  const [selectedChoiceIndex, setSelectedChoiceIndex] = useState<number | null>(
+    null,
+  );
   const [selectedAnswers, setSelectedAnswers] = useState<
     Array<{ quizId: number; answer: string }>
   >([]);
@@ -48,16 +50,16 @@ const QuizSelectPage: ActivityComponentType<QuizSelectPageProps> = ({
   const completedQuizCount = parsedOxAnswers.length;
   const currentQuizNumber = completedQuizCount + currentIndex + 1;
 
-  const handleSelectChoice = (choice: string) => {
-    setSelectedChoice(choice);
+  const handleSelectChoice = (choiceIndex: number) => {
+    setSelectedChoiceIndex(choiceIndex);
   };
 
   const handleNext = () => {
-    if (!currentQuiz?.id || selectedChoice === null) return;
+    if (!currentQuiz?.id || selectedChoiceIndex === null) return;
 
     const nextAnswers = [
       ...selectedAnswers.filter((item) => item.quizId !== currentQuiz.id),
-      { quizId: currentQuiz.id, answer: selectedChoice },
+      { quizId: currentQuiz.id, answer: String(selectedChoiceIndex) },
     ];
     setSelectedAnswers(nextAnswers);
 
@@ -89,7 +91,7 @@ const QuizSelectPage: ActivityComponentType<QuizSelectPageProps> = ({
     }
 
     setCurrentIndex((prev) => prev + 1);
-    setSelectedChoice(null);
+    setSelectedChoiceIndex(null);
   };
 
   return (
@@ -101,7 +103,7 @@ const QuizSelectPage: ActivityComponentType<QuizSelectPageProps> = ({
           <Button
             size="large"
             state={
-              selectedChoice !== null && multipleChoiceQuizzes.length > 0
+              selectedChoiceIndex !== null && multipleChoiceQuizzes.length > 0
                 ? "active"
                 : "disabled"
             }
@@ -118,14 +120,16 @@ const QuizSelectPage: ActivityComponentType<QuizSelectPageProps> = ({
             {currentQuiz.content}
           </PageTitle>
           <div className="flex flex-col gap-3">
-            {(currentQuiz.choices ?? []).map((choice) => (
+            {(currentQuiz.choices ?? []).map((choice, choiceIndex) => (
               <Button
-                key={choice}
+                key={`${choiceIndex}-${choice}`}
                 size="large"
                 state={
-                  selectedChoice === choice ? "outline" : "disabled_outline"
+                  selectedChoiceIndex === choiceIndex
+                    ? "outline"
+                    : "disabled_outline"
                 }
-                onClick={() => handleSelectChoice(choice)}
+                onClick={() => handleSelectChoice(choiceIndex)}
               >
                 {choice}
               </Button>
