@@ -44,7 +44,6 @@ const OnboardingCompletePage: ActivityComponentType<
       {
         onSuccess: () => {
           setIsInitialized(true);
-          push("HomePage", {});
         },
         onError: (error) => {
           toastError(error.message);
@@ -87,6 +86,7 @@ const OnboardingCompletePage: ActivityComponentType<
         <Button
           size="large"
           state={isPending || isError ? "disabled" : "active"}
+          onClick={() => push("HomePage", {})}
         >
           {isError ? "다시 시도해주세요." : "시작하기"}
         </Button>
