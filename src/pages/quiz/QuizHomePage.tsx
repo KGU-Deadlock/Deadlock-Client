@@ -13,6 +13,8 @@ import {
 } from "@/components/common";
 import { BackButton } from "@/components/common";
 
+import { QUIZ_MODE } from "@/constants/quiz/quiz";
+
 const quizMethod = {
   VOICE: "voice",
   STANDARD: "standard",
@@ -30,9 +32,9 @@ export default function QuizHomePage() {
 
   const handleStartQuiz = () => {
     if (selectedMethod === quizMethod.VOICE) {
-      push("QuizSubjectPage", { mode: "VOICE" });
+      push("QuizSubjectPage", { mode: QUIZ_MODE.VOICE });
     } else {
-      push("QuizSubjectPage", { mode: "STANDARD" });
+      push("QuizSubjectPage", { mode: QUIZ_MODE.STANDARD });
     }
   };
 

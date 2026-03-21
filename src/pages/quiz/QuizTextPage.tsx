@@ -15,10 +15,11 @@ import QuizLayout from "@/components/quiz/QuizLayout";
 
 import type { GetQuizResult } from "@/api/quiz/api.model";
 
+import { QUIZ_MODE } from "@/constants/quiz/quiz";
 
 interface QuizTextPageProps {
   topic: string;
-  mode: "STANDARD";
+  mode: typeof QUIZ_MODE.STANDARD;
   quizData: string;
   userAnswers: string;
 }

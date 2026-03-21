@@ -15,10 +15,12 @@ import {
 
 import { quizQueries } from "@/api/quiz/api.query";
 
+import { QUIZ_MODE, type QuizMode } from "@/constants/quiz/quiz";
+
 import { toastError } from "@/utils/toast";
 
 interface QuizSubjectPageProps {
-  mode: "VOICE" | "STANDARD";
+  mode: QuizMode;
 }
 
 const QuizSubjectPage: ActivityComponentType<QuizSubjectPageProps> = ({
@@ -50,7 +52,8 @@ const QuizSubjectPage: ActivityComponentType<QuizSubjectPageProps> = ({
         mode,
       });
 
-      const targetPage = mode === "VOICE" ? "QuizVoicePage" : "QuizOXPage";
+      const targetPage =
+        mode === QUIZ_MODE.VOICE ? "QuizVoicePage" : "QuizOXPage";
       push(targetPage, {
         topic: selectedTopic,
         mode,

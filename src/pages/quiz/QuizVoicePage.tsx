@@ -15,11 +15,13 @@ import { useVoiceQuiz } from "@/model/quiz/useVoiceQuiz";
 
 import type { GetQuizResult } from "@/api/quiz/api.model";
 
+import { QUIZ_MODE } from "@/constants/quiz/quiz";
+
 import { cn } from "@/utils/cn";
 
 interface QuizVoicePageProps {
   topic: string;
-  mode: "VOICE";
+  mode: typeof QUIZ_MODE.VOICE;
   quizData: string;
 }
 
