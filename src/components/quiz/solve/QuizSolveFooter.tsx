@@ -34,7 +34,13 @@ export function QuizSolveFooter() {
         };
       }
 
-      if (kind === "text-input") {
+      if (kind === "text") {
+        const isTextEmptySubmit =
+          s.shortQuizzes.length === 0 && s.priorUserAnswersBase.length > 0;
+        if (isTextEmptySubmit) {
+          return { kind: "none" as const };
+        }
+
         const q = s.shortQuizzes[s.textIndex];
         const isLastText = s.textIndex >= s.shortQuizzes.length - 1;
         const canGoNext =
@@ -42,7 +48,7 @@ export function QuizSolveFooter() {
           Boolean(q && s.inputValue.trim() !== "");
 
         return {
-          kind: "text-input" as const,
+          kind: "text" as const,
           onNext: s.handleTextNext,
           canNext: canGoNext,
           label: (isLastText ? "완료" : "다음 문제") as string,
@@ -53,7 +59,7 @@ export function QuizSolveFooter() {
     }),
   );
 
-  if (block.kind === "none") return null;
+  if (block.kind === "none") return <></>;
 
   return (
     <Footer>

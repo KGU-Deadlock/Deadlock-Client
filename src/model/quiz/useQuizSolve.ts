@@ -11,13 +11,7 @@ export type { QuizSolvePhase } from "@/model/quiz/useQuizStore";
 
 export { QUIZ_SOLVE_TOTAL_COUNT } from "@/model/quiz/useQuizStore";
 
-/** `QuizSolvePage`에서 어떤 섹션을 그릴지 — 데이터는 전부 `useQuizSolveStore` */
-export type QuizSolveUiKind =
-  | "blank"
-  | "ox"
-  | "select"
-  | "text-empty"
-  | "text-input";
+export type QuizSolveUiKind = "ox" | "select" | "text";
 
 export function getQuizSolveUiKind(s: QuizSolveStoreState): QuizSolveUiKind {
   const nothingToSolve =
@@ -27,12 +21,11 @@ export function getQuizSolveUiKind(s: QuizSolveStoreState): QuizSolveUiKind {
     s.shortQuizzes.length === 0;
 
   if (nothingToSolve) {
-    return "blank";
+    return "text";
   }
 
   const currentOxQuiz = s.oxQuizzes[s.oxIndex];
   const currentMcQuiz = s.mcQuizzes[s.selectIndex];
-  const currentShortQuiz = s.shortQuizzes[s.textIndex];
 
   const { phase } = s;
 
@@ -45,28 +38,26 @@ export function getQuizSolveUiKind(s: QuizSolveStoreState): QuizSolveUiKind {
   }
 
   if (phase === "text") {
-    if (s.shortQuizzes.length === 0 && s.priorUserAnswersBase.length > 0) {
-      return "text-empty";
-    }
-
-    if (currentShortQuiz) {
-      return "text-input";
-    }
+    return "text";
   }
 
-  return "blank";
+  if (s.phase === "ox") return "ox";
+  if (s.phase === "select") return "select";
+  return "text";
 }
 
-/** QuizLayout 진행 바용 현재 문항 번호 */
-export function getQuizSolveProgressCurrent(
-  s: QuizSolveStoreState,
-): number {
+export function getQuizSolveProgressCurrent(s: QuizSolveStoreState): number {
   const kind = getQuizSolveUiKind(s);
   if (kind === "ox") return s.oxIndex + 1;
-  if (kind === "select")
-    return s.oxQuizzes.length + s.selectIndex + 1;
-  if (kind === "text-input")
-    return s.priorUserAnswersBase.length + s.textIndex + 1;
+  if (kind === "select") return s.oxQuizzes.length + s.selectIndex + 1;
+  if (kind === "text") {
+    if (s.shortQuizzes.length === 0 && s.priorUserAnswersBase.length > 0) {
+      return 1;
+    }
+    if (s.shortQuizzes.length > 0) {
+      return s.priorUserAnswersBase.length + s.textIndex + 1;
+    }
+  }
   return 1;
 }
 
@@ -75,18 +66,18 @@ type UseQuizSolveParams = {
   onComplete: (answers: UserAnswerString[]) => void;
 };
 
-export function useQuizSolve({
-  quizDataJson,
-  onComplete,
-}: UseQuizSolveParams) {
+export function useQuizSolve({ quizDataJson, onComplete }: UseQuizSolveParams) {
   const onCompleteRef = useRef(onComplete);
-  onCompleteRef.current = onComplete;
 
   const init = useQuizSolveStore((st: QuizSolveStoreState) => st.init);
   const reset = useQuizSolveStore((st: QuizSolveStoreState) => st.reset);
   const completionPayload = useQuizSolveStore(
     (st: QuizSolveStoreState) => st.completionPayload,
   );
+
+  useEffect(() => {
+    onCompleteRef.current = onComplete;
+  }, [onComplete]);
 
   useEffect(() => {
     init(quizDataJson);

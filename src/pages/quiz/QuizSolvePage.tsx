@@ -48,20 +48,21 @@ const QuizSolvePage: ActivityComponentType<QuizSolvePageProps> = ({
     onComplete,
   });
 
+  const isTextEmptySubmit = useQuizSolveStore(
+    (s: QuizSolveStoreState) =>
+      s.shortQuizzes.length === 0 && s.priorUserAnswersBase.length > 0,
+  );
+
   const layoutCurrent = useQuizSolveStore((s: QuizSolveStoreState) =>
     getQuizSolveProgressCurrent(s),
   );
 
   if (nothingToSolve) {
-    return null;
+    return <></>;
   }
 
-  if (uiKind === "text-empty") {
+  if (uiKind === "text" && isTextEmptySubmit) {
     return <QuizTextEmptySection />;
-  }
-
-  if (uiKind === "blank") {
-    return null;
   }
 
   return (
@@ -72,7 +73,7 @@ const QuizSolvePage: ActivityComponentType<QuizSolvePageProps> = ({
     >
       {uiKind === "ox" && <QuizOxSection />}
       {uiKind === "select" && <QuizSelectSection />}
-      {uiKind === "text-input" && <QuizTextInputSection />}
+      {uiKind === "text" && <QuizTextInputSection />}
     </QuizLayout>
   );
 };
