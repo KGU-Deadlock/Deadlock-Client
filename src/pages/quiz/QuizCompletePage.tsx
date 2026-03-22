@@ -1,6 +1,6 @@
 import { AppScreen } from "@stackflow/plugin-basic-ui";
 import type { ActivityComponentType } from "@stackflow/react";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { useFlow } from "@/app/stackflow";
 
@@ -15,6 +15,8 @@ import {
 } from "@/components/common";
 
 import { quizQueries } from "@/api/quiz/api.query";
+import { rankingKeys } from "@/api/ranking/api.query";
+import { streakKeys } from "@/api/streak/api.query";
 
 import { formatQuizAnswerDisplay } from "@/utils/formatQuizAnswerDisplay";
 import { toastError } from "@/utils/toast";
@@ -27,6 +29,7 @@ const QuizCompletePage: ActivityComponentType<QuizCompletePageProps> = ({
   params,
 }) => {
   const { replace } = useFlow();
+  const queryClient = useQueryClient();
   const parsedUserAnswers: Array<{ quizId: number; answer: string }> =
     params.userAnswers
       ? (JSON.parse(params.userAnswers) as Array<{
@@ -47,6 +50,10 @@ const QuizCompletePage: ActivityComponentType<QuizCompletePageProps> = ({
 
     try {
       const res = await submitGrading(parsedUserAnswers);
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: streakKeys.all }),
+        queryClient.invalidateQueries({ queryKey: rankingKeys.all }),
+      ]);
       const gradingLogId = res.data?.gradingLogId;
       if (!gradingLogId) {
         toastError("채점 결과 ID를 받지 못했어요.");
