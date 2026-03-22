@@ -106,10 +106,18 @@ export default function UserPage() {
           <div className="gap-colgap-small flex flex-col">
             <Title>활동</Title>
             <div className="divide-gray-002 flex flex-col divide-y">
-              <Button size="large" state="ghost" className="flex justify-start">
+              <Button
+                size="large"
+                state="ghost"
+                className="flex justify-start rounded-none"
+              >
                 <span>내 공부</span>
               </Button>
-              <Button size="large" state="ghost" className="flex justify-start">
+              <Button
+                size="large"
+                state="ghost"
+                className="flex justify-start rounded-none"
+              >
                 <span>문의하기</span>
               </Button>
             </div>
@@ -121,7 +129,7 @@ export default function UserPage() {
               <Button
                 size="large"
                 state="ghost"
-                className="flex justify-start"
+                className="flex justify-start rounded-none"
                 onClick={handleLogout}
               >
                 <span>로그아웃</span>
@@ -129,7 +137,7 @@ export default function UserPage() {
               <Button
                 size="large"
                 state="ghost"
-                className="flex justify-start"
+                className="flex justify-start rounded-none"
                 onClick={() => setWithdrawOpen(true)}
               >
                 <span>탈퇴하기</span>
