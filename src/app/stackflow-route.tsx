@@ -24,6 +24,7 @@ const QuizGradeLogDetailPage = lazy(
 );
 const QuizGradeLogPage = lazy(() => import("@/pages/quiz/QuizGradeLogPage"));
 const QuizHomePage = lazy(() => import("@/pages/quiz/QuizHomePage"));
+const QuizLoadingPage = lazy(() => import("@/pages/quiz/QuizLoadingPage"));
 const QuizSubjectPage = lazy(() => import("@/pages/quiz/QuizSubjectPage"));
 const QuizSolvePage = lazy(() => import("@/pages/quiz/QuizSolvePage"));
 const QuizVoicePage = lazy(() => import("@/pages/quiz/QuizVoicePage"));
@@ -86,6 +87,11 @@ export const Route: ActivityEntry[] = [
     name: "QuizSubjectPage",
     component: QuizSubjectPage,
     path: "/quiz/subject",
+  },
+  {
+    name: "QuizLoadingPage",
+    component: QuizLoadingPage,
+    path: "/quiz/loading",
   },
   {
     name: "QuizSolvePage",

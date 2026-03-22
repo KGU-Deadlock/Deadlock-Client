@@ -1,6 +1,6 @@
 import { AppScreen } from "@stackflow/plugin-basic-ui";
 import type { ActivityComponentType } from "@stackflow/react";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 
 import { useFlow } from "@/app/stackflow";
@@ -15,9 +15,7 @@ import {
 
 import { quizQueries } from "@/api/quiz/api.query";
 
-import { toastError } from "@/utils/toast";
-
-import { QUIZ_MODE, type QuizMode } from "@/constants/quiz/quiz";
+import type { QuizMode } from "@/constants/quiz/quiz";
 
 interface QuizSubjectPageProps {
   mode: QuizMode;
@@ -34,38 +32,19 @@ const QuizSubjectPage: ActivityComponentType<QuizSubjectPageProps> = ({
     isPending,
     isError,
   } = useQuery(quizQueries.getQuizTopicQuery());
-  const { mutateAsync: fetchQuizList, isPending: isFetchingQuiz } = useMutation(
-    quizQueries.postQuizListMutation(),
-  );
   const topics = topicResponse?.data ?? [];
 
   const handleSelectTopic = (topic: number) => {
     setSelectedTopic(topic);
   };
 
-  const handleComplete = async () => {
+  const handleComplete = () => {
     if (!selectedTopic) return;
 
-    try {
-      const quizResponse = await fetchQuizList({
-        topicIds: [selectedTopic],
-        mode,
-      });
-
-      const targetPage =
-        mode === QUIZ_MODE.VOICE ? "QuizVoicePage" : "QuizSolvePage";
-      replace(targetPage, {
-        topic: selectedTopic,
-        mode,
-        quizData: JSON.stringify(quizResponse.data),
-      });
-    } catch (error) {
-      const message =
-        error instanceof Error
-          ? error.message
-          : "퀴즈를 불러오지 못했어요. 잠시 후 다시 시도해주세요.";
-      toastError(message);
-    }
+    replace("QuizLoadingPage", {
+      topic: selectedTopic,
+      mode,
+    });
   };
 
   return (
@@ -104,10 +83,10 @@ const QuizSubjectPage: ActivityComponentType<QuizSubjectPageProps> = ({
       <Footer>
         <Button
           size="large"
-          state={selectedTopic && !isFetchingQuiz ? "active" : "disabled"}
+          state={selectedTopic ? "active" : "disabled"}
           onClick={handleComplete}
         >
-          {isFetchingQuiz ? "퀴즈 생성 중..." : "시작하기"}
+          시작하기
         </Button>
       </Footer>
     </AppScreen>
