@@ -12,6 +12,7 @@ import type {
   RankingEntryResult,
 } from "@/api/ranking/api.model";
 import { rankingQueries } from "@/api/ranking/api.query";
+
 import { cn } from "@/utils/cn";
 
 function isMyRankingEntry(

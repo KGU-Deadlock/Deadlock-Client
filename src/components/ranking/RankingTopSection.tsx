@@ -1,4 +1,5 @@
 import type { RankingEntryResult } from "@/api/ranking/api.model";
+
 import { cn } from "@/utils/cn";
 
 function userByRank(
