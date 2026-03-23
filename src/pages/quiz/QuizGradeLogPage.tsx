@@ -56,13 +56,20 @@ const QuizGradeLogPage: ActivityComponentType<QuizGradeLogPageProps> = ({
           {!isPending && !isError && log && (
             <>
               <div className="border-gray-003 bg-gray-001 rounded-xl border px-4 py-3">
-                <p className="text-base font-semibold">
-                  맞힌 개수 {log.correctCount ?? 0} / {log.quizCount ?? 0}
+                <p className="text-sm font-medium">
+                  전체{" "}
+                  <span className="text-blue-004">{log.quizCount ?? 0}</span>
+                  문항 중{" "}
+                  <span className="text-blue-004">{log.correctCount ?? 0}</span>
+                  개의 문항을 맞혔어요!
                 </p>
               </div>
               <ul className="flex flex-col gap-2">
                 {results.map((item, index) => (
-                  <li key={`${item.quizId}-${index}`}>
+                  <li
+                    key={`${item.quizId}-${index}`}
+                    className="last:mb-[100px]"
+                  >
                     <button
                       type="button"
                       className="border-gray-003 hover:border-blue-004 w-full rounded-xl border bg-white px-4 py-3 text-left transition-colors"
