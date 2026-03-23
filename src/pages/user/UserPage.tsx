@@ -1,5 +1,5 @@
 import { AppScreen } from "@stackflow/plugin-basic-ui";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
 import { RiUser3Fill } from "react-icons/ri";
 
@@ -31,8 +31,11 @@ export default function UserPage() {
   const { profile, name, interest } = useUserStore();
   const [editOpen, setEditOpen] = useState(false);
   const [withdrawOpen, setWithdrawOpen] = useState(false);
+  const queryClient = useQueryClient();
 
   const handleLogout = () => {
+    queryClient.cancelQueries();
+    queryClient.clear();
     logout();
   };
 

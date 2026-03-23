@@ -5,10 +5,16 @@ import { Card, Header, Title, Scrollable } from "@/components/common";
 import { BackButton } from "@/components/common";
 import { StreakBoard, StreakCalendar } from "@/components/streak";
 
+import { useAuthStore } from "@/model/auth/useAuthStore";
+
 import { streakQueries } from "@/api/streak/api.query";
 
 export default function StreakPage() {
-  const { data: streakDetail } = useQuery(streakQueries.getStreakDetailQuery());
+  const isLoggedOut = useAuthStore((s) => s.isLoggedOut);
+  const { data: streakDetail } = useQuery({
+    ...streakQueries.getStreakDetailQuery(),
+    enabled: !isLoggedOut,
+  });
 
   const currentStreakDays = streakDetail?.data?.currentStreakDays ?? 0;
   const solvedQuizCount = streakDetail?.data?.solvedQuizCount ?? 0;

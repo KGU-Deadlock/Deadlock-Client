@@ -10,6 +10,7 @@ import { Card, Subtitle, Title, Scrollable } from "@/components/common";
 import { RankingItem } from "@/components/ranking";
 import { StreakBoard } from "@/components/streak";
 
+import { useAuthStore } from "@/model/auth/useAuthStore";
 import { useUserStore } from "@/model/user/useUserStore";
 
 import { rankingQueries } from "@/api/ranking/api.query";
@@ -19,11 +20,19 @@ import { userQueries } from "@/api/user/api.query";
 export default function HomePage() {
   const { push } = useFlow();
   const { setProfile, setName } = useUserStore();
-  const { data } = useQuery(userQueries.getUserProfileQuery());
-  const { data: streakDetail } = useQuery(streakQueries.getStreakDetailQuery());
-  const { data: rankingSummary } = useQuery(
-    rankingQueries.getRankingSummaryQuery(),
-  );
+  const isLoggedOut = useAuthStore((s) => s.isLoggedOut);
+  const { data } = useQuery({
+    ...userQueries.getUserProfileQuery(),
+    enabled: !isLoggedOut,
+  });
+  const { data: streakDetail } = useQuery({
+    ...streakQueries.getStreakDetailQuery(),
+    enabled: !isLoggedOut,
+  });
+  const { data: rankingSummary } = useQuery({
+    ...rankingQueries.getRankingSummaryQuery(),
+    enabled: !isLoggedOut,
+  });
 
   useEffect(() => {
     const profile = data?.data ?? null;
