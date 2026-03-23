@@ -52,7 +52,7 @@ function PodiumSlot({
         </div>
       </div>
       <div className="mt-3 flex flex-col items-center">
-        <span className="text-sm font-medium text-black">
+        <span className="line-clamp-1 text-sm font-medium text-black">
           {user.nickname ?? "익명"}
         </span>
         <span className="text-gray-005 text-[11px] font-medium">관심사</span>
