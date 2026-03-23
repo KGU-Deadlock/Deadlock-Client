@@ -1,5 +1,5 @@
 import type { ActivityComponentType } from "@stackflow/react";
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { BsFillSendFill } from "react-icons/bs";
 import { FaMicrophone } from "react-icons/fa";
 import { IoClose } from "react-icons/io5";
@@ -20,6 +20,7 @@ import { cn } from "@/utils/cn";
 import { formatQuizAnswerDisplay } from "@/utils/formatQuizAnswerDisplay";
 import {
   isMobileEnvironmentByUA,
+  parseBridgeMessageType,
   requestMicPermissionViaBridge,
 } from "@/utils/microphonePermissionBridge";
 import { toastError } from "@/utils/toast";
@@ -42,6 +43,7 @@ const QuizVoicePage: ActivityComponentType<QuizVoicePageProps> = ({
   const [micPermissionState, setMicPermissionState] = useState<
     "unknown" | "granted" | "denied"
   >("unknown");
+  const [bridgeMicState, setBridgeMicState] = useState<boolean | null>(null);
   const micPermissionPromiseRef = useRef<Promise<boolean> | null>(null);
 
   const quizData: GetQuizResult | null = params.quizData
@@ -74,8 +76,26 @@ const QuizVoicePage: ActivityComponentType<QuizVoicePageProps> = ({
     },
   });
 
+  useEffect(() => {
+    if (!isMobileUA) return;
+
+    const handleMessage = (event: MessageEvent) => {
+      const type = parseBridgeMessageType(event.data);
+      if (type === "MIC_STATE_ON") {
+        setBridgeMicState(true);
+      } else if (type === "MIC_STATE_OFF") {
+        setBridgeMicState(false);
+      }
+    };
+
+    window.addEventListener("message", handleMessage);
+    return () => window.removeEventListener("message", handleMessage);
+  }, [isMobileUA]);
+
+  const syncedIsListening = bridgeMicState ?? isListening;
+
   const handleToggleListeningWithPermission = async () => {
-    if (isListening) {
+    if (syncedIsListening) {
       handleToggleListening();
       return;
     }
@@ -129,7 +149,7 @@ const QuizVoicePage: ActivityComponentType<QuizVoicePageProps> = ({
               </Button>
             </div>
             <div className="relative flex items-center justify-center">
-              {isListening ? (
+              {syncedIsListening ? (
                 <p className="text-gray-005 absolute -top-10 text-sm text-red-500">
                   듣고 있어요...
                 </p>
@@ -140,11 +160,11 @@ const QuizVoicePage: ActivityComponentType<QuizVoicePageProps> = ({
               )}
               <Button
                 size="large"
-                state={isListening ? "active" : "ghost_background"}
+                state={syncedIsListening ? "active" : "ghost_background"}
                 className="size-36 rounded-full"
                 onClick={handleToggleListeningWithPermission}
               >
-                {isListening ? (
+                {syncedIsListening ? (
                   <IoStop size={48} />
                 ) : (
                   <FaMicrophone size={48} />
@@ -177,7 +197,7 @@ const QuizVoicePage: ActivityComponentType<QuizVoicePageProps> = ({
 
           <div className="border-gray-003 bg-gray-001 min-h-[200px] rounded-xl border p-4">
             <p className="text-gray-005 text-xs">
-              {isListening ? "듣고 있어요..." : "인식된 답변"}
+              {syncedIsListening ? "듣고 있어요..." : "인식된 답변"}
             </p>
             <p
               className={cn(

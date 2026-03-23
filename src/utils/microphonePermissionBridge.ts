@@ -8,6 +8,27 @@ type WindowWithBridge = Window & {
 export type BridgeMicPermissionType =
   | "MIC_PERMISSION_GRANTED"
   | "MIC_PERMISSION_DENIED";
+export type BridgeMicStateType = "MIC_STATE_ON" | "MIC_STATE_OFF";
+
+export function parseBridgeMessageType(raw: unknown): string {
+  let data: unknown = raw;
+
+  if (typeof raw === "string") {
+    try {
+      data = JSON.parse(raw) as unknown;
+    } catch {
+      data = { type: raw } as { type: string };
+    }
+  }
+
+  const type =
+    (typeof data === "object" && data !== null
+      ? (data as { type?: unknown; action?: unknown }).type ??
+        (data as { type?: unknown; action?: unknown }).action
+      : undefined) ?? "";
+
+  return typeof type === "string" ? type : "";
+}
 
 export function isMobileEnvironmentByUA(): boolean {
   const ua = typeof navigator !== "undefined" ? navigator.userAgent : "";
@@ -32,22 +53,7 @@ export function requestMicPermissionViaBridge(
     };
 
     const handleMessage = (event: MessageEvent) => {
-      const raw = event.data;
-      let data: unknown = raw;
-
-      if (typeof raw === "string") {
-        try {
-          data = JSON.parse(raw) as unknown;
-        } catch {
-          data = { type: raw } as { type: string };
-        }
-      }
-
-      const type =
-        (typeof data === "object" && data !== null
-          ? (data as { type?: unknown; action?: unknown }).type ??
-            (data as { type?: unknown; action?: unknown }).action
-          : undefined) ?? "";
+      const type = parseBridgeMessageType(event.data);
 
       if (type === "MIC_PERMISSION_GRANTED") {
         cleanup();
