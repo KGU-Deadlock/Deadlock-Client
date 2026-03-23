@@ -491,6 +491,10 @@ export interface components {
         AuthTokenResponse: {
             accessToken?: string;
             isUser?: boolean;
+            userData?: components["schemas"]["UserData"];
+        };
+        UserData: {
+            nickname?: string;
         };
         UpdateMyInfoCommand: {
             nickname?: string;

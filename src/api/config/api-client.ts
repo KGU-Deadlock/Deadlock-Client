@@ -7,7 +7,14 @@ import ky, {
 
 import { useAuthStore } from "@/model/auth/useAuthStore";
 
+import type { ReissueResponse } from "@/api/auth/api.model";
+
+import { apiClientHandler } from "./api-client-handler";
+import { END_POINTS } from "./api-endpoints";
+
 const baseURL = import.meta.env.VITE_API_BASE_URL;
+
+const AUTH_RETRY_HEADER = "x-deadlock-auth-retry";
 
 export const baseApiClient = ky.extend({
   prefixUrl: baseURL,
@@ -17,6 +24,34 @@ export const baseApiClient = ky.extend({
   },
 });
 
+let refreshAccessTokenPromise: Promise<string | null> | null = null;
+
+async function refreshAccessToken(): Promise<string | null> {
+  if (!refreshAccessTokenPromise) {
+    refreshAccessTokenPromise = (async () => {
+      try {
+        const result = await apiClientHandler<ReissueResponse>(
+          baseApiClient,
+          END_POINTS.AUTH.REISSUE,
+          { method: "POST" },
+        );
+        if (!result.ok) {
+          return null;
+        }
+        const token = result.data.data?.accessToken;
+        if (!token) {
+          return null;
+        }
+        useAuthStore.getState().setAccessToken(token);
+        return token;
+      } finally {
+        refreshAccessTokenPromise = null;
+      }
+    })();
+  }
+  return refreshAccessTokenPromise;
+}
+
 const beforeRequestHandler = (request: KyRequest) => {
   const token = useAuthStore.getState().accessToken;
   if (token) {
@@ -25,19 +60,34 @@ const beforeRequestHandler = (request: KyRequest) => {
 };
 
 const afterResponseHook = async (
-  _request: KyRequest,
+  request: KyRequest,
   _options: NormalizedOptions,
   response: KyResponse,
   state: AfterResponseState,
 ): Promise<Response | void> => {
-  if (response.status !== 401 || state.retryCount > 0) {
+  if (response.status !== 401) {
     return;
   }
 
-  // 현재 프로젝트는 refreshToken/재발급 플로우가 없어서,
-  // 401이면 store 기반으로 인증 상태를 초기화합니다.
-  useAuthStore.getState().logout();
-  return response;
+  if (state.retryCount > 0) {
+    return;
+  }
+
+  if (request.headers.get(AUTH_RETRY_HEADER) === "1") {
+    useAuthStore.getState().logout();
+    return response;
+  }
+
+  const token = await refreshAccessToken();
+  if (!token) {
+    useAuthStore.getState().logout();
+    return response;
+  }
+
+  request.headers.set("Authorization", `Bearer ${token}`);
+  request.headers.set(AUTH_RETRY_HEADER, "1");
+
+  return authApiClientInstance(request);
 };
 
 const authApiClientInstance = baseApiClient.extend({
