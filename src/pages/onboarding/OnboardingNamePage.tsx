@@ -1,5 +1,6 @@
 import { AppScreen } from "@stackflow/plugin-basic-ui";
-import { useState } from "react";
+import type { ActivityComponentType } from "@stackflow/react";
+import { useEffect, useState } from "react";
 
 import { useFlow } from "@/app/stackflow";
 
@@ -16,9 +17,20 @@ import {
   NICKNAME_MAX_LENGTH,
 } from "@/utils/formatNicknameInput";
 
-export default function OnboardingNamePage() {
+interface OnboardingNamePageProps {
+  name: string;
+}
+
+const OnboardingNamePage: ActivityComponentType<OnboardingNamePageProps> = ({
+  params,
+}) => {
+  const { name: initialName = "" } = params;
   const { push } = useFlow();
-  const [name, setName] = useState("");
+  const [name, setName] = useState(initialName);
+
+  useEffect(() => {
+    setName(initialName);
+  }, [initialName]);
 
   const handleNext = () => {
     push("OnboardingInterestPage", { name });
@@ -62,4 +74,6 @@ export default function OnboardingNamePage() {
       </Footer>
     </AppScreen>
   );
-}
+};
+
+export default OnboardingNamePage;

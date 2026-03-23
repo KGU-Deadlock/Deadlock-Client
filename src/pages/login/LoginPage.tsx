@@ -95,7 +95,11 @@ export default function LoginPage() {
               replace("HomePage", {}, { animate: false });
             } else {
               setIsInitialized(false);
-              replace("OnboardingNamePage", {}, { animate: false });
+              replace(
+                "OnboardingNamePage",
+                { name: res.data.userData?.nickname },
+                { animate: false },
+              );
             }
           }
         })
