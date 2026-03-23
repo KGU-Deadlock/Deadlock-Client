@@ -10,7 +10,7 @@ import { Card, Subtitle, Title, Scrollable } from "@/components/common";
 import { RankingItem } from "@/components/ranking";
 import { StreakBoard } from "@/components/streak";
 
-import { useUserStore } from "@/model/user/user-store";
+import { useUserStore } from "@/model/user/useUserStore";
 
 import { rankingQueries } from "@/api/ranking/api.query";
 import { streakQueries } from "@/api/streak/api.query";

@@ -16,7 +16,7 @@ import {
   UserWithdrawConfirmModal,
 } from "@/components/user";
 
-import { useUserStore } from "@/model/user/user-store";
+import { useUserStore } from "@/model/user/useUserStore";
 
 import { quizQueries } from "@/api/quiz/api.query";
 

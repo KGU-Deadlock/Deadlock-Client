@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import { Button, Modal, Subtitle } from "@/components/common";
 
 import { useModalClose } from "@/model/common";
-import { useUserStore } from "@/model/user/user-store";
+import { useUserStore } from "@/model/user/useUserStore";
 
 import { quizQueries } from "@/api/quiz/api.query";
 import { rankingKeys } from "@/api/ranking/api.query";

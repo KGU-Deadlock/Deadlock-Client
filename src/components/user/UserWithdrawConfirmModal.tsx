@@ -4,7 +4,7 @@ import { Button, Modal, Subtitle } from "@/components/common";
 
 import { useAuthStore } from "@/model/auth/useAuthStore";
 import { useModalClose } from "@/model/common";
-import { useUserStore } from "@/model/user/user-store";
+import { useUserStore } from "@/model/user/useUserStore";
 
 import { userQueries } from "@/api/user/api.query";
 
