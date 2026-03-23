@@ -23,8 +23,13 @@ export function AuthInitializer({ children }: AuthInitializerProps) {
   const { replace } = useFlow();
   const stack = useStack();
 
-  const { accessToken, isInitialized, setAccessToken, setIsInitialized } =
-    useAuthStore();
+  const {
+    accessToken,
+    isInitialized,
+    isLoggedOut,
+    setAccessToken,
+    setIsInitialized,
+  } = useAuthStore();
   const [isBootstrappingAuth, setIsBootstrappingAuth] = useState(true);
 
   const currentActivity = stack.activities[stack.activities.length - 1]?.name;
@@ -32,6 +37,11 @@ export function AuthInitializer({ children }: AuthInitializerProps) {
 
   useEffect(() => {
     if (!isAppRoute) {
+      setIsBootstrappingAuth(false);
+      return;
+    }
+
+    if (isLoggedOut) {
       setIsBootstrappingAuth(false);
       return;
     }
@@ -65,7 +75,7 @@ export function AuthInitializer({ children }: AuthInitializerProps) {
     return () => {
       cancelled = true;
     };
-  }, [accessToken, isAppRoute, setAccessToken, setIsInitialized]);
+  }, [accessToken, isAppRoute, isLoggedOut, setAccessToken, setIsInitialized]);
 
   useEffect(() => {
     if (!isAppRoute) return;

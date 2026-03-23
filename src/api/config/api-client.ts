@@ -27,6 +27,10 @@ export const baseApiClient = ky.extend({
 let refreshAccessTokenPromise: Promise<string | null> | null = null;
 
 async function refreshAccessToken(): Promise<string | null> {
+  if (useAuthStore.getState().isLoggedOut) {
+    return null;
+  }
+
   if (!refreshAccessTokenPromise) {
     refreshAccessTokenPromise = (async () => {
       try {

@@ -16,6 +16,7 @@ import {
   UserWithdrawConfirmModal,
 } from "@/components/user";
 
+import { useAuthStore } from "@/model/auth/useAuthStore";
 import { useUserStore } from "@/model/user/useUserStore";
 
 import { quizQueries } from "@/api/quiz/api.query";
@@ -26,12 +27,13 @@ import {
 } from "@/utils/formatNicknameInput";
 
 export default function UserPage() {
+  const { logout } = useAuthStore();
   const { profile, name, interest } = useUserStore();
   const [editOpen, setEditOpen] = useState(false);
   const [withdrawOpen, setWithdrawOpen] = useState(false);
 
   const handleLogout = () => {
-    window.location.replace("/login");
+    logout();
   };
 
   const {
