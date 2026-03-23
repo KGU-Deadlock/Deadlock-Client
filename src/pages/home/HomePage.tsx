@@ -46,8 +46,8 @@ export default function HomePage() {
   };
 
   return (
-    <AppScreen backgroundColor="var(--color-gray-002)">
-      <Scrollable className="space-y-colgap">
+    <AppScreen backgroundColor="var(--color-white)">
+      <Scrollable className="space-y-colgap bg-[linear-gradient(to_bottom,var(--color-gray-002),var(--color-white))]">
         <div className="px-gutter pt-header flex items-center justify-between">
           <div>
             <span className="text-xl leading-6 font-bold text-black">
@@ -66,7 +66,7 @@ export default function HomePage() {
         </div>
         <div className="px-gutter gap-colgap-small flex w-full flex-col">
           <button onClick={handleNavigation("StreakPage")}>
-            <Card className="flex w-full flex-col items-start gap-1 bg-white">
+            <Card className="flex w-full flex-col items-start gap-1 bg-white shadow-[0_-4px_10px_0_rgba(0,0,0,0.02)]">
               <Title>
                 연속 스트릭 <span className="font-tossface">🔥</span>
               </Title>
@@ -88,7 +88,7 @@ export default function HomePage() {
               onClick={handleNavigation("InterviewPage")}
               className="w-full"
             >
-              <Card className="flex w-full flex-col items-start gap-1 bg-white">
+              <Card className="flex w-full flex-col items-start gap-1 bg-white shadow-[0_-4px_10px_0_rgba(0,0,0,0.02)]">
                 <Title>
                   모의 면접 <span className="font-tossface">🤖</span>
                 </Title>
@@ -99,7 +99,7 @@ export default function HomePage() {
               onClick={handleNavigation("QuizHomePage")}
               className="w-full"
             >
-              <Card className="flex w-full flex-col items-start gap-1 bg-white">
+              <Card className="flex w-full flex-col items-start gap-1 bg-white shadow-[0_-4px_10px_0_rgba(0,0,0,0.02)]">
                 <Title>
                   CS 퀴즈 <span className="font-tossface">💡</span>
                 </Title>
@@ -108,7 +108,7 @@ export default function HomePage() {
             </button>
           </div>
         </div>
-        <div className="w-full flex-1 rounded-t-3xl bg-white">
+        <div className="w-full flex-1 rounded-t-3xl bg-white shadow-[0_-4px_10px_0_rgba(0,0,0,0.02)]">
           <button
             onClick={handleNavigation("RankingPage")}
             className="pt-header flex w-full flex-col items-start gap-1 px-[calc(var(--spacing-gutter)*1.5)]"
