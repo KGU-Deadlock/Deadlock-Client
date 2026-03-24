@@ -31,6 +31,7 @@ const QuizVoicePage = lazy(() => import("@/pages/quiz/QuizVoicePage"));
 const RankingPage = lazy(() => import("@/pages/ranking/RankingPage"));
 const StreakPage = lazy(() => import("@/pages/streak/StreakPage"));
 const UserPage = lazy(() => import("@/pages/user/UserPage"));
+const UserGradeLogPage = lazy(() => import("@/pages/user/UserGradeLogPage"));
 
 export const Route: ActivityEntry[] = [
   {
@@ -77,6 +78,11 @@ export const Route: ActivityEntry[] = [
     name: "UserPage",
     component: UserPage,
     path: "/user",
+  },
+  {
+    name: "UserGradeLogPage",
+    component: UserGradeLogPage,
+    path: "/user/study",
   },
   {
     name: "QuizHomePage",

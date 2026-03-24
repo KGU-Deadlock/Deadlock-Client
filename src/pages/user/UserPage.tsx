@@ -3,6 +3,8 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
 import { RiUser3Fill } from "react-icons/ri";
 
+import { useFlow } from "@/app/stackflow";
+
 import {
   Button,
   Header,
@@ -27,6 +29,7 @@ import {
 } from "@/utils/formatNicknameInput";
 
 export default function UserPage() {
+  const { push } = useFlow();
   const { logout } = useAuthStore();
   const { profile, name, interest } = useUserStore();
   const [editOpen, setEditOpen] = useState(false);
@@ -115,6 +118,7 @@ export default function UserPage() {
                 size="large"
                 state="ghost"
                 className="flex justify-start rounded-none"
+                onClick={() => push("UserGradeLogPage", {})}
               >
                 <span>내 공부</span>
               </Button>
