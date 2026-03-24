@@ -5,3 +5,5 @@ export const QUIZ_MODE = {
 } as const;
 
 export type QuizMode = (typeof QUIZ_MODE)[keyof typeof QUIZ_MODE];
+
+export const QUIZ_GRADE_LOG_ENTRY_USER_STUDY = "user-study";

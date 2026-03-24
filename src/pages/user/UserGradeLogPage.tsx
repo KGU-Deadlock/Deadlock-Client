@@ -17,6 +17,8 @@ import {
 import type { GradingLogListResult } from "@/api/quiz/api.model";
 import { quizQueries } from "@/api/quiz/api.query";
 
+import { QUIZ_GRADE_LOG_ENTRY_USER_STUDY } from "@/constants/quiz/quiz";
+
 type UserGradeLogListItemProps = {
   item: GradingLogListResult;
   onSelect: (gradingLogId: string) => void;
@@ -118,7 +120,10 @@ const UserGradeLogPage: ActivityComponentType<Record<string, never>> = () => {
                 key={item.id ?? `grading-log-${index}`}
                 item={item}
                 onSelect={(gradingLogId) =>
-                  push("QuizGradeLogPage", { gradingLogId })
+                  push("QuizGradeLogPage", {
+                    gradingLogId,
+                    entry: QUIZ_GRADE_LOG_ENTRY_USER_STUDY,
+                  })
                 }
               />
             ))}

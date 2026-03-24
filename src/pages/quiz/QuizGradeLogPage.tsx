@@ -16,15 +16,21 @@ import {
 
 import { quizQueries } from "@/api/quiz/api.query";
 
+import { QUIZ_GRADE_LOG_ENTRY_USER_STUDY } from "@/constants/quiz/quiz";
+
 interface QuizGradeLogPageProps {
   gradingLogId: string;
+  /** URL 쿼리로 동기화 — `user-study`이면 마이페이지「내 공부」에서 진입 */
+  entry?: string;
 }
 
 const QuizGradeLogPage: ActivityComponentType<QuizGradeLogPageProps> = ({
   params,
 }) => {
-  const { gradingLogId } = params;
-  const { push, pop } = useFlow();
+  const { gradingLogId, entry } = params;
+  const { push, pop, replace } = useFlow();
+
+  const isFromUserStudy = entry === QUIZ_GRADE_LOG_ENTRY_USER_STUDY;
 
   const { data, isPending, isError } = useQuery(
     quizQueries.getQuizGradeLogQuery(gradingLogId),
@@ -113,8 +119,17 @@ const QuizGradeLogPage: ActivityComponentType<QuizGradeLogPageProps> = ({
         </div>
 
         <Footer>
-          <Button size="large" onClick={() => pop({ animate: false })}>
-            홈으로
+          <Button
+            size="large"
+            onClick={() => {
+              if (isFromUserStudy) {
+                pop();
+              } else {
+                replace("HomePage", {}, { animate: false });
+              }
+            }}
+          >
+            {isFromUserStudy ? "목록으로" : "홈으로"}
           </Button>
         </Footer>
       </Scrollable>
