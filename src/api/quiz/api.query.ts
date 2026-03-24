@@ -3,6 +3,7 @@ import { mutationOptions, queryOptions } from "@tanstack/react-query";
 import type { GetQuizRequest } from "./api.model";
 import { getQuizGradeLog } from "./getQuizGradeLog";
 import { getQuizGradeLogDetail } from "./getQuizGradeLogDetail";
+import { getQuizGradeLogList } from "./getQuizGradeLogList";
 import { getQuizTopic } from "./getQuizTopic";
 import { postQuizGrade } from "./postQuizGrade";
 import { postQuizList } from "./postQuizList";
@@ -15,6 +16,7 @@ export const quizKeys = {
   list: (params: GetQuizRequest) => [...quizQueryKey, "list", params] as const,
   gradingLog: (gradingLogId: string) =>
     [...quizQueryKey, "grading-log", gradingLogId] as const,
+  gradingLogList: () => [...quizQueryKey, "grading-log-list"] as const,
   gradingLogDetail: (gradingLogId: string, quizId: number) =>
     [...quizQueryKey, "grading-log-detail", gradingLogId, quizId] as const,
 };
@@ -69,6 +71,16 @@ export const quizQueries = {
         return res.data;
       },
       enabled: Boolean(gradingLogId),
+    }),
+
+  getQuizGradeLogListQuery: () =>
+    queryOptions({
+      queryKey: quizKeys.gradingLogList(),
+      queryFn: async () => {
+        const res = await getQuizGradeLogList();
+        if (!res.ok) throw new Error("채점 기록 목록 조회에 실패했습니다.");
+        return res.data;
+      },
     }),
 
   getQuizGradeLogDetailQuery: (gradingLogId: string, quizId: number) =>

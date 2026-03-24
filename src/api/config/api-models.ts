@@ -212,8 +212,8 @@ export interface paths {
             cookie?: never;
         };
         /**
-         * 실시간 랭킹 상세 조회
-         * @description 필터 유형에 따라 랭킹 목록, 내 랭킹 정보, 내 아래 2개 순위 정보를 조회합니다.
+         * 랭킹 상세 조회
+         * @description 로그인한 사용자를 기준으로 랭킹 목록을 조회합니다. `filterType=ALL`이면 전체 랭킹, `filterType=INTEREST`이면 내 관심 주제 기준 랭킹을 반환하며, 응답에는 요청한 랭킹 목록과 내 순위 정보, 내 바로 아래 최대 2명의 순위 정보가 포함됩니다.
          */
         get: operations["getRanking"];
         put?: never;
@@ -232,8 +232,8 @@ export interface paths {
             cookie?: never;
         };
         /**
-         * 실시간 랭킹 요약 조회
-         * @description 인증 없이 전역 랭킹 상위 5명을 조회합니다.
+         * 랭킹 요약 조회
+         * @description 인증 없이 전체 랭킹 상위 5명의 순위, 사용자 정보, 누적 점수를 조회합니다.
          */
         get: operations["getRankingSummary"];
         put?: never;
@@ -276,6 +276,26 @@ export interface paths {
          * @description 채점 로그 내 특정 퀴즈의 상세 채점 결과를 조회합니다.
          */
         get: operations["getGradingDetailLog"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/quiz/grading/list": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * 채점 기록 목록 조회
+         * @description 자신의 전체 채점 기록 목록을 조회합니다.
+         */
+        get: operations["getGradingLogList"];
         put?: never;
         post?: never;
         delete?: never;
@@ -654,6 +674,8 @@ export interface components {
              * @example https://cdn.example.com/profiles/10001.png
              */
             profileImage?: string;
+            /** @description 현재 로그인한 사용자의 관심 주제 목록입니다. */
+            interests?: string[];
             /**
              * Format: int64
              * @description 랭킹 순위입니다. 아직 랭킹에 반영되지 않은 경우 null입니다.
@@ -689,18 +711,18 @@ export interface components {
         RankingEntryResult: {
             /**
              * Format: int64
-             * @description 전역 랭킹 순위입니다.
+             * @description 랭킹 순위입니다.
              * @example 1
              */
             rank?: number;
             /**
              * Format: int64
-             * @description 사용자의 카카오 식별자입니다.
+             * @description 사용자의 카카오 고유 ID입니다.
              * @example 10001
              */
             kakaoId?: number;
             /**
-             * @description 랭킹에 노출되는 사용자 닉네임입니다.
+             * @description 랭킹에 노출되는 사용자의 닉네임입니다.
              * @example cs_runner
              */
             nickname?: string;
@@ -710,8 +732,16 @@ export interface components {
              */
             profileImage?: string;
             /**
+             * @description 사용자의 관심 토픽 목록입니다.
+             * @example [
+             *       "OS",
+             *       "Network"
+             *     ]
+             */
+            interests?: string[];
+            /**
              * Format: int64
-             * @description 퀴즈 채점 완료 시 누적 반영된 총 점수입니다.
+             * @description 누적 반영된 총 점수입니다.
              * @example 1280
              */
             score?: number;
@@ -774,6 +804,24 @@ export interface components {
             feedback?: string;
             missingKeywords?: string[];
             improvedAnswer?: string;
+        };
+        ApiResponseListGradingLogListResult: {
+            isSuccess?: boolean;
+            code?: string;
+            message?: string;
+            data?: components["schemas"]["GradingLogListResult"][];
+            success?: boolean;
+        };
+        GradingLogListResult: {
+            id?: string;
+            /** Format: date-time */
+            solvedAt?: string;
+            /** Format: int32 */
+            correctCount?: number;
+            /** Format: int32 */
+            totalCount?: number;
+            quizMode?: string;
+            topicNames?: string[];
         };
         AdminTokenResponse: {
             accessToken?: string;
@@ -1250,9 +1298,9 @@ export interface operations {
     getRanking: {
         parameters: {
             query?: {
-                /** @description 랭킹 필터 유형입니다. ALL 또는 INTEREST를 사용합니다. */
+                /** @description 랭킹 조회 기준입니다. `ALL`은 전체 사용자 기준, `INTEREST`는 로그인한 사용자의 관심 주제 기준 랭킹을 의미합니다. */
                 filterType?: "ALL" | "INTEREST";
-                /** @description 조회할 랭킹 인원 수입니다. 기본값은 10이며 최대 100명까지 조회할 수 있습니다. */
+                /** @description 반환할 랭킹 목록의 개수입니다. 기본값은 10이며 최대 100까지 요청할 수 있습니다. */
                 size?: string;
             };
             header?: never;
@@ -1261,7 +1309,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description 실시간 랭킹 상세 조회 성공 */
+            /** @description 랭킹 상세 조회 성공 */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -1308,7 +1356,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description 실시간 랭킹 요약 조회 성공 */
+            /** @description 랭킹 요약 조회 성공 */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -1418,6 +1466,40 @@ export interface operations {
             };
             /** @description 채점 상세를 찾을 수 없음 */
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description 서버 내부 오류 */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    getGradingLogList: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description 채점 기록 목록 조회 성공 */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ApiResponseListGradingLogListResult"];
+                };
+            };
+            /** @description 인증 실패 */
+            401: {
                 headers: {
                     [name: string]: unknown;
                 };

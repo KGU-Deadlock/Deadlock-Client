@@ -1,5 +1,6 @@
 import type {
   GetGradingDetailLogResponse,
+  GetGradingLogListResponse,
   GetGradingLogResponse,
   GetQuizResponse,
   GetQuizTopicResponse,
@@ -16,6 +17,8 @@ export type GradingDetailLogData = NonNullable<
   GetGradingDetailLogResponse["data"]
 >;
 export type GradingDetailLogResultData = GradingDetailLogData;
+
+export type GradingLogList = NonNullable<GetGradingLogListResponse["data"]>;
 
 export type QuizTopicList = NonNullable<
   NonNullable<GetQuizTopicResponse["data"]>

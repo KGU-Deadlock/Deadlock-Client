@@ -19,6 +19,11 @@ export type GetGradingDetailLogResponse =
 export type GradingDetailLogResult =
   components["schemas"]["GradingDetailLogResult"];
 
+export type GetGradingLogListResponse =
+  components["schemas"]["ApiResponseListGradingLogListResult"];
+export type GradingLogListResult =
+  components["schemas"]["GradingLogListResult"];
+
 export type GetQuizTopicResponse =
   components["schemas"]["ApiResponseListTopicResult"];
 export type QuizTopicResult = Required<components["schemas"]["TopicResult"]>;

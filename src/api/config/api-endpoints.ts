@@ -10,6 +10,7 @@ export const END_POINTS = {
   QUIZ: {
     QUIZ_LIST: "quiz",
     QUIZ_GRADING: "quiz/grading",
+    QUIZ_GRADING_LIST: "quiz/grading/list",
     QUIZ_GRADING_LOG: (gradingLogId: string) => `quiz/grading/${gradingLogId}`,
     QUIZ_GRADING_LOG_DETAIL: (gradingLogId: string, quizId: number) =>
       `quiz/grading/${gradingLogId}/${quizId}`,
