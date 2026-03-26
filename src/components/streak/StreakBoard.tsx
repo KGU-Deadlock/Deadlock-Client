@@ -13,16 +13,13 @@ const levelToClass: Record<number, string> = {
 
 interface StreakBoardProps {
   currentStreakDays: number;
-  longestStreakDays: number;
 }
 
 export default function StreakBoard(props: StreakBoardProps) {
   const current = Math.max(0, props.currentStreakDays ?? 0);
-  const longest = Math.max(current, props.longestStreakDays ?? current);
 
   const cells = Array.from({ length: TOTAL_DAYS }, (_, index) => {
-    if (index < current) return 4; // 현재 연속 스트릭 구간(위에서부터)
-    if (index < longest) return 2; // 과거 최장 스트릭 구간
+    if (index < current) return 4;
     return 0;
   });
 

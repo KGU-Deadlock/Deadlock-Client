@@ -19,7 +19,6 @@ export default function StreakPage() {
   const currentStreakDays = streakDetail?.data?.currentStreakDays ?? 0;
   const solvedQuizCount = streakDetail?.data?.solvedQuizCount ?? 0;
   const solvedTopicCount = streakDetail?.data?.solvedTopicCount ?? 0;
-  const longestStreakDays = streakDetail?.data?.longestStreakDays ?? 0;
 
   return (
     <AppScreen>
@@ -30,10 +29,7 @@ export default function StreakPage() {
           center={<Title>연속 스트릭</Title>}
         />
         <section className="pt-header px-gutter gap-colgap flex flex-col">
-          <StreakBoard
-            currentStreakDays={currentStreakDays}
-            longestStreakDays={longestStreakDays}
-          />
+          <StreakBoard currentStreakDays={currentStreakDays} />
           <div className="gap-colgap-small grid grid-cols-3">
             <Card className="bg-gray-002 grid place-items-center">
               <span className="text-sm">연속 학습</span>

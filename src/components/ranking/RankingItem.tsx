@@ -43,12 +43,7 @@ export default function RankingItem({
   };
 
   return (
-    <div
-      className={cn(
-        "grid w-full grid-cols-[1fr_4fr_1fr] py-2 last:mb-8",
-        className,
-      )}
-    >
+    <div className={cn("grid w-full grid-cols-[1fr_4fr_1fr] py-2", className)}>
       <div className="font-tossface flex items-center justify-start text-[24px]">
         {getRankTag()}
       </div>

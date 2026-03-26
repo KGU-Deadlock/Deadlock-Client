@@ -79,7 +79,6 @@ export default function HomePage() {
               </Subtitle>
               <StreakBoard
                 currentStreakDays={streakDetail?.data?.currentStreakDays ?? 0}
-                longestStreakDays={streakDetail?.data?.longestStreakDays ?? 0}
               />
             </Card>
           </button>
@@ -128,6 +127,7 @@ export default function HomePage() {
               )}
               {rankingSummary.data.top5.map((item, index) => (
                 <RankingItem
+                  className="last:mb-8 last:pb-8"
                   key={item.rank ?? index}
                   rank={item.rank ?? index + 1}
                   nickname={item.nickname ?? "익명"}
