@@ -1,9 +1,14 @@
+import { useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import "./StreakCalendar.css";
 import { BiChevronLeft, BiChevronRight } from "react-icons/bi";
+
+import { streakQueries } from "@/api/streak/api.query";
+
+import { cn } from "@/utils/cn";
 
 import { Title } from "../common";
 
@@ -27,6 +32,24 @@ export default function StreakCalendar({
   };
 
   const activeStartDate = dayjs(internalViewDate).startOf("month").toDate();
+
+  const year = dayjs(activeStartDate).year();
+  const month = dayjs(activeStartDate).month() + 1;
+
+  const { data: monthlyData } = useQuery(
+    streakQueries.getStreakSummaryQuery({ year, month }),
+  );
+
+  const solvedDates = useMemo(() => {
+    const days = monthlyData?.data?.days ?? [];
+    const set = new Set<string>();
+    for (const d of days) {
+      if (d.solved && d.date) {
+        set.add(d.date);
+      }
+    }
+    return set;
+  }, [monthlyData]);
 
   return (
     <div className="px-gutter flex w-full flex-col gap-3">
@@ -71,9 +94,16 @@ export default function StreakCalendar({
         formatDay={(_, date) => dayjs(date).format("D")}
         calendarType="gregory"
         tileClassName={({ date }) => {
-          if (!isPastDateDisabled) return "";
-          if (dayjs(date).isBefore(dayjs().startOf("day"))) return "opacity-40";
-          return "";
+          const dateStr = dayjs(date).format("YYYY-MM-DD");
+          const isSolved = solvedDates.has(dateStr);
+          const isPast =
+            isPastDateDisabled &&
+            dayjs(date).isBefore(dayjs().startOf("day"));
+
+          return cn(
+            isSolved && "streak-calendar-solved",
+            isPast && "opacity-40",
+          );
         }}
         tileDisabled={({ date }) => {
           if (!isPastDateDisabled) return false;

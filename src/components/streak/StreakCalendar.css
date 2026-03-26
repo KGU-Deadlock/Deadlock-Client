@@ -102,3 +102,9 @@ abbr {
 .react-calendar__tile--now {
   background-color: var(--color-blue-002);
 }
+
+.streak-calendar-solved {
+  background-color: var(--color-blue-002) !important;
+  color: var(--color-black) !important;
+  font-weight: 500;
+}
