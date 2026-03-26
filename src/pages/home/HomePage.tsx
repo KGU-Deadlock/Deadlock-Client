@@ -132,6 +132,7 @@ export default function HomePage() {
                   rank={item.rank ?? index + 1}
                   nickname={item.nickname ?? "익명"}
                   score={item.score ?? 0}
+                  interest={item.interests?.[0]}
                 />
               ))}
             </div>

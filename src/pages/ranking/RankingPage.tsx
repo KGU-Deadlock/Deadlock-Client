@@ -129,6 +129,7 @@ export default function RankingPage() {
                           ? (myRanking?.nickname ?? "나")
                           : (item.nickname ?? "익명")
                       }
+                      interest={item.interests?.[0]}
                       score={isMe ? (myRanking?.score ?? 0) : (item.score ?? 0)}
                       tone={isMe ? "inverse" : "default"}
                     />

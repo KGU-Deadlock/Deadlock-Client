@@ -5,7 +5,6 @@ interface RankingItemProps {
   nickname: string;
   score: number;
   profileImage?: string;
-  university?: string;
   interest?: string;
   className?: string;
   tone?: "default" | "inverse";
@@ -15,7 +14,6 @@ export default function RankingItem({
   rank,
   nickname,
   score,
-  university,
   interest,
   className,
   tone = "default",
@@ -62,7 +60,7 @@ export default function RankingItem({
             tone === "inverse" ? "text-gray-002" : "text-gray-006",
           )}
         >
-          {university ?? "경기대학교"} · {interest ?? "CS"}
+          {interest ?? "CS"}
         </span>
       </div>
       <span
