@@ -1,0 +1,12 @@
+packages:
+  - '.'
+
+catalog:
+  typescript: 5.9.2
+  eslint: ^9.39.1
+
+catalogs:
+  react19.1:
+    react: 19.1.0
+    react-dom: 19.1.0
+    '@types/react': ~19.1.0

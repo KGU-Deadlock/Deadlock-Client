@@ -1,0 +1,107 @@
+{
+  "expo": {
+    "name": "HelloCS",
+    "slug": "hellocs",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/images/icon.png",
+    "scheme": "hellocs",
+    "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.hellocs.app",
+      "associatedDomains": [
+        "applinks:hellocs.com"
+      ],
+      "infoPlist": {
+        "NSAppTransportSecurity": {
+          "NSAllowsArbitraryLoads": true,
+          "NSAllowsArbitraryLoadsInWebContent": true
+        },
+        "NSMicrophoneUsageDescription": "음성 퀴즈를 위해 마이크 권한이 필요해요.",
+        "LSApplicationQueriesSchemes": [
+          "nmap"
+        ],
+        "ITSAppUsesNonExemptEncryption": false
+      },
+      "appleTeamId": "4U9PQRRKLB"
+    },
+    "android": {
+      "versionCode": 10,
+      "permissions": ["RECORD_AUDIO"],
+      "intentFilters": [
+        {
+          "action": "VIEW",
+          "autoVerify": true,
+          "data": [
+            {
+              "scheme": "https",
+              "host": "hellocs.site"
+            }
+          ],
+          "category": [
+            "BROWSABLE",
+            "DEFAULT"
+          ]
+        }
+      ],
+      "manifest": {
+        "queries": [
+          {
+            "package": "com.kakao.talk"
+          },
+          {
+            "intent": {
+              "action": "android.intent.action.VIEW",
+              "data": {
+                "scheme": "kakaotalk"
+              }
+            }
+          },
+          {
+            "package": "com.nhn.android.nmap"
+          },
+          {
+            "intent": {
+              "action": "android.intent.action.VIEW",
+              "data": {
+                "scheme": "nmap"
+              }
+            }
+          }
+        ]
+      },
+      "adaptiveIcon": {
+        "backgroundColor": "#E6F4FE",
+        "foregroundImage": "./assets/images/icon.png",
+        "backgroundImage": "./assets/images/icon.png",
+        "monochromeImage": "./assets/images/icon.png"
+      },
+      "edgeToEdgeEnabled": true,
+      "networkSecurityConfig": "./network_security_config.xml",
+      "package": "com.hellocs.app",
+      "predictiveBackGestureEnabled": false,
+      "usesCleartextTraffic": true
+    },
+    "plugins": [
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "usesCleartextTraffic": true
+          }
+        }
+      ]
+    ],
+    "experiments": {
+      "typedRoutes": true,
+      "reactCompiler": true
+    },
+    "extra": {
+      "eas": {
+        "projectId": "59536759-9178-4d40-bc1e-5ba6770cf7f3"
+      }
+    }
+  }
+}
