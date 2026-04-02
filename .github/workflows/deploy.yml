@@ -22,12 +22,12 @@ jobs:
           {
             echo "VITE_API_BASE_URL=${{ secrets.VITE_API_BASE_URL }}"
             echo "API_SWAGGER_URL=${{ secrets.API_SWAGGER_URL }}"
-          } > .env
+          } > web/.env
 
       - name: Build image
         shell: bash
         run: |
-          docker build -t deadlock-client:latest .
+          docker build -t deadlock-client:latest -f web/Dockerfile web
 
       - name: Deploy
         shell: bash
