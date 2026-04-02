@@ -2,8 +2,15 @@ name: Deploy Frontend to GCP VM
 
 on:
   push:
-    branches: [main, develop]
-  workflow_dispatch: {}
+    branches:
+      - main
+    workflow_dispatch: {}
+    paths:
+      - "web/**"
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - "web/**"
 
 concurrency:
   group: deploy-frontend-${{ github.ref }}
