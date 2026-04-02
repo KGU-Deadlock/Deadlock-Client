@@ -11,14 +11,14 @@ import { LinearGradient } from "expo-linear-gradient";
 import {
   getShellGradientTopColor,
   SHELL_GRADIENT_BOTTOM,
-} from "@/shared/constants/shell-background";
-import { WEBVIEW_URL } from "@/shared/constants/url";
+} from "@/constants/shell-background";
+import { WEBVIEW_URL } from "@/constants/url";
 import CustomAnimatedSplash from "./splash-screen";
 import { router } from "expo-router";
-import { buildWebUrl } from "@/utils/webview/buildWebUrl";
-import { createHandleShouldStartLoad } from "@/utils/webview/createHandleShouldStartLoad";
-import { createHandleWebViewMessage } from "@/utils/webview/createHandleWebViewMessage";
-import { micStateBridgeScript } from "@/utils/webview/micStateBridgeScript";
+import { createHandleShouldStartLoad } from "@/webview/createHandleShouldStartLoad";
+import { createHandleWebViewMessage } from "@/webview/createHandleWebViewMessage";
+import { micStateBridgeScript } from "@/webview/micStateBridgeScript";
+import { buildWebUrl } from "@/webview/buildWebUrl";
 
 export default function App() {
   const webViewRef = useRef<WebViewType>(null);
