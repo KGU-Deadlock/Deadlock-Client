@@ -6,7 +6,7 @@ import { RiKakaoTalkFill } from "react-icons/ri";
 
 import { useFlow } from "@/app/stackflow";
 
-import { Button, Footer } from "@/components/common";
+import { Button } from "@/components/common";
 
 import { useAuthStore } from "@/model/auth/useAuthStore";
 
@@ -130,7 +130,7 @@ export default function LoginPage() {
           className="login-hero-scan pointer-events-none absolute inset-0 z-0 opacity-40"
           aria-hidden
         />
-        <div className="px-gutter relative z-10 flex flex-col items-center">
+        <div className="px-gutter relative z-10 mt-40 flex w-full flex-col items-center">
           <LoginTerminalHello />
           <img
             src="/logo.svg"
@@ -140,20 +140,18 @@ export default function LoginPage() {
           <p className="text-blue-004 mt-1 text-center font-medium">
             꾸준히 준비하는 CS 면접
           </p>
+          <Button
+            size="large"
+            state="kakao"
+            className="z-999 mt-60 w-full"
+            onClick={handleKakaoLogin}
+            disabled={!isPending}
+          >
+            <RiKakaoTalkFill className="mr-2" size={24} />
+            카카오로 시작하기
+          </Button>
         </div>
       </div>
-      <Footer>
-        <Button
-          size="large"
-          state="kakao"
-          className="z-999 mt-40"
-          onClick={handleKakaoLogin}
-          disabled={!isPending}
-        >
-          <RiKakaoTalkFill className="mr-2" size={24} />
-          카카오로 시작하기
-        </Button>
-      </Footer>
     </AppScreen>
   );
 }
