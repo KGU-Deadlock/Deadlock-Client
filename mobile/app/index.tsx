@@ -1,9 +1,6 @@
 import { useRef, useEffect, useState, useCallback, useMemo } from "react";
-import { WebView } from "react-native-webview";
-import type {
-  WebView as WebViewType,
-  WebViewNavigation,
-} from "react-native-webview";
+import { createWebView } from "@webview-bridge/react-native";
+import type { WebView as WebViewType, WebViewNavigation } from "react-native-webview";
 import { SafeAreaView, SafeAreaProvider } from "react-native-safe-area-context";
 import { BackHandler, StyleSheet } from "react-native";
 import * as Linking from "expo-linking";
@@ -19,6 +16,12 @@ import { createHandleShouldStartLoad } from "@/webview/createHandleShouldStartLo
 import { createHandleWebViewMessage } from "@/webview/createHandleWebViewMessage";
 import { micStateBridgeScript } from "@/webview/micStateBridgeScript";
 import { buildWebUrl } from "@/webview/buildWebUrl";
+import { appBridge } from "@/bridge";
+
+const { WebView } = createWebView({
+  bridge: appBridge,
+  debug: __DEV__,
+});
 
 export default function App() {
   const webViewRef = useRef<WebViewType>(null);
