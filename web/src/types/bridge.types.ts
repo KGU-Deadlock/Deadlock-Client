@@ -1,0 +1,24 @@
+import type { BridgeStore } from "@webview-bridge/web";
+
+export interface AppBridgeState {
+  isLoggedIn: boolean;
+}
+
+export interface AppBridgeMethods {
+  logout: () => Promise<void>;
+  startRecording: () => Promise<{
+    status: "success" | "error";
+    errorMessage?: string;
+  }>;
+  stopRecording: () => Promise<{
+    status: "success" | "error";
+    text?: string;
+    errorMessage?: string;
+  }>;
+}
+
+export type AppBridgeSpec = AppBridgeState &
+  AppBridgeMethods & {
+    [key: string]: any;
+  };
+export type AppBridge = BridgeStore<AppBridgeSpec>;
