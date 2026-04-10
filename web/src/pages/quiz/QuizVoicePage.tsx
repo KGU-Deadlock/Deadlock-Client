@@ -1,5 +1,5 @@
 import type { ActivityComponentType } from "@stackflow/react";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo } from "react";
 import { BsFillSendFill } from "react-icons/bs";
 import { FaMicrophone } from "react-icons/fa";
 import { IoClose } from "react-icons/io5";
@@ -19,7 +19,7 @@ import { formatQuizAnswerDisplay } from "@/utils/formatQuizAnswerDisplay";
 import { toastError } from "@/utils/toast";
 
 import { QUIZ_MODE } from "@/constants/quiz/quiz";
-import { bridge } from "@/lib/bridge";
+import { useMicRecording } from "@/lib/bridge/useMicRecording";
 
 interface QuizVoicePageProps {
   topic: string;
@@ -32,7 +32,8 @@ const QuizVoicePage: ActivityComponentType<QuizVoicePageProps> = ({
 }) => {
   const { push } = useFlow();
 
-  const [isRecording, setIsRecording] = useState(false);
+  const { start, stop, state, transcript: micTranscript, errorMessage } = useMicRecording();
+  const isRecording = state === "recording";
 
   const quizData: GetQuizResult | null = params.quizData
     ? (JSON.parse(params.quizData) as GetQuizResult)
@@ -63,24 +64,23 @@ const QuizVoicePage: ActivityComponentType<QuizVoicePageProps> = ({
     },
   });
 
-  const handleToggleRecording = async () => {
-    if (isRecording) {
-      const result = await bridge.stopRecording();
-      setIsRecording(false);
-      if (result.status === "success" && result.text) {
-        setTranscript(result.text);
-      } else if (result.status === "error") {
-        toastError(result.errorMessage ?? "녹음 중 오류가 발생했어요.");
-      }
-      return;
+  useEffect(() => {
+    if (state === "done" && micTranscript) {
+      setTranscript(micTranscript);
     }
+  }, [state, micTranscript, setTranscript]);
 
-    const result = await bridge.startRecording();
+  useEffect(() => {
+    if (state === "error" && errorMessage) {
+      toastError(errorMessage);
+    }
+  }, [state, errorMessage]);
 
-    if (result.status === "success") {
-      setIsRecording(true);
+  const handleToggleRecording = () => {
+    if (isRecording) {
+      stop();
     } else {
-      toastError(result.errorMessage ?? "녹음을 시작할 수 없어요.");
+      start();
     }
   };
 
