@@ -1,6 +1,5 @@
 import { bridge } from "@webview-bridge/react-native";
 import type { Bridge } from "@webview-bridge/react-native";
-import { Share } from "react-native";
 import { startRecording, stopRecording } from "./audioRecorder";
 
 interface AppBridgeType extends Bridge {

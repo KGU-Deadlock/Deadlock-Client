@@ -13,8 +13,6 @@ import { WEBVIEW_URL } from "@/constants/url";
 import CustomAnimatedSplash from "./splash-screen";
 import { router } from "expo-router";
 import { createHandleShouldStartLoad } from "@/webview/createHandleShouldStartLoad";
-import { createHandleWebViewMessage } from "@/webview/createHandleWebViewMessage";
-import { micStateBridgeScript } from "@/webview/micStateBridgeScript";
 import { buildWebUrl } from "@/webview/buildWebUrl";
 import { appBridge } from "@/bridge";
 
@@ -106,11 +104,6 @@ export default function App() {
     [webViewRef]
   );
 
-  const handleWebViewMessage = useMemo(
-    () => createHandleWebViewMessage(webViewRef),
-    [webViewRef]
-  );
-
   return (
     <SafeAreaProvider>
       {showSplash && <CustomAnimatedSplash onFinish={handleSplashFinish} />}
@@ -131,7 +124,6 @@ export default function App() {
           ref={webViewRef}
           source={{ uri: initialUrl }}
           style={{ flex: 1, backgroundColor: "transparent" }}
-          injectedJavaScriptBeforeContentLoaded={micStateBridgeScript}
           webviewDebuggingEnabled
           domStorageEnabled={true}
           sharedCookiesEnabled={true}
@@ -139,7 +131,6 @@ export default function App() {
           originWhitelist={["*"]}
           applicationNameForUserAgent={"hellocswebview"}
           onShouldStartLoadWithRequest={handleShouldStartLoad}
-          onMessage={handleWebViewMessage}
           onNavigationStateChange={(navState: WebViewNavigation) => {
             setCurrentUrl(navState.url);
             setCanGoBack(navState.canGoBack);

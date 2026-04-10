@@ -1,5 +1,5 @@
 import type { ActivityComponentType } from "@stackflow/react";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useMemo, useState } from "react";
 import { BsFillSendFill } from "react-icons/bs";
 import { FaMicrophone } from "react-icons/fa";
 import { IoClose } from "react-icons/io5";
@@ -10,22 +10,16 @@ import { useFlow } from "@/app/stackflow";
 import { Button, Footer, PageTitle } from "@/components/common";
 import QuizLayout from "@/components/quiz/QuizLayout";
 
-
 import { useVoiceQuiz } from "@/model/quiz/useVoiceQuiz";
 
 import type { GetQuizResult } from "@/api/quiz/api.model";
 
-
 import { cn } from "@/utils/cn";
 import { formatQuizAnswerDisplay } from "@/utils/formatQuizAnswerDisplay";
-import {
-  isMobileEnvironmentByUA,
-  parseBridgeMessageType,
-  requestMicPermissionViaBridge,
-} from "@/utils/microphonePermissionBridge";
 import { toastError } from "@/utils/toast";
 
 import { QUIZ_MODE } from "@/constants/quiz/quiz";
+import { bridge } from "@/lib/bridge";
 
 interface QuizVoicePageProps {
   topic: string;
@@ -38,13 +32,7 @@ const QuizVoicePage: ActivityComponentType<QuizVoicePageProps> = ({
 }) => {
   const { push } = useFlow();
 
-  const isMobileUA = useMemo(() => isMobileEnvironmentByUA(), []);
-
-  const [micPermissionState, setMicPermissionState] = useState<
-    "unknown" | "granted" | "denied"
-  >("unknown");
-  const [bridgeMicState, setBridgeMicState] = useState<boolean | null>(null);
-  const micPermissionPromiseRef = useRef<Promise<boolean> | null>(null);
+  const [isRecording, setIsRecording] = useState(false);
 
   const quizData: GetQuizResult | null = params.quizData
     ? (JSON.parse(params.quizData) as GetQuizResult)
@@ -57,10 +45,9 @@ const QuizVoicePage: ActivityComponentType<QuizVoicePageProps> = ({
   const {
     currentQuiz,
     currentQuizNumber,
-    isListening,
     hasTranscript,
     transcript,
-    handleToggleListening,
+    setTranscript,
     handleCancel,
     handleSubmitVoice,
   } = useVoiceQuiz({
@@ -76,58 +63,24 @@ const QuizVoicePage: ActivityComponentType<QuizVoicePageProps> = ({
     },
   });
 
-  useEffect(() => {
-    if (!isMobileUA) return;
-
-    const handleMessage = (event: MessageEvent) => {
-      const type = parseBridgeMessageType(event.data);
-      if (type === "MIC_STATE_ON") {
-        setBridgeMicState(true);
-      } else if (type === "MIC_STATE_OFF") {
-        setBridgeMicState(false);
+  const handleToggleRecording = async () => {
+    if (isRecording) {
+      const result = await bridge.stopRecording();
+      setIsRecording(false);
+      if (result.status === "success" && result.text) {
+        setTranscript(result.text);
+      } else if (result.status === "error") {
+        toastError(result.errorMessage ?? "녹음 중 오류가 발생했어요.");
       }
-    };
-
-    window.addEventListener("message", handleMessage);
-    return () => window.removeEventListener("message", handleMessage);
-  }, [isMobileUA]);
-
-  const syncedIsListening = bridgeMicState ?? isListening;
-
-  const handleToggleListeningWithPermission = async () => {
-    if (syncedIsListening) {
-      handleToggleListening();
       return;
     }
 
-    if (!isMobileUA) {
-      handleToggleListening();
-      return;
-    }
+    const result = await bridge.startRecording();
 
-    if (micPermissionState === "granted") {
-      handleToggleListening();
-      return;
-    }
-
-    try {
-      if (!micPermissionPromiseRef.current) {
-        micPermissionPromiseRef.current = requestMicPermissionViaBridge();
-      }
-      const granted = await micPermissionPromiseRef.current;
-      micPermissionPromiseRef.current = null;
-
-      if (granted) {
-        setMicPermissionState("granted");
-        handleToggleListening();
-      } else {
-        setMicPermissionState("denied");
-        toastError("마이크 권한이 거부되었어요.");
-      }
-    } catch {
-      micPermissionPromiseRef.current = null;
-      setMicPermissionState("denied");
-      toastError("마이크 권한 요청에 실패했어요.");
+    if (result.status === "success") {
+      setIsRecording(true);
+    } else {
+      toastError(result.errorMessage ?? "녹음을 시작할 수 없어요.");
     }
   };
 
@@ -149,7 +102,7 @@ const QuizVoicePage: ActivityComponentType<QuizVoicePageProps> = ({
               </Button>
             </div>
             <div className="relative flex items-center justify-center">
-              {syncedIsListening ? (
+              {isRecording ? (
                 <p className="text-gray-005 absolute -top-10 text-sm text-red-500">
                   듣고 있어요...
                 </p>
@@ -160,11 +113,11 @@ const QuizVoicePage: ActivityComponentType<QuizVoicePageProps> = ({
               )}
               <Button
                 size="large"
-                state={syncedIsListening ? "active" : "ghost_background"}
+                state={isRecording ? "active" : "ghost_background"}
                 className="size-36 rounded-full"
-                onClick={handleToggleListeningWithPermission}
+                onClick={handleToggleRecording}
               >
-                {syncedIsListening ? (
+                {isRecording ? (
                   <IoStop size={48} />
                 ) : (
                   <FaMicrophone size={48} />
@@ -197,7 +150,7 @@ const QuizVoicePage: ActivityComponentType<QuizVoicePageProps> = ({
 
           <div className="border-gray-003 bg-gray-001 min-h-[200px] rounded-xl border p-4">
             <p className="text-gray-005 text-xs">
-              {syncedIsListening ? "듣고 있어요..." : "인식된 답변"}
+              {isRecording ? "듣고 있어요..." : "인식된 답변"}
             </p>
             <p
               className={cn(
