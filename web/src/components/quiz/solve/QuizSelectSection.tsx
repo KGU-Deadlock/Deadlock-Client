@@ -12,7 +12,7 @@ export function QuizSelectSection() {
         const q = s.mcQuizzes[s.selectIndex];
         return {
           question: q?.content ?? "",
-          choices: q.choices ? q.choices[0]?.split("<;;;>") || [] : [],
+          choices: q?.choices?.[0]?.split("<;;;>") ?? [],
           selectedChoiceIndex: s.selectedChoiceIndex,
           setSelectedChoiceIndex: s.setSelectedChoiceIndex,
         };
