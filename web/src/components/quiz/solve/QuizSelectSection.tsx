@@ -6,18 +6,20 @@ import type { QuizSolveStoreState } from "@/model/quiz/useQuizStore";
 import { useQuizSolveStore } from "@/model/quiz/useQuizStore";
 
 export function QuizSelectSection() {
-  const { question, choices, selectedChoiceIndex, setSelectedChoiceIndex } =
+  const { question, rawChoices, selectedChoiceIndex, setSelectedChoiceIndex } =
     useQuizSolveStore(
       useShallow((s: QuizSolveStoreState) => {
         const q = s.mcQuizzes[s.selectIndex];
         return {
           question: q?.content ?? "",
-          choices: q?.choices?.[0]?.split("<;;;>") ?? [],
+          rawChoices: q?.choices?.[0] ?? "",
           selectedChoiceIndex: s.selectedChoiceIndex,
           setSelectedChoiceIndex: s.setSelectedChoiceIndex,
         };
       }),
     );
+
+  const choices = rawChoices ? rawChoices.split("<;;;>") : [];
 
   return (
     <>
