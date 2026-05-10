@@ -6,6 +6,8 @@ dist
 .vinxi
 app.config.timestamp_*.js
 
+.superset/
+
 # Environment
 .env
 .env*.local
