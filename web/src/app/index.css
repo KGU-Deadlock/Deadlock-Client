@@ -242,6 +242,10 @@ body {
   animation: login-hero-scan 9s ease-in-out infinite;
 }
 
+.kakao-btn:active:not(:disabled) {
+  filter: brightness(0.9);
+}
+
 @keyframes login-hero-scan {
   0%,
   100% {

@@ -75,6 +75,24 @@ function LoginTerminalHello() {
 export default function LoginPage() {
   const { replace } = useFlow();
   const { setAccessToken, setIsInitialized } = useAuthStore();
+  const [isKakaoReady, setIsKakaoReady] = useState(() => {
+    if (isWebView()) return true;
+    if (window.Kakao) return true;
+    const script = document.querySelector('script[src*="kakao"]');
+    if (!script) return true;
+    return false;
+  });
+
+  useEffect(() => {
+    if (isKakaoReady) return;
+    const script = document.querySelector<HTMLScriptElement>(
+      'script[src*="kakao"]',
+    );
+    if (!script) return;
+    const onLoad = () => setIsKakaoReady(true);
+    script.addEventListener("load", onLoad);
+    return () => script.removeEventListener("load", onLoad);
+  }, [isKakaoReady]);
 
   const { mutate, isPending } = useMutation({
     ...authQueries.kakaoLoginMutation(),
@@ -139,9 +157,11 @@ export default function LoginPage() {
     }
   };
 
+  const isButtonDisabled = isPending || !isKakaoReady;
+
   return (
     <AppScreen className="relative overflow-hidden bg-white">
-      <div className="absolute top-0 right-0 bottom-0 left-0 flex flex-col items-center justify-center overflow-hidden bg-white">
+      <div className="absolute inset-0 flex flex-col overflow-hidden bg-white">
         <div className="login-hero-gradient absolute inset-0 z-0" aria-hidden />
         <div className="login-hero-grid absolute inset-0 z-0" aria-hidden />
         <motion.div
@@ -158,7 +178,8 @@ export default function LoginPage() {
           className="login-hero-scan pointer-events-none absolute inset-0 z-0 opacity-40"
           aria-hidden
         />
-        <div className="px-gutter relative z-10 mt-40 flex w-full flex-col items-center">
+
+        <div className="px-gutter relative z-10 flex flex-1 flex-col items-center justify-center">
           <LoginTerminalHello />
           <img
             src="/logo.svg"
@@ -168,15 +189,27 @@ export default function LoginPage() {
           <p className="text-blue-004 mt-1 text-center font-medium">
             꾸준히 준비하는 CS 면접
           </p>
+        </div>
+
+        <div className="px-gutter relative z-10 pb-10 w-full">
           <Button
             size="large"
-            state="kakao"
-            className="z-999 mt-60 w-full"
+            state={isButtonDisabled ? "disabled" : "kakao"}
+            className="w-full"
             onClick={handleKakaoLogin}
-            disabled={isPending}
+            disabled={isButtonDisabled}
           >
-            <RiKakaoTalkFill className="mr-2" size={24} />
-            카카오로 시작하기
+            {!isKakaoReady ? (
+              <span className="flex items-center gap-2">
+                <span className="border-gray-004 h-5 w-5 animate-spin rounded-full border-2 border-t-transparent" />
+                로딩 중...
+              </span>
+            ) : (
+              <>
+                <RiKakaoTalkFill className="mr-2" size={24} />
+                카카오로 시작하기
+              </>
+            )}
           </Button>
         </div>
       </div>
