@@ -1,6 +1,6 @@
 import { mutationOptions } from "@tanstack/react-query";
 
-import { postKakaoLogin } from "./getKakaoLogin";
+import { postKakaoLogin } from "./postKakaoLogin";
 import { postReissueToken } from "./postReissueToken";
 
 const authQueryKey = ["auth"] as const;
