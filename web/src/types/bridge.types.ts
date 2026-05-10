@@ -6,6 +6,11 @@ export interface AppBridgeState {
 
 export interface AppBridgeMethods {
   logout: () => Promise<void>;
+  kakaoLogin: () => Promise<{
+    status: "success" | "error";
+    accessToken?: string;
+    errorMessage?: string;
+  }>;
   startRecording: () => Promise<{
     status: "success" | "error";
     errorMessage?: string;
