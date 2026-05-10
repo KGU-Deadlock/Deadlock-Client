@@ -106,23 +106,35 @@ export default function LoginPage() {
     mutate(result.accessToken);
   };
 
+  useEffect(() => {
+    if (isWebView()) return;
+    const code = new URLSearchParams(window.location.search).get("code");
+    if (!code) return;
+
+    window.history.replaceState({}, "", window.location.pathname);
+
+    if (!window.Kakao.isInitialized()) {
+      window.Kakao.init(import.meta.env.VITE_KAKAO_JS_APP_KEY);
+    }
+    const token = window.Kakao.Auth.getAccessToken();
+    if (token) {
+      mutate(token);
+    } else {
+      toastError("카카오 로그인에 실패했습니다.");
+    }
+  }, [mutate]);
+
   const handleKakaoLogin = () => {
     if (isWebView()) {
       // Android / iOS: native Kakao SDK를 bridge를 통해 호출
       void handleWebViewLogin();
     } else {
-      // Web: Kakao JavaScript SDK 사용 (동기 호출로 팝업 차단 방지)
+      // Web: Kakao JS SDK 2.x — authorize() 리다이렉트 방식
       if (!window.Kakao.isInitialized()) {
         window.Kakao.init(import.meta.env.VITE_KAKAO_JS_APP_KEY);
       }
-      window.Kakao.Auth.login({
-        success: (authObj) => {
-          mutate(authObj.access_token);
-        },
-        fail: (err) => {
-          console.error(err);
-          toastError("카카오 로그인에 실패했습니다.");
-        },
+      window.Kakao.Auth.authorize({
+        redirectUri: window.location.origin + window.location.pathname,
       });
     }
   };
