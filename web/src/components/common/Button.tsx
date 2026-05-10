@@ -13,7 +13,7 @@ const buttonVariant = cva(
         small: "h-8 w-fit px-3 text-sm font-normal",
       },
       state: {
-        kakao: ["bg-kakao text-black text-base rounded-xl border-none "],
+        kakao: ["bg-kakao text-black text-base rounded-xl border-none kakao-btn"],
         active: ["bg-blue-004 text-white border-none"],
         outline: ["bg-blue-002/25 border-1 border-blue-004"],
         disabled: ["bg-gray-002 text-gray-005 cursor-not-allowed border-none"],

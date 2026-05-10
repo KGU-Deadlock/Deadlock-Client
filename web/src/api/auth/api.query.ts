@@ -1,29 +1,25 @@
-import { mutationOptions, queryOptions } from "@tanstack/react-query";
+import { mutationOptions } from "@tanstack/react-query";
 
-import { getKakaoLogin } from "./getKakaoLogin";
+import { postKakaoLogin } from "./postKakaoLogin";
 import { postReissueToken } from "./postReissueToken";
 
 const authQueryKey = ["auth"] as const;
 
 export const authKeys = {
   all: authQueryKey,
-  kakaoLogin: () => [...authQueryKey, "kakao-login"] as const,
   reissue: () => [...authQueryKey, "reissue"] as const,
 };
 
 export const authQueries = {
   keys: authKeys,
 
-  kakaoLoginQuery: (code: string, state: string) =>
-    queryOptions({
-      queryKey: authKeys.kakaoLogin(),
-      queryFn: async () => {
-        const res = await getKakaoLogin(code, state);
-        if (!res.ok) throw new Error("카카오 로그인 시작에 실패했습니다.");
+  kakaoLoginMutation: () =>
+    mutationOptions({
+      mutationFn: async (accessToken: string) => {
+        const res = await postKakaoLogin(accessToken);
+        if (!res.ok) throw new Error("카카오 로그인에 실패했습니다.");
         return res.data;
       },
-      enabled: false,
-      retry: false,
     }),
 
   reissueMutation: () =>

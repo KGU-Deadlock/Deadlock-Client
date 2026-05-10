@@ -6,6 +6,11 @@ export interface AppBridgeState {
 
 export interface AppBridgeMethods {
   logout: () => Promise<void>;
+  kakaoLogin: () => Promise<{
+    status: "success" | "error";
+    accessToken?: string;
+    errorMessage?: string;
+  }>;
   startRecording: () => Promise<{
     status: "success" | "error";
     errorMessage?: string;
@@ -19,6 +24,7 @@ export interface AppBridgeMethods {
 
 export type AppBridgeSpec = AppBridgeState &
   AppBridgeMethods & {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     [key: string]: any;
   };
 export type AppBridge = BridgeStore<AppBridgeSpec>;

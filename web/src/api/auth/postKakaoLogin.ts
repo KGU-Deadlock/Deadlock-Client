@@ -4,17 +4,11 @@ import { END_POINTS } from "@/api/config/api-endpoints";
 
 import type { KakaoLoginResponse } from "./api.model";
 
-/**
- * refreshToken(HttpOnly cookie) 기반 accessToken 재발급
- */
-export function getKakaoLogin(
-  code: string,
-  state: string,
+export function postKakaoLogin(
+  accessToken: string,
 ): Promise<ApiResult<KakaoLoginResponse>> {
-  return baseApi.get<KakaoLoginResponse>(END_POINTS.AUTH.TOKEN, {
-    searchParams: {
-      code,
-      state,
-    },
-  });
+  return baseApi.post<KakaoLoginResponse, { accessToken: string }>(
+    END_POINTS.AUTH.TOKEN,
+    { accessToken },
+  );
 }

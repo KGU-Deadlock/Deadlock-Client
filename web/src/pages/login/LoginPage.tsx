@@ -1,5 +1,5 @@
 import { AppScreen } from "@stackflow/plugin-basic-ui";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { motion } from "motion/react";
 import { useEffect, useState } from "react";
 import { RiKakaoTalkFill } from "react-icons/ri";
@@ -11,11 +11,14 @@ import { Button } from "@/components/common";
 import { useAuthStore } from "@/model/auth/useAuthStore";
 
 import { authQueries } from "@/api/auth/api.query";
-import { END_POINTS } from "@/api/config/api-endpoints";
 
 import { toastError } from "@/utils/toast";
 
+import { bridge } from "@/lib/bridge";
+
 const TERMINAL_LINE = "hello!";
+
+const isWebView = () => navigator.userAgent.includes("hellocswebview");
 
 function LoginTerminalHello() {
   const [display, setDisplay] = useState("");
@@ -72,48 +75,81 @@ function LoginTerminalHello() {
 export default function LoginPage() {
   const { replace } = useFlow();
   const { setAccessToken, setIsInitialized } = useAuthStore();
-  const code = new URLSearchParams(window.location.search).get("code");
-  const state = new URLSearchParams(window.location.search).get("state");
-
-  const { refetch, isPending } = useQuery(
-    authQueries.kakaoLoginQuery(code ?? "", state ?? ""),
-  );
-
-  const handleKakaoLogin = () => {
-    const baseUrl = import.meta.env.VITE_API_BASE_URL;
-    window.location.assign(`${baseUrl}${END_POINTS.AUTH.LOGIN}`);
-  };
+  const [isKakaoReady, setIsKakaoReady] = useState(() => {
+    if (isWebView()) return true;
+    if (window.Kakao) return true;
+    const script = document.querySelector('script[src*="kakao"]');
+    if (!script) return true;
+    return false;
+  });
 
   useEffect(() => {
-    if (code && state) {
-      refetch()
-        .then((res) => {
-          if (res.data) {
-            setAccessToken(res.data.accessToken);
-            if (res.data.isUser) {
-              setIsInitialized(true);
-              replace("HomePage", {}, { animate: false });
-            } else {
-              setIsInitialized(false);
-              replace(
-                "OnboardingNamePage",
-                { name: res.data.userData?.nickname },
-                { animate: false },
-              );
-            }
-          }
-        })
-        .catch((error) => {
-          toastError(error.message);
-          replace("LoginPage", {}, { animate: false });
-        });
+    if (isKakaoReady) return;
+    const script = document.querySelector<HTMLScriptElement>(
+      'script[src*="kakao"]',
+    );
+    if (!script) return;
+    const onLoad = () => setIsKakaoReady(true);
+    script.addEventListener("load", onLoad);
+    return () => script.removeEventListener("load", onLoad);
+  }, [isKakaoReady]);
+
+  const { mutate, isPending } = useMutation({
+    ...authQueries.kakaoLoginMutation(),
+    onSuccess: (data) => {
+      setAccessToken(data.accessToken);
+      if (data.isUser) {
+        setIsInitialized(true);
+        replace("HomePage", {}, { animate: false });
+      } else {
+        setIsInitialized(false);
+        replace(
+          "OnboardingNamePage",
+          { name: data.userData?.nickname },
+          { animate: false },
+        );
+      }
+    },
+    onError: (error) => {
+      toastError(error.message);
+    },
+  });
+
+  const handleWebViewLogin = async () => {
+    const result = await bridge.kakaoLogin();
+    if (result.status === "error" || !result.accessToken) {
+      toastError(result.errorMessage ?? "카카오 로그인에 실패했습니다.");
+      return;
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [code, refetch]);
+    mutate(result.accessToken);
+  };
+
+  const handleKakaoLogin = () => {
+    if (isWebView()) {
+      // Android / iOS: native Kakao SDK를 bridge를 통해 호출
+      void handleWebViewLogin();
+    } else {
+      // Web: Kakao JS SDK 2.6.x — login() 팝업 방식
+      if (!window.Kakao.isInitialized()) {
+        window.Kakao.init(import.meta.env.VITE_KAKAO_JS_APP_KEY);
+      }
+      window.Kakao.Auth.login({
+        success: (authObj) => {
+          mutate(authObj.access_token);
+        },
+        fail: (err) => {
+          console.error(err);
+          toastError("카카오 로그인에 실패했습니다.");
+        },
+      });
+    }
+  };
+
+  const isButtonDisabled = isPending || !isKakaoReady;
 
   return (
     <AppScreen className="relative overflow-hidden bg-white">
-      <div className="absolute top-0 right-0 bottom-0 left-0 flex flex-col items-center justify-center overflow-hidden bg-white">
+      <div className="absolute inset-0 flex flex-col overflow-hidden bg-white">
         <div className="login-hero-gradient absolute inset-0 z-0" aria-hidden />
         <div className="login-hero-grid absolute inset-0 z-0" aria-hidden />
         <motion.div
@@ -130,7 +166,8 @@ export default function LoginPage() {
           className="login-hero-scan pointer-events-none absolute inset-0 z-0 opacity-40"
           aria-hidden
         />
-        <div className="px-gutter relative z-10 mt-40 flex w-full flex-col items-center">
+
+        <div className="px-gutter relative z-10 flex flex-1 flex-col items-center justify-center">
           <LoginTerminalHello />
           <img
             src="/logo.svg"
@@ -140,15 +177,27 @@ export default function LoginPage() {
           <p className="text-blue-004 mt-1 text-center font-medium">
             꾸준히 준비하는 CS 면접
           </p>
+        </div>
+
+        <div className="px-gutter relative z-10 pb-10 w-full">
           <Button
             size="large"
-            state="kakao"
-            className="z-999 mt-60 w-full"
+            state={isButtonDisabled ? "disabled" : "kakao"}
+            className="w-full"
             onClick={handleKakaoLogin}
-            disabled={!isPending}
+            disabled={isButtonDisabled}
           >
-            <RiKakaoTalkFill className="mr-2" size={24} />
-            카카오로 시작하기
+            {!isKakaoReady ? (
+              <span className="flex items-center gap-2">
+                <span className="border-gray-004 h-5 w-5 animate-spin rounded-full border-2 border-t-transparent" />
+                로딩 중...
+              </span>
+            ) : (
+              <>
+                <RiKakaoTalkFill className="mr-2" size={24} />
+                카카오로 시작하기
+              </>
+            )}
           </Button>
         </div>
       </div>

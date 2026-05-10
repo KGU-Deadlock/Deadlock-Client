@@ -37,11 +37,8 @@ function PodiumSlot({
             size,
             "bg-gray-002 absolute inset-0 shrink-0 rounded-full object-cover object-center",
           )}
-          src={user.profileImage}
-          alt={user.nickname}
-          onError={(e) => {
-            e.currentTarget.src = `/images/default-profile-${rank}.png`;
-          }}
+          src={`/images/default-profile-${rank}.png`}
+          alt={`${rank}위`}
         />
         <div
           className={`absolute bottom-[-10px] left-1/2 grid h-5 w-5 -translate-x-1/2 place-items-center rounded-full text-[11px] font-semibold ${
@@ -53,7 +50,7 @@ function PodiumSlot({
       </div>
       <div className="mt-3 flex flex-col items-center">
         <span className="line-clamp-1 text-sm font-medium text-black">
-          {user.nickname ?? "익명"}
+          익명
         </span>
         <span className="text-gray-005 text-[11px] font-medium">관심사</span>
       </div>
