@@ -7,7 +7,8 @@ import type { KakaoLoginResponse } from "./api.model";
 export function postKakaoLogin(
   accessToken: string,
 ): Promise<ApiResult<KakaoLoginResponse>> {
-  return baseApi.post<KakaoLoginResponse>(END_POINTS.AUTH.TOKEN, {
-    json: { accessToken },
-  });
+  return baseApi.post<KakaoLoginResponse, { accessToken: string }>(
+    END_POINTS.AUTH.TOKEN,
+    { accessToken },
+  );
 }
