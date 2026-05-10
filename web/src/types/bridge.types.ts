@@ -24,6 +24,7 @@ export interface AppBridgeMethods {
 
 export type AppBridgeSpec = AppBridgeState &
   AppBridgeMethods & {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     [key: string]: any;
   };
 export type AppBridge = BridgeStore<AppBridgeSpec>;

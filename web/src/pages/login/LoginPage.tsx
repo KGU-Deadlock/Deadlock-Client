@@ -12,9 +12,9 @@ import { useAuthStore } from "@/model/auth/useAuthStore";
 
 import { authQueries } from "@/api/auth/api.query";
 
-import { bridge } from "@/lib/bridge";
-
 import { toastError } from "@/utils/toast";
+
+import { bridge } from "@/lib/bridge";
 
 const TERMINAL_LINE = "hello!";
 
