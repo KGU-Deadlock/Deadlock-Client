@@ -1,5 +1,5 @@
 import { AppScreen } from "@stackflow/plugin-basic-ui";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { motion } from "motion/react";
 import { useEffect, useState } from "react";
 import { RiKakaoTalkFill } from "react-icons/ri";
@@ -11,11 +11,14 @@ import { Button } from "@/components/common";
 import { useAuthStore } from "@/model/auth/useAuthStore";
 
 import { authQueries } from "@/api/auth/api.query";
-import { END_POINTS } from "@/api/config/api-endpoints";
+
+import { bridge } from "@/lib/bridge";
 
 import { toastError } from "@/utils/toast";
 
 const TERMINAL_LINE = "hello!";
+
+const isWebView = () => navigator.userAgent.includes("hellocswebview");
 
 function LoginTerminalHello() {
   const [display, setDisplay] = useState("");
@@ -72,44 +75,53 @@ function LoginTerminalHello() {
 export default function LoginPage() {
   const { replace } = useFlow();
   const { setAccessToken, setIsInitialized } = useAuthStore();
-  const code = new URLSearchParams(window.location.search).get("code");
-  const state = new URLSearchParams(window.location.search).get("state");
 
-  const { refetch, isPending } = useQuery(
-    authQueries.kakaoLoginQuery(code ?? "", state ?? ""),
-  );
+  const { mutate, isPending } = useMutation({
+    ...authQueries.kakaoLoginMutation(),
+    onSuccess: (data) => {
+      setAccessToken(data.accessToken);
+      if (data.isUser) {
+        setIsInitialized(true);
+        replace("HomePage", {}, { animate: false });
+      } else {
+        setIsInitialized(false);
+        replace(
+          "OnboardingNamePage",
+          { name: data.userData?.nickname },
+          { animate: false },
+        );
+      }
+    },
+    onError: (error) => {
+      toastError(error.message);
+    },
+  });
 
-  const handleKakaoLogin = () => {
-    const baseUrl = import.meta.env.VITE_API_BASE_URL;
-    window.location.assign(`${baseUrl}${END_POINTS.AUTH.LOGIN}`);
-  };
-
-  useEffect(() => {
-    if (code && state) {
-      refetch()
-        .then((res) => {
-          if (res.data) {
-            setAccessToken(res.data.accessToken);
-            if (res.data.isUser) {
-              setIsInitialized(true);
-              replace("HomePage", {}, { animate: false });
-            } else {
-              setIsInitialized(false);
-              replace(
-                "OnboardingNamePage",
-                { name: res.data.userData?.nickname },
-                { animate: false },
-              );
-            }
-          }
-        })
-        .catch((error) => {
-          toastError(error.message);
-          replace("LoginPage", {}, { animate: false });
-        });
+  const handleKakaoLogin = async () => {
+    if (isWebView()) {
+      // Android / iOS: native Kakao SDK를 bridge를 통해 호출
+      const result = await bridge.kakaoLogin();
+      if (result.status === "error" || !result.accessToken) {
+        toastError(result.errorMessage ?? "카카오 로그인에 실패했습니다.");
+        return;
+      }
+      mutate(result.accessToken);
+    } else {
+      // Web: Kakao JavaScript SDK 사용
+      if (!window.Kakao.isInitialized()) {
+        window.Kakao.init(import.meta.env.VITE_KAKAO_JS_APP_KEY);
+      }
+      window.Kakao.Auth.login({
+        success: (authObj) => {
+          mutate(authObj.access_token);
+        },
+        fail: (err) => {
+          console.error(err);
+          toastError("카카오 로그인에 실패했습니다.");
+        },
+      });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [code, refetch]);
+  };
 
   return (
     <AppScreen className="relative overflow-hidden bg-white">
@@ -145,7 +157,7 @@ export default function LoginPage() {
             state="kakao"
             className="z-999 mt-60 w-full"
             onClick={handleKakaoLogin}
-            disabled={!isPending}
+            disabled={isPending}
           >
             <RiKakaoTalkFill className="mr-2" size={24} />
             카카오로 시작하기
