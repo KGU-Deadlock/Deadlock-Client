@@ -97,17 +97,21 @@ export default function LoginPage() {
     },
   });
 
-  const handleKakaoLogin = async () => {
+  const handleWebViewLogin = async () => {
+    const result = await bridge.kakaoLogin();
+    if (result.status === "error" || !result.accessToken) {
+      toastError(result.errorMessage ?? "카카오 로그인에 실패했습니다.");
+      return;
+    }
+    mutate(result.accessToken);
+  };
+
+  const handleKakaoLogin = () => {
     if (isWebView()) {
       // Android / iOS: native Kakao SDK를 bridge를 통해 호출
-      const result = await bridge.kakaoLogin();
-      if (result.status === "error" || !result.accessToken) {
-        toastError(result.errorMessage ?? "카카오 로그인에 실패했습니다.");
-        return;
-      }
-      mutate(result.accessToken);
+      void handleWebViewLogin();
     } else {
-      // Web: Kakao JavaScript SDK 사용
+      // Web: Kakao JavaScript SDK 사용 (동기 호출로 팝업 차단 방지)
       if (!window.Kakao.isInitialized()) {
         window.Kakao.init(import.meta.env.VITE_KAKAO_JS_APP_KEY);
       }
