@@ -64,7 +64,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/v1/dev/seed": {
+    "/v1/interview/{interviewId}/complete": {
         parameters: {
             query?: never;
             header?: never;
@@ -73,14 +73,18 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        post: operations["seed"];
+        /**
+         * 면접 완료 및 AI 피드백 생성
+         * @description 면접을 완료하고 AI 피드백을 생성하여 반환합니다.
+         */
+        post: operations["completeInterview"];
         delete?: never;
         options?: never;
         head?: never;
         patch?: never;
         trace?: never;
     };
-    "/v1/dev/seed/me": {
+    "/v1/interview/{interviewId}/answer": {
         parameters: {
             query?: never;
             header?: never;
@@ -89,7 +93,31 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        post: operations["seedMyData"];
+        /**
+         * 답변 제출
+         * @description 각 질문에 대한 답변을 제출합니다.
+         */
+        post: operations["submitAnswer"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/interview/start": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * 면접 시작
+         * @description 회사명과 직무를 입력받아 면접 세션을 생성하고 5개의 질문을 반환합니다.
+         */
+        post: operations["startInterview"];
         delete?: never;
         options?: never;
         head?: never;
@@ -110,6 +138,26 @@ export interface paths {
          * @description refreshToken 쿠키를 사용하여 새로운 accessToken을 발급받습니다. refreshToken도 함께 갱신됩니다.
          */
         post: operations["reissue"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/auth/kakao": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * 카카오 액세스 토큰으로 로그인
+         * @description 프론트엔드에서 카카오 SDK로 발급받은 액세스 토큰을 전달하면 백엔드가 카카오 API로 유저 정보를 조회하여 hellocs JWT를 발급합니다. 성공 시 accessToken과 isUser(기가입 여부)를 응답 body로, refreshToken은 HttpOnly 쿠키로 전달합니다. 신규 유저인 경우 userData(nickname)가 함께 반환됩니다.
+         */
+        post: operations["kakaoTokenLogin"];
         delete?: never;
         options?: never;
         head?: never;
@@ -142,6 +190,22 @@ export interface paths {
          * @description 현재 로그인한 사용자의 닉네임, 프로필 이미지, 관심 주제를 수정합니다.
          */
         patch: operations["updateMyProfile"];
+        trace?: never;
+    };
+    "/v1/users/{userId}/interest-topic": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["getInterestTopicId"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
         trace?: never;
     };
     "/v1/topics": {
@@ -304,6 +368,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/v1/interview/{interviewId}/feedback": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * 피드백 조회
+         * @description 완료된 면접의 AI 피드백을 조회합니다.
+         */
+        get: operations["getFeedback"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/v1/dev/admin-token": {
         parameters: {
             query?: never;
@@ -320,52 +404,12 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/v1/auth/token": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * 카카오 인가 코드로 로그인
-         * @description 카카오 인가 코드(code)를 받아 토큰 교환 → 유저 정보 조회 → JWT 발급을 자동 처리합니다. Spring Security OAuth2가 내부적으로 처리하는 엔드포인트입니다. 성공 시 accessToken과 isUser(회원가입 여부)를 응답 body로, refreshToken은 HttpOnly 쿠키로 전달합니다.
-         */
-        get: operations["kakaoCallback"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/v1/auth/oauth2/kakao": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * 카카오 OAuth2 로그인
-         * @description 카카오 OAuth2 인증 페이지로 리다이렉트합니다. 인증 성공 시 accessToken은 응답 body, refreshToken은 HttpOnly 쿠키로 전달됩니다.
-         */
-        get: operations["kakaoLogin"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
         UserSignUpCommand: {
-            nickname?: string;
+            nickname: string;
             /** Format: email */
             kakaoEmail?: string;
             profileImage?: string;
@@ -460,46 +504,55 @@ export interface components {
              */
             gradingLogId?: string;
         };
-        ApiResponseSeedResult: {
+        ApiResponseFeedbackResult: {
             isSuccess?: boolean;
             code?: string;
             message?: string;
-            data?: components["schemas"]["SeedResult"];
+            data?: components["schemas"]["FeedbackResult"];
             success?: boolean;
         };
-        SeedResult: {
+        FeedbackResult: {
             /** Format: int32 */
-            topicsCreated?: number;
-            /** Format: int32 */
-            usersCreated?: number;
-            /** Format: int32 */
-            quizzesCreated?: number;
-            /** Format: int32 */
-            rankingEntriesCreated?: number;
-            /** Format: int32 */
-            streaksCreated?: number;
+            overallScore?: number;
+            questionFeedbacks?: components["schemas"]["QuestionFeedback"][];
         };
-        ApiResponseMyTestDataSeedResult: {
+        QuestionFeedback: {
+            /** Format: int32 */
+            questionNumber?: number;
+            /** Format: int32 */
+            score?: number;
+            missingKeywords?: string[];
+            improvedAnswer?: string;
+            message?: string;
+        };
+        SubmitAnswerRequest: {
+            /** Format: int32 */
+            questionNumber: number;
+            answerText: string;
+            /** Format: int32 */
+            durationSeconds?: number;
+        };
+        StartInterviewRequest: {
+            companyName: string;
+            position: string;
+        };
+        ApiResponseStartInterviewResult: {
             isSuccess?: boolean;
             code?: string;
             message?: string;
-            data?: components["schemas"]["MyTestDataSeedResult"];
+            data?: components["schemas"]["StartInterviewResult"];
             success?: boolean;
         };
-        MyTestDataSeedResult: {
-            /** Format: int64 */
-            userId?: number;
-            nickname?: string;
+        QuestionResult: {
             /** Format: int32 */
-            topicCount?: number;
-            /** Format: int32 */
-            quizzesCreated?: number;
-            /** Format: int32 */
-            globalRankingEntriesUpserted?: number;
-            /** Format: int32 */
-            topicRankingEntriesUpserted?: number;
-            /** Format: int32 */
-            streakDaysCreated?: number;
+            questionNumber?: number;
+            questionText?: string;
+            questionType?: string;
+            category?: string;
+        };
+        StartInterviewResult: {
+            interviewId?: string;
+            questions?: components["schemas"]["QuestionResult"][];
         };
         ApiResponseAuthTokenResponse: {
             isSuccess?: boolean;
@@ -516,10 +569,21 @@ export interface components {
         UserData: {
             nickname?: string;
         };
+        KakaoTokenRequest: {
+            accessToken?: string;
+        };
         UpdateMyInfoCommand: {
             nickname?: string;
             profileImage?: string;
             interestTopicIds?: number[];
+        };
+        ApiResponseLong: {
+            isSuccess?: boolean;
+            code?: string;
+            message?: string;
+            /** Format: int64 */
+            data?: number;
+            success?: boolean;
         };
         ApiResponseProfileResult: {
             isSuccess?: boolean;
@@ -555,19 +619,16 @@ export interface components {
         StreakSummaryResult: {
             /**
              * Format: int32
-             * @description 현재 연속 학습 일수입니다.
              * @example 4
              */
             currentStreakDays?: number;
             /**
              * Format: int32
-             * @description 누적 퀴즈 풀이 수입니다.
              * @example 87
              */
             solvedQuizCount?: number;
             /**
              * Format: int32
-             * @description 해결한 분야 수입니다.
              * @example 5
              */
             solvedTopicCount?: number;
@@ -580,17 +641,31 @@ export interface components {
             success?: boolean;
         };
         DailyStreakRecordResult: {
+            /** @example 2025-12-10 */
             date?: string;
+            /** @example true */
             solved?: boolean;
-            /** Format: int32 */
+            /**
+             * Format: int32
+             * @example 3
+             */
             quizCount?: number;
-            /** Format: int32 */
+            /**
+             * Format: int32
+             * @example 4
+             */
             streakAtEndOfDay?: number;
         };
         StreakMonthlyResult: {
-            /** Format: int32 */
+            /**
+             * Format: int32
+             * @example 2025
+             */
             year?: number;
-            /** Format: int32 */
+            /**
+             * Format: int32
+             * @example 12
+             */
             month?: number;
             days?: components["schemas"]["DailyStreakRecordResult"][];
         };
@@ -604,48 +679,38 @@ export interface components {
         StreakDetailResult: {
             /**
              * Format: int32
-             * @description 현재 연속 학습 일수입니다.
              * @example 4
              */
             currentStreakDays?: number;
             /**
              * Format: int32
-             * @description 누적 퀴즈 풀이 수입니다.
              * @example 87
              */
             solvedQuizCount?: number;
             /**
              * Format: int32
-             * @description 해결한 분야 수입니다.
              * @example 5
              */
             solvedTopicCount?: number;
             /**
              * Format: int32
-             * @description 최장 연속 학습 일수입니다.
              * @example 12
              */
             longestStreakDays?: number;
             /**
              * Format: date
-             * @description 마지막으로 퀴즈를 푼 날짜입니다.
              * @example 2025-12-10
              */
             lastSolvedDate?: string;
-            /**
-             * @description 오늘 퀴즈를 풀었는지 여부입니다.
-             * @example true
-             */
+            /** @example true */
             solvedToday?: boolean;
             /**
              * Format: int32
-             * @description 이번 달 학습한 일수입니다.
              * @example 10
              */
             activeDaysThisMonth?: number;
             /**
              * Format: int32
-             * @description 이번 달 푼 퀴즈 수입니다.
              * @example 23
              */
             currentMonthSolvedQuizCount?: number;
@@ -657,93 +722,17 @@ export interface components {
             data?: components["schemas"]["RankingDetailResult"];
             success?: boolean;
         };
-        MyRankingResult: {
-            /**
-             * Format: int64
-             * @description 현재 로그인한 사용자의 카카오 식별자입니다.
-             * @example 10001
-             */
-            kakaoId?: number;
-            /**
-             * @description 현재 로그인한 사용자의 닉네임입니다.
-             * @example cs_runner
-             */
-            nickname?: string;
-            /**
-             * @description 현재 로그인한 사용자의 프로필 이미지 URL입니다.
-             * @example https://cdn.example.com/profiles/10001.png
-             */
-            profileImage?: string;
-            /** @description 현재 로그인한 사용자의 관심 주제 목록입니다. */
-            interests?: string[];
-            /**
-             * Format: int64
-             * @description 랭킹 순위입니다. 아직 랭킹에 반영되지 않은 경우 null입니다.
-             * @example 12
-             */
-            rank?: number;
-            /**
-             * Format: int64
-             * @description 누적 점수입니다.
-             * @example 840
-             */
-            score?: number;
-        };
         RankingDetailResult: {
-            /**
-             * @description 랭킹 필터 유형입니다.
-             * @example ALL
-             */
-            filterType?: string;
-            /** @description 조건에 맞는 랭킹 목록입니다. */
             rankings?: components["schemas"]["RankingEntryResult"][];
-            /** @description 현재 로그인한 사용자의 랭킹 정보입니다. */
-            myRanking?: components["schemas"]["MyRankingResult"];
-            /** @description 내 순위 바로 아래 2개의 랭킹 정보입니다. */
-            belowMyRankings?: components["schemas"]["RankingEntryResult"][];
-            /**
-             * Format: int32
-             * @description 최근 관련 논의 수입니다. 현재 구현에서는 항상 0을 반환합니다.
-             * @example 0
-             */
-            recentRelatedDiscussionCount?: number;
+            myRank?: components["schemas"]["RankingEntryResult"];
+            nearbyRankings?: components["schemas"]["RankingEntryResult"][];
         };
         RankingEntryResult: {
-            /**
-             * Format: int64
-             * @description 랭킹 순위입니다.
-             * @example 1
-             */
+            /** Format: int64 */
             rank?: number;
-            /**
-             * Format: int64
-             * @description 사용자의 카카오 고유 ID입니다.
-             * @example 10001
-             */
-            kakaoId?: number;
-            /**
-             * @description 랭킹에 노출되는 사용자의 닉네임입니다.
-             * @example cs_runner
-             */
-            nickname?: string;
-            /**
-             * @description 사용자 프로필 이미지 URL입니다.
-             * @example https://cdn.example.com/profiles/10001.png
-             */
-            profileImage?: string;
-            /**
-             * @description 사용자의 관심 토픽 목록입니다.
-             * @example [
-             *       "OS",
-             *       "Network"
-             *     ]
-             */
-            interests?: string[];
-            /**
-             * Format: int64
-             * @description 누적 반영된 총 점수입니다.
-             * @example 1280
-             */
+            /** Format: int64 */
+            userId?: number;
+            /** Format: int64 */
             score?: number;
         };
         ApiResponseRankingSummaryResult: {
@@ -754,14 +743,9 @@ export interface components {
             success?: boolean;
         };
         RankingSummaryResult: {
-            /** @description 전역 랭킹 상위 5명 목록입니다. */
-            top5?: components["schemas"]["RankingEntryResult"][];
-            /**
-             * Format: int32
-             * @description 최근 관련 논의 수입니다. 현재 구현에서는 항상 0을 반환합니다.
-             * @example 0
-             */
-            recentRelatedDiscussionCount?: number;
+            topEntries?: components["schemas"]["RankingEntryResult"][];
+            /** Format: int64 */
+            totalCount?: number;
         };
         ApiResponseGradingLogResult: {
             isSuccess?: boolean;
@@ -987,43 +971,126 @@ export interface operations {
             };
         };
     };
-    seed: {
+    completeInterview: {
         parameters: {
             query?: never;
             header?: never;
-            path?: never;
+            path: {
+                /** @description 면접 세션 ID */
+                interviewId: string;
+            };
             cookie?: never;
         };
         requestBody?: never;
         responses: {
-            /** @description OK */
+            /** @description 피드백 생성 성공 */
             200: {
                 headers: {
                     [name: string]: unknown;
                 };
                 content: {
-                    "*/*": components["schemas"]["ApiResponseSeedResult"];
+                    "*/*": components["schemas"]["ApiResponseFeedbackResult"];
                 };
+            };
+            /** @description 이미 완료된 면접 */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description 면접 세션 없음 */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description AI 피드백 생성 실패 */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
         };
     };
-    seedMyData: {
+    submitAnswer: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description 면접 세션 ID */
+                interviewId: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SubmitAnswerRequest"];
+            };
+        };
+        responses: {
+            /** @description 답변 제출 성공 */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ApiResponseVoid"];
+                };
+            };
+            /** @description 이미 완료된 면접 또는 요청 검증 실패 */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description 면접 세션 없음 */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    startInterview: {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        requestBody?: never;
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["StartInterviewRequest"];
+            };
+        };
         responses: {
-            /** @description OK */
+            /** @description 면접 세션 생성 성공 */
             200: {
                 headers: {
                     [name: string]: unknown;
                 };
                 content: {
-                    "*/*": components["schemas"]["ApiResponseMyTestDataSeedResult"];
+                    "*/*": components["schemas"]["ApiResponseStartInterviewResult"];
                 };
+            };
+            /** @description 요청 검증 실패 */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description CS 질문 부족 또는 서버 오류 */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
         };
     };
@@ -1047,7 +1114,38 @@ export interface operations {
                     "*/*": components["schemas"]["ApiResponseAuthTokenResponse"];
                 };
             };
-            /** @description 유효하지 않은 리프레시 토큰(AUTH401) */
+            /** @description 유효하지 않은 리프레시 토큰 (AUTH401) */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    kakaoTokenLogin: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["KakaoTokenRequest"];
+            };
+        };
+        responses: {
+            /** @description 로그인 성공 */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["AuthTokenResponse"];
+                };
+            };
+            /** @description 유효하지 않은 카카오 액세스 토큰 (AUTH402) */
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -1176,6 +1274,28 @@ export interface operations {
             };
         };
     };
+    getInterestTopicId: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                userId: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ApiResponseLong"];
+                };
+            };
+        };
+    };
     getAllTopics: {
         parameters: {
             query?: never;
@@ -1200,9 +1320,9 @@ export interface operations {
         parameters: {
             query: {
                 /** @description 조회할 연도입니다. */
-                year: string;
+                arg1: string;
                 /** @description 조회할 월입니다. 1부터 12 사이의 값을 입력합니다. */
-                month: string;
+                arg2: string;
             };
             header?: never;
             path?: never;
@@ -1257,17 +1377,8 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description 월별 스트릭 상세 조회 성공 */
+            /** @description 스트릭 상세 조회 성공 */
             200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ApiResponseStreakDetailResult"];
-                };
-            };
-            /** @description 연도 또는 월 파라미터가 올바르지 않음 */
-            400: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -1514,6 +1625,36 @@ export interface operations {
             };
         };
     };
+    getFeedback: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description 면접 세션 ID */
+                interviewId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description 피드백 조회 성공 */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ApiResponseFeedbackResult"];
+                };
+            };
+            /** @description 피드백 없음 */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
     getAdminToken: {
         parameters: {
             query?: never;
@@ -1531,59 +1672,6 @@ export interface operations {
                 content: {
                     "*/*": components["schemas"]["ApiResponseAdminTokenResponse"];
                 };
-            };
-        };
-    };
-    kakaoCallback: {
-        parameters: {
-            query: {
-                /**
-                 * @description 카카오 인가 코드
-                 * @example abc123
-                 */
-                code: string;
-                /** @description CSRF 방지용 상태값 */
-                state: string;
-            };
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description 로그인 성공 */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["AuthTokenResponse"];
-                };
-            };
-            /** @description 유효하지 않은 인가 코드 */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    kakaoLogin: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description 카카오 로그인 페이지로 리다이렉트 */
-            302: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
             };
         };
     };
