@@ -115,9 +115,9 @@ export default function HomePage() {
             <Title>실시간 랭킹</Title>
             <Subtitle>내 위치는 어디일까요?</Subtitle>
           </button>
-          {rankingSummary?.data?.top5 && (
+          {rankingSummary?.data?.topEntries && (
             <div className="pb-footer divide-gray-002 flex flex-col gap-1 divide-y px-[calc(var(--spacing-gutter)*1.5)] pt-4">
-              {rankingSummary.data.top5.length === 0 && (
+              {rankingSummary.data.topEntries.length === 0 && (
                 <div className="flex flex-col items-center justify-center gap-2 py-8">
                   <span className="font-tossface text-5xl">🤔</span>
                   <span className="text-gray-005 font-regular text-center text-sm">
@@ -125,14 +125,13 @@ export default function HomePage() {
                   </span>
                 </div>
               )}
-              {rankingSummary.data.top5.map((item, index) => (
+              {rankingSummary.data.topEntries.map((item, index) => (
                 <RankingItem
                   className="last:mb-8 last:pb-8"
                   key={item.rank ?? index}
                   rank={item.rank ?? index + 1}
-                  nickname={item.nickname ?? "익명"}
+                  nickname="익명"
                   score={item.score ?? 0}
-                  interest={item.interests?.[0]}
                 />
               ))}
             </div>

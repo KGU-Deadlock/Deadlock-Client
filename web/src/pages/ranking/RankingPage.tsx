@@ -7,29 +7,20 @@ import { Header, Scrollable, Subtitle, Title } from "@/components/common";
 import { BackButton } from "@/components/common";
 import { RankingItem, RankingTopSection } from "@/components/ranking";
 
-import type {
-  MyRankingResult,
-  RankingEntryResult,
-} from "@/api/ranking/api.model";
+import type { RankingEntryResult } from "@/api/ranking/api.model";
 import { rankingQueries } from "@/api/ranking/api.query";
 
 import { cn } from "@/utils/cn";
 
 function isMyRankingEntry(
   item: RankingEntryResult,
-  myRanking: MyRankingResult | undefined,
+  myRank: RankingEntryResult | undefined,
 ): boolean {
-  if (!myRanking) return false;
-  if (
-    myRanking.kakaoId != null &&
-    item.kakaoId != null &&
-    myRanking.kakaoId === item.kakaoId
-  ) {
-    return true;
+  if (!myRank) return false;
+  if (myRank.userId != null && item.userId != null) {
+    return myRank.userId === item.userId;
   }
-  return (
-    myRanking.rank != null && item.rank != null && myRanking.rank === item.rank
-  );
+  return myRank.rank != null && item.rank != null && myRank.rank === item.rank;
 }
 
 type RankingFilterType = "ALL" | "INTEREST";
@@ -48,8 +39,8 @@ export default function RankingPage() {
   );
 
   const rankings = data?.data?.rankings ?? [];
-  const myRanking = data?.data?.myRanking;
-  const belowMyRankings = data?.data?.belowMyRankings ?? [];
+  const myRanking = data?.data?.myRank;
+  const belowMyRankings = data?.data?.nearbyRankings ?? [];
 
   const isMyRankInTop4 =
     myRanking?.rank != null && myRanking.rank >= 1 && myRanking.rank <= 4;
@@ -124,19 +115,14 @@ export default function RankingPage() {
                           ? (myRanking?.rank ?? item.rank ?? 0)
                           : (item.rank ?? 0)
                       }
-                      nickname={
-                        isMe
-                          ? (myRanking?.nickname ?? "나")
-                          : (item.nickname ?? "익명")
-                      }
-                      interest={item.interests?.[0]}
+                      nickname={isMe ? "나" : "익명"}
                       score={isMe ? (myRanking?.score ?? 0) : (item.score ?? 0)}
                       tone={isMe ? "inverse" : "default"}
                     />
                   );
                   return (
                     <div
-                      key={`${item.kakaoId ?? "r"}-${item.rank}`}
+                      key={`${item.userId ?? "r"}-${item.rank}`}
                       className="py-1"
                     >
                       {isMe ? (
@@ -160,7 +146,7 @@ export default function RankingPage() {
                   <div className="bg-blue-003 mt-2 w-full rounded-xl">
                     <RankingItem
                       rank={myRanking.rank ?? 0}
-                      nickname={myRanking.nickname ?? "나"}
+                      nickname="나"
                       score={myRanking.score ?? 0}
                       tone="inverse"
                     />
@@ -171,7 +157,7 @@ export default function RankingPage() {
                     <div key={item.rank} className="py-1">
                       <RankingItem
                         rank={item.rank ?? 0}
-                        nickname={item.nickname ?? "익명"}
+                        nickname="익명"
                         score={item.score ?? 0}
                       />
                     </div>
