@@ -4,14 +4,12 @@ declare global {
       init: (appKey: string) => void;
       isInitialized: () => boolean;
       Auth: {
-        authorize: (options: {
-          redirectUri: string;
-          state?: string;
+        login: (options: {
+          success: (authObj: { access_token: string }) => void;
+          fail?: (err: unknown) => void;
           scope?: string;
-          throughTalk?: boolean;
         }) => void;
         getAccessToken: () => string | null;
-        setAccessToken: (token: string) => void;
       };
     };
   }
