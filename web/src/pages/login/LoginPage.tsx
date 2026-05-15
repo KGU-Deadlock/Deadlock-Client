@@ -100,7 +100,7 @@ export default function LoginPage() {
       setAccessToken(data.accessToken);
       if (data.isUser) {
         setIsInitialized(true);
-        replace("HomePage", {}, { animate: false });
+        window.location.replace("/");
       } else {
         setIsInitialized(false);
         replace(
