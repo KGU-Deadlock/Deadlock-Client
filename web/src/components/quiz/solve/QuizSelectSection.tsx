@@ -12,14 +12,14 @@ export function QuizSelectSection() {
         const q = s.mcQuizzes[s.selectIndex];
         return {
           question: q?.content ?? "",
-          rawChoices: q?.choices?.[0] ?? "",
+          rawChoices: q?.choices ?? [],
           selectedChoiceIndex: s.selectedChoiceIndex,
           setSelectedChoiceIndex: s.setSelectedChoiceIndex,
         };
       }),
     );
 
-  const choices = rawChoices ? rawChoices.split("<;;;>") : [];
+  const choices = rawChoices;
 
   return (
     <>
