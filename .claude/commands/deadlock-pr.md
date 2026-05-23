@@ -17,15 +17,16 @@
 
 ```markdown
 ## 개요
+
 - 변경 목적을 bullet point로 요약 (1~3개)
 
 ## 주요 변경사항
+
 - 파일/기능별 변경 내용
 
 ## 테스트 체크리스트
-- [ ] 테스트 항목
 
-🤖 Generated with [Claude Code](https://claude.com/claude-code)
+- [ ] 테스트 항목
 ```
 
 ## 주의사항
