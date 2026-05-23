@@ -8,7 +8,7 @@ export interface AppBridgeMethods {
   logout: () => Promise<void>;
   kakaoLogin: () => Promise<{
     status: "success" | "error";
-    accessToken?: string;
+    code?: string;
     errorMessage?: string;
   }>;
   startRecording: () => Promise<{

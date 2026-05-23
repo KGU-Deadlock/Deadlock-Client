@@ -75,6 +75,13 @@ function LoginTerminalHello() {
 export default function LoginPage() {
   const { replace } = useFlow();
   const { setAccessToken, setIsInitialized } = useAuthStore();
+
+  // URL에 code가 있으면 리다이렉트 복귀 상태 → 즉시 로딩으로 표시
+  const [isProcessingCode] = useState(() => {
+    const params = new URLSearchParams(window.location.search);
+    return params.has("code");
+  });
+
   const [isKakaoReady, setIsKakaoReady] = useState(() => {
     if (isWebView()) return true;
     if (window.Kakao) return true;
@@ -115,13 +122,23 @@ export default function LoginPage() {
     },
   });
 
+  // 카카오 리다이렉트 복귀 시 URL의 code 파라미터로 로그인
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const code = params.get("code");
+    if (!code) return;
+    window.history.replaceState({}, "", window.location.pathname);
+    mutate(code);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const handleWebViewLogin = async () => {
     const result = await bridge.kakaoLogin();
-    if (result.status === "error" || !result.accessToken) {
+    if (result.status === "error" || !result.code) {
       toastError(result.errorMessage ?? "카카오 로그인에 실패했습니다.");
       return;
     }
-    mutate(result.accessToken);
+    mutate(result.code);
   };
 
   const handleKakaoLogin = () => {
@@ -129,23 +146,17 @@ export default function LoginPage() {
       // Android / iOS: native Kakao SDK를 bridge를 통해 호출
       void handleWebViewLogin();
     } else {
-      // Web: Kakao JS SDK 2.6.x — login() 팝업 방식
+      // Web: Kakao JS SDK — authorize() 리다이렉트 방식
       if (!window.Kakao.isInitialized()) {
         window.Kakao.init(import.meta.env.VITE_KAKAO_JS_APP_KEY);
       }
-      window.Kakao.Auth.login({
-        success: (authObj) => {
-          mutate(authObj.access_token);
-        },
-        fail: (err) => {
-          console.error(err);
-          toastError("카카오 로그인에 실패했습니다.");
-        },
+      window.Kakao.Auth.authorize({
+        redirectUri: window.location.origin,
       });
     }
   };
 
-  const isButtonDisabled = isPending || !isKakaoReady;
+  const isButtonDisabled = isPending || isProcessingCode || !isKakaoReady;
 
   return (
     <AppScreen className="relative overflow-hidden bg-white">
@@ -187,7 +198,7 @@ export default function LoginPage() {
             onClick={handleKakaoLogin}
             disabled={isButtonDisabled}
           >
-            {!isKakaoReady ? (
+            {!isKakaoReady || isProcessingCode || isPending ? (
               <span className="flex items-center gap-2">
                 <span className="border-gray-004 h-5 w-5 animate-spin rounded-full border-2 border-t-transparent" />
                 로딩 중...

@@ -15,8 +15,8 @@ export const authQueries = {
 
   kakaoLoginMutation: () =>
     mutationOptions({
-      mutationFn: async (accessToken: string) => {
-        const res = await postKakaoLogin(accessToken);
+      mutationFn: async (code: string) => {
+        const res = await postKakaoLogin(code);
         if (!res.ok) throw new Error("카카오 로그인에 실패했습니다.");
         return res.data;
       },

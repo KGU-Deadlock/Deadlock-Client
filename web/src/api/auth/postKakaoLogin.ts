@@ -5,10 +5,10 @@ import { END_POINTS } from "@/api/config/api-endpoints";
 import type { KakaoLoginResponse } from "./api.model";
 
 export function postKakaoLogin(
-  accessToken: string,
+  code: string,
 ): Promise<ApiResult<KakaoLoginResponse>> {
-  return baseApi.post<KakaoLoginResponse, { accessToken: string }>(
+  return baseApi.post<KakaoLoginResponse, { code: string }>(
     END_POINTS.AUTH.TOKEN,
-    { accessToken },
+    { code },
   );
 }
