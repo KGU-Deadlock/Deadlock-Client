@@ -151,7 +151,7 @@ export default function LoginPage() {
         window.Kakao.init(import.meta.env.VITE_KAKAO_JS_APP_KEY);
       }
       window.Kakao.Auth.authorize({
-        redirectUri: window.location.origin,
+        redirectUri: `${window.location.origin}/login`,
       });
     }
   };
