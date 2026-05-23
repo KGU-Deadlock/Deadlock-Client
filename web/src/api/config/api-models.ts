@@ -4,1675 +4,1675 @@
  */
 
 export interface paths {
-    "/v1/users": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * 회원가입
-         * @description 카카오 OAuth2 인증 후 사용자 프로필을 등록합니다.
-         */
-        post: operations["createUser"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+  "/v1/users": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/v1/quiz": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * 퀴즈 목록 조회
-         * @description 사용자 레벨과 요청 조건으로 퀴즈 목록을 조회합니다.
-         */
-        post: operations["getQuizzes"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    get?: never;
+    put?: never;
+    /**
+     * 회원가입
+     * @description 카카오 OAuth2 인증 후 사용자 프로필을 등록합니다.
+     */
+    post: operations["createUser"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/v1/quiz": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/v1/quiz/grading": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * 답안 제출
-         * @description 사용자 답안을 제출하고 채점 로그 ID를 반환합니다.
-         */
-        post: operations["submitAnswers"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    get?: never;
+    put?: never;
+    /**
+     * 퀴즈 목록 조회
+     * @description 사용자 레벨과 요청 조건으로 퀴즈 목록을 조회합니다.
+     */
+    post: operations["getQuizzes"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/v1/quiz/grading": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/v1/interview/{interviewId}/complete": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * 면접 완료 및 AI 피드백 생성
-         * @description 면접을 완료하고 AI 피드백을 생성하여 반환합니다.
-         */
-        post: operations["completeInterview"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    get?: never;
+    put?: never;
+    /**
+     * 답안 제출
+     * @description 사용자 답안을 제출하고 채점 로그 ID를 반환합니다.
+     */
+    post: operations["submitAnswers"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/v1/interview/{interviewId}/complete": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/v1/interview/{interviewId}/answer": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * 답변 제출
-         * @description 각 질문에 대한 답변을 제출합니다.
-         */
-        post: operations["submitAnswer"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    get?: never;
+    put?: never;
+    /**
+     * 면접 완료 및 AI 피드백 생성
+     * @description 면접을 완료하고 AI 피드백을 생성하여 반환합니다.
+     */
+    post: operations["completeInterview"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/v1/interview/{interviewId}/answer": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/v1/interview/start": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * 면접 시작
-         * @description 회사명과 직무를 입력받아 면접 세션을 생성하고 5개의 질문을 반환합니다.
-         */
-        post: operations["startInterview"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    get?: never;
+    put?: never;
+    /**
+     * 답변 제출
+     * @description 각 질문에 대한 답변을 제출합니다.
+     */
+    post: operations["submitAnswer"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/v1/interview/start": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/v1/auth/reissue": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * 토큰 재발급
-         * @description refreshToken 쿠키를 사용하여 새로운 accessToken을 발급받습니다. refreshToken도 함께 갱신됩니다.
-         */
-        post: operations["reissue"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    get?: never;
+    put?: never;
+    /**
+     * 면접 시작
+     * @description 회사명과 직무를 입력받아 면접 세션을 생성하고 5개의 질문을 반환합니다.
+     */
+    post: operations["startInterview"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/v1/auth/reissue": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/v1/auth/kakao": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * 카카오 액세스 토큰으로 로그인
-         * @description 프론트엔드에서 카카오 SDK로 발급받은 액세스 토큰을 전달하면 백엔드가 카카오 API로 유저 정보를 조회하여 hellocs JWT를 발급합니다. 성공 시 accessToken과 isUser(기가입 여부)를 응답 body로, refreshToken은 HttpOnly 쿠키로 전달합니다. 신규 유저인 경우 userData(nickname)가 함께 반환됩니다.
-         */
-        post: operations["kakaoTokenLogin"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    get?: never;
+    put?: never;
+    /**
+     * 토큰 재발급
+     * @description refreshToken 쿠키를 사용하여 새로운 accessToken을 발급받습니다. refreshToken도 함께 갱신됩니다.
+     */
+    post: operations["reissue"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/v1/auth/kakao": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/v1/users/me": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * 내 프로필 조회
-         * @description 현재 로그인한 사용자의 프로필 정보를 조회합니다.
-         */
-        get: operations["getMyProfile"];
-        put?: never;
-        post?: never;
-        /**
-         * 회원 탈퇴
-         * @description 현재 로그인한 사용자의 계정을 삭제합니다.
-         */
-        delete: operations["deleteMyAccount"];
-        options?: never;
-        head?: never;
-        /**
-         * 내 프로필 수정
-         * @description 현재 로그인한 사용자의 닉네임, 프로필 이미지, 관심 주제를 수정합니다.
-         */
-        patch: operations["updateMyProfile"];
-        trace?: never;
+    get?: never;
+    put?: never;
+    /**
+     * 카카오 액세스 토큰으로 로그인
+     * @description 프론트엔드에서 카카오 SDK로 발급받은 액세스 토큰을 전달하면 백엔드가 카카오 API로 유저 정보를 조회하여 hellocs JWT를 발급합니다. 성공 시 accessToken과 isUser(기가입 여부)를 응답 body로, refreshToken은 HttpOnly 쿠키로 전달합니다. 신규 유저인 경우 userData(nickname)가 함께 반환됩니다.
+     */
+    post: operations["kakaoTokenLogin"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/v1/users/me": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/v1/users/{userId}/interest-topic": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get: operations["getInterestTopicId"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    /**
+     * 내 프로필 조회
+     * @description 현재 로그인한 사용자의 프로필 정보를 조회합니다.
+     */
+    get: operations["getMyProfile"];
+    put?: never;
+    post?: never;
+    /**
+     * 회원 탈퇴
+     * @description 현재 로그인한 사용자의 계정을 삭제합니다.
+     */
+    delete: operations["deleteMyAccount"];
+    options?: never;
+    head?: never;
+    /**
+     * 내 프로필 수정
+     * @description 현재 로그인한 사용자의 닉네임, 프로필 이미지, 관심 주제를 수정합니다.
+     */
+    patch: operations["updateMyProfile"];
+    trace?: never;
+  };
+  "/v1/users/{userId}/interest-topic": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/v1/topics": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * 전체 주제 목록 조회
-         * @description 등록된 모든 주제(토픽) 목록을 조회합니다.
-         */
-        get: operations["getAllTopics"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    get: operations["getInterestTopicId"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/v1/topics": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/v1/streak": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * 연속 스트릭 기간 조회
-         * @description 지정한 연도와 월의 일자별 스트릭 정보를 조회합니다.
-         */
-        get: operations["getSummary"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    /**
+     * 전체 주제 목록 조회
+     * @description 등록된 모든 주제(토픽) 목록을 조회합니다.
+     */
+    get: operations["getAllTopics"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/v1/streak": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/v1/streak/detail": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * 연속 스트릭 상세 조회
-         * @description 연속 학습일, 해결한 문제 수, 해결한 분야 수와 함께 상세 통계를 조회합니다.
-         */
-        get: operations["getDetail"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    /**
+     * 연속 스트릭 기간 조회
+     * @description 지정한 연도와 월의 일자별 스트릭 정보를 조회합니다.
+     */
+    get: operations["getSummary"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/v1/streak/detail": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/v1/ranking": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * 랭킹 상세 조회
-         * @description 로그인한 사용자를 기준으로 랭킹 목록을 조회합니다. `filterType=ALL`이면 전체 랭킹, `filterType=INTEREST`이면 내 관심 주제 기준 랭킹을 반환하며, 응답에는 요청한 랭킹 목록과 내 순위 정보, 내 바로 아래 최대 2명의 순위 정보가 포함됩니다.
-         */
-        get: operations["getRanking"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    /**
+     * 연속 스트릭 상세 조회
+     * @description 연속 학습일, 해결한 문제 수, 해결한 분야 수와 함께 상세 통계를 조회합니다.
+     */
+    get: operations["getDetail"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/v1/ranking": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/v1/ranking/summary": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * 랭킹 요약 조회
-         * @description 인증 없이 전체 랭킹 상위 5명의 순위, 사용자 정보, 누적 점수를 조회합니다.
-         */
-        get: operations["getRankingSummary"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    /**
+     * 랭킹 상세 조회
+     * @description 로그인한 사용자를 기준으로 랭킹 목록을 조회합니다. `filterType=ALL`이면 전체 랭킹, `filterType=INTEREST`이면 내 관심 주제 기준 랭킹을 반환하며, 응답에는 요청한 랭킹 목록과 내 순위 정보, 내 바로 아래 최대 2명의 순위 정보가 포함됩니다.
+     */
+    get: operations["getRanking"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/v1/ranking/summary": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/v1/quiz/grading/{gradingLogId}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * 채점 로그 조회
-         * @description 채점 로그 ID로 전체 채점 결과를 조회합니다.
-         */
-        get: operations["getGradingLog"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    /**
+     * 랭킹 요약 조회
+     * @description 인증 없이 전체 랭킹 상위 5명의 순위, 사용자 정보, 누적 점수를 조회합니다.
+     */
+    get: operations["getRankingSummary"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/v1/quiz/grading/{gradingLogId}": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/v1/quiz/grading/{gradingLogId}/{quizId}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * 채점 상세 조회
-         * @description 채점 로그 내 특정 퀴즈의 상세 채점 결과를 조회합니다.
-         */
-        get: operations["getGradingDetailLog"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    /**
+     * 채점 로그 조회
+     * @description 채점 로그 ID로 전체 채점 결과를 조회합니다.
+     */
+    get: operations["getGradingLog"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/v1/quiz/grading/{gradingLogId}/{quizId}": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/v1/quiz/grading/list": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * 채점 기록 목록 조회
-         * @description 자신의 전체 채점 기록 목록을 조회합니다.
-         */
-        get: operations["getGradingLogList"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    /**
+     * 채점 상세 조회
+     * @description 채점 로그 내 특정 퀴즈의 상세 채점 결과를 조회합니다.
+     */
+    get: operations["getGradingDetailLog"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/v1/quiz/grading/list": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/v1/interview/{interviewId}/feedback": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * 피드백 조회
-         * @description 완료된 면접의 AI 피드백을 조회합니다.
-         */
-        get: operations["getFeedback"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    /**
+     * 채점 기록 목록 조회
+     * @description 자신의 전체 채점 기록 목록을 조회합니다.
+     */
+    get: operations["getGradingLogList"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/v1/interview/{interviewId}/feedback": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/v1/dev/admin-token": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get: operations["getAdminToken"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    /**
+     * 피드백 조회
+     * @description 완료된 면접의 AI 피드백을 조회합니다.
+     */
+    get: operations["getFeedback"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/v1/dev/admin-token": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
+    get: operations["getAdminToken"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
 }
 export type webhooks = Record<string, never>;
 export interface components {
-    schemas: {
-        UserSignUpCommand: {
-            nickname: string;
-            /** Format: email */
-            kakaoEmail?: string;
-            profileImage?: string;
-            /** @enum {string} */
-            quizLevel: "JUNIOR" | "SEMIPRO" | "PRO";
-            interests: number[];
-        };
-        ApiResponseVoid: {
-            isSuccess?: boolean;
-            code?: string;
-            message?: string;
-            data?: unknown;
-            success?: boolean;
-        };
-        /** @description 퀴즈 조회 필터(주제 ID 목록, 문제 모드) */
-        GetQuizRequest: {
-            /**
-             * @description 토픽 ID 목록
-             * @example [
-             *       1,
-             *       2,
-             *       3
-             *     ]
-             */
-            topicIds: number[];
-            /**
-             * @description 퀴즈 모드
-             * @example STANDARD
-             * @enum {string}
-             */
-            mode: "STANDARD" | "VOICE";
-        };
-        ApiResponseGetQuizResult: {
-            isSuccess?: boolean;
-            code?: string;
-            message?: string;
-            data?: components["schemas"]["GetQuizResult"];
-            success?: boolean;
-        };
-        GetQuizResult: {
-            oxQuizzes?: components["schemas"]["OxQuizResult"][];
-            multipleChoiceQuizzes?: components["schemas"]["MultipleChoiceQuizResult"][];
-            shortAnswerQuizzes?: components["schemas"]["ShortAnswerQuizResult"][];
-            voiceQuizzes?: components["schemas"]["VoiceQuizResult"][];
-        };
-        MultipleChoiceQuizResult: {
-            /** Format: int64 */
-            id?: number;
-            content?: string;
-            choices?: string[];
-        };
-        OxQuizResult: {
-            /** Format: int64 */
-            id?: number;
-            content?: string;
-        };
-        ShortAnswerQuizResult: {
-            /** Format: int64 */
-            id?: number;
-            content?: string;
-        };
-        VoiceQuizResult: {
-            /** Format: int64 */
-            id?: number;
-            content?: string;
-            contentText?: string;
-        };
-        UserGradingCommand: {
-            /**
-             * Format: int64
-             * @description 답안을 제출할 퀴즈 ID
-             * @example 101
-             */
-            quizId: number;
-            /**
-             * @description 사용자 답안
-             * @example true
-             */
-            answer: string;
-        };
-        ApiResponseSubmitAnswerResponse: {
-            isSuccess?: boolean;
-            code?: string;
-            message?: string;
-            data?: components["schemas"]["SubmitAnswerResponse"];
-            success?: boolean;
-        };
-        SubmitAnswerResponse: {
-            /**
-             * @description 생성된 채점 로그 ID
-             * @example log-12345
-             */
-            gradingLogId?: string;
-        };
-        ApiResponseFeedbackResult: {
-            isSuccess?: boolean;
-            code?: string;
-            message?: string;
-            data?: components["schemas"]["FeedbackResult"];
-            success?: boolean;
-        };
-        FeedbackResult: {
-            /** Format: int32 */
-            overallScore?: number;
-            questionFeedbacks?: components["schemas"]["QuestionFeedback"][];
-        };
-        QuestionFeedback: {
-            /** Format: int32 */
-            questionNumber?: number;
-            /** Format: int32 */
-            score?: number;
-            missingKeywords?: string[];
-            improvedAnswer?: string;
-            message?: string;
-        };
-        SubmitAnswerRequest: {
-            /** Format: int32 */
-            questionNumber: number;
-            answerText: string;
-            /** Format: int32 */
-            durationSeconds?: number;
-        };
-        StartInterviewRequest: {
-            companyName: string;
-            position: string;
-        };
-        ApiResponseStartInterviewResult: {
-            isSuccess?: boolean;
-            code?: string;
-            message?: string;
-            data?: components["schemas"]["StartInterviewResult"];
-            success?: boolean;
-        };
-        QuestionResult: {
-            /** Format: int32 */
-            questionNumber?: number;
-            questionText?: string;
-            questionType?: string;
-            category?: string;
-        };
-        StartInterviewResult: {
-            interviewId?: string;
-            questions?: components["schemas"]["QuestionResult"][];
-        };
-        ApiResponseAuthTokenResponse: {
-            isSuccess?: boolean;
-            code?: string;
-            message?: string;
-            data?: components["schemas"]["AuthTokenResponse"];
-            success?: boolean;
-        };
-        AuthTokenResponse: {
-            accessToken?: string;
-            isUser?: boolean;
-            userData?: components["schemas"]["UserData"];
-        };
-        UserData: {
-            nickname?: string;
-        };
-        KakaoTokenRequest: {
-            accessToken?: string;
-        };
-        UpdateMyInfoCommand: {
-            nickname?: string;
-            profileImage?: string;
-            interestTopicIds?: number[];
-        };
-        ApiResponseLong: {
-            isSuccess?: boolean;
-            code?: string;
-            message?: string;
-            /** Format: int64 */
-            data?: number;
-            success?: boolean;
-        };
-        ApiResponseProfileResult: {
-            isSuccess?: boolean;
-            code?: string;
-            message?: string;
-            data?: components["schemas"]["ProfileResult"];
-            success?: boolean;
-        };
-        ProfileResult: {
-            profileImage?: string;
-            nickname?: string;
-            interests?: string[];
-        };
-        ApiResponseListTopicResult: {
-            isSuccess?: boolean;
-            code?: string;
-            message?: string;
-            data?: components["schemas"]["TopicResult"][];
-            success?: boolean;
-        };
-        TopicResult: {
-            /** Format: int64 */
-            id?: number;
-            name?: string;
-        };
-        ApiResponseStreakSummaryResult: {
-            isSuccess?: boolean;
-            code?: string;
-            message?: string;
-            data?: components["schemas"]["StreakSummaryResult"];
-            success?: boolean;
-        };
-        StreakSummaryResult: {
-            /**
-             * Format: int32
-             * @example 4
-             */
-            currentStreakDays?: number;
-            /**
-             * Format: int32
-             * @example 87
-             */
-            solvedQuizCount?: number;
-            /**
-             * Format: int32
-             * @example 5
-             */
-            solvedTopicCount?: number;
-        };
-        ApiResponseStreakMonthlyResult: {
-            isSuccess?: boolean;
-            code?: string;
-            message?: string;
-            data?: components["schemas"]["StreakMonthlyResult"];
-            success?: boolean;
-        };
-        DailyStreakRecordResult: {
-            /** @example 2025-12-10 */
-            date?: string;
-            /** @example true */
-            solved?: boolean;
-            /**
-             * Format: int32
-             * @example 3
-             */
-            quizCount?: number;
-            /**
-             * Format: int32
-             * @example 4
-             */
-            streakAtEndOfDay?: number;
-        };
-        StreakMonthlyResult: {
-            /**
-             * Format: int32
-             * @example 2025
-             */
-            year?: number;
-            /**
-             * Format: int32
-             * @example 12
-             */
-            month?: number;
-            days?: components["schemas"]["DailyStreakRecordResult"][];
-        };
-        ApiResponseStreakDetailResult: {
-            isSuccess?: boolean;
-            code?: string;
-            message?: string;
-            data?: components["schemas"]["StreakDetailResult"];
-            success?: boolean;
-        };
-        StreakDetailResult: {
-            /**
-             * Format: int32
-             * @example 4
-             */
-            currentStreakDays?: number;
-            /**
-             * Format: int32
-             * @example 87
-             */
-            solvedQuizCount?: number;
-            /**
-             * Format: int32
-             * @example 5
-             */
-            solvedTopicCount?: number;
-            /**
-             * Format: int32
-             * @example 12
-             */
-            longestStreakDays?: number;
-            /**
-             * Format: date
-             * @example 2025-12-10
-             */
-            lastSolvedDate?: string;
-            /** @example true */
-            solvedToday?: boolean;
-            /**
-             * Format: int32
-             * @example 10
-             */
-            activeDaysThisMonth?: number;
-            /**
-             * Format: int32
-             * @example 23
-             */
-            currentMonthSolvedQuizCount?: number;
-        };
-        ApiResponseRankingDetailResult: {
-            isSuccess?: boolean;
-            code?: string;
-            message?: string;
-            data?: components["schemas"]["RankingDetailResult"];
-            success?: boolean;
-        };
-        RankingDetailResult: {
-            rankings?: components["schemas"]["RankingEntryResult"][];
-            myRank?: components["schemas"]["RankingEntryResult"];
-            nearbyRankings?: components["schemas"]["RankingEntryResult"][];
-        };
-        RankingEntryResult: {
-            /** Format: int64 */
-            rank?: number;
-            /** Format: int64 */
-            userId?: number;
-            /** Format: int64 */
-            score?: number;
-        };
-        ApiResponseRankingSummaryResult: {
-            isSuccess?: boolean;
-            code?: string;
-            message?: string;
-            data?: components["schemas"]["RankingSummaryResult"];
-            success?: boolean;
-        };
-        RankingSummaryResult: {
-            topEntries?: components["schemas"]["RankingEntryResult"][];
-            /** Format: int64 */
-            totalCount?: number;
-        };
-        ApiResponseGradingLogResult: {
-            isSuccess?: boolean;
-            code?: string;
-            message?: string;
-            data?: components["schemas"]["GradingLogResult"];
-            success?: boolean;
-        };
-        GradingItemResult: {
-            /** Format: int64 */
-            quizId?: number;
-            content?: string;
-            quizType?: string;
-            isCorrect?: boolean;
-        };
-        GradingLogResult: {
-            /** Format: int32 */
-            correctCount?: number;
-            /** Format: int32 */
-            quizCount?: number;
-            gradingResults?: components["schemas"]["GradingItemResult"][];
-        };
-        ApiResponseGradingDetailLogResult: {
-            isSuccess?: boolean;
-            code?: string;
-            message?: string;
-            data?: components["schemas"]["GradingDetailLogResult"];
-            success?: boolean;
-        };
-        GradingDetailLogResult: {
-            /** Format: int64 */
-            quizId?: number;
-            /** Format: int32 */
-            score?: number;
-            isCorrect?: boolean;
-            content?: string;
-            quizType?: string;
-            userAnswer?: string;
-            correctAnswer?: string;
-            feedback?: string;
-            missingKeywords?: string[];
-            improvedAnswer?: string;
-        };
-        ApiResponseListGradingLogListResult: {
-            isSuccess?: boolean;
-            code?: string;
-            message?: string;
-            data?: components["schemas"]["GradingLogListResult"][];
-            success?: boolean;
-        };
-        GradingLogListResult: {
-            id?: string;
-            /** Format: date-time */
-            solvedAt?: string;
-            /** Format: int32 */
-            correctCount?: number;
-            /** Format: int32 */
-            totalCount?: number;
-            quizMode?: string;
-            topicNames?: string[];
-        };
-        AdminTokenResponse: {
-            accessToken?: string;
-            refreshToken?: string;
-            isUser?: boolean;
-        };
-        ApiResponseAdminTokenResponse: {
-            isSuccess?: boolean;
-            code?: string;
-            message?: string;
-            data?: components["schemas"]["AdminTokenResponse"];
-            success?: boolean;
-        };
+  schemas: {
+    UserSignUpCommand: {
+      nickname: string;
+      /** Format: email */
+      kakaoEmail?: string;
+      profileImage?: string;
+      /** @enum {string} */
+      quizLevel: "JUNIOR" | "SEMIPRO" | "PRO";
+      interests: number[];
     };
-    responses: never;
-    parameters: never;
-    requestBodies: never;
-    headers: never;
-    pathItems: never;
+    ApiResponseVoid: {
+      isSuccess?: boolean;
+      code?: string;
+      message?: string;
+      data?: unknown;
+      success?: boolean;
+    };
+    /** @description 퀴즈 조회 필터(주제 ID 목록, 문제 모드) */
+    GetQuizRequest: {
+      /**
+       * @description 토픽 ID 목록
+       * @example [
+       *       1,
+       *       2,
+       *       3
+       *     ]
+       */
+      topicIds: number[];
+      /**
+       * @description 퀴즈 모드
+       * @example STANDARD
+       * @enum {string}
+       */
+      mode: "STANDARD" | "VOICE";
+    };
+    ApiResponseGetQuizResult: {
+      isSuccess?: boolean;
+      code?: string;
+      message?: string;
+      data?: components["schemas"]["GetQuizResult"];
+      success?: boolean;
+    };
+    GetQuizResult: {
+      oxQuizzes?: components["schemas"]["OxQuizResult"][];
+      multipleChoiceQuizzes?: components["schemas"]["MultipleChoiceQuizResult"][];
+      shortAnswerQuizzes?: components["schemas"]["ShortAnswerQuizResult"][];
+      voiceQuizzes?: components["schemas"]["VoiceQuizResult"][];
+    };
+    MultipleChoiceQuizResult: {
+      /** Format: int64 */
+      id?: number;
+      content?: string;
+      choices?: string[];
+    };
+    OxQuizResult: {
+      /** Format: int64 */
+      id?: number;
+      content?: string;
+    };
+    ShortAnswerQuizResult: {
+      /** Format: int64 */
+      id?: number;
+      content?: string;
+    };
+    VoiceQuizResult: {
+      /** Format: int64 */
+      id?: number;
+      content?: string;
+      contentText?: string;
+    };
+    UserGradingCommand: {
+      /**
+       * Format: int64
+       * @description 답안을 제출할 퀴즈 ID
+       * @example 101
+       */
+      quizId: number;
+      /**
+       * @description 사용자 답안
+       * @example true
+       */
+      answer: string;
+    };
+    ApiResponseSubmitAnswerResponse: {
+      isSuccess?: boolean;
+      code?: string;
+      message?: string;
+      data?: components["schemas"]["SubmitAnswerResponse"];
+      success?: boolean;
+    };
+    SubmitAnswerResponse: {
+      /**
+       * @description 생성된 채점 로그 ID
+       * @example log-12345
+       */
+      gradingLogId?: string;
+    };
+    ApiResponseFeedbackResult: {
+      isSuccess?: boolean;
+      code?: string;
+      message?: string;
+      data?: components["schemas"]["FeedbackResult"];
+      success?: boolean;
+    };
+    FeedbackResult: {
+      /** Format: int32 */
+      overallScore?: number;
+      questionFeedbacks?: components["schemas"]["QuestionFeedback"][];
+    };
+    QuestionFeedback: {
+      /** Format: int32 */
+      questionNumber?: number;
+      /** Format: int32 */
+      score?: number;
+      missingKeywords?: string[];
+      improvedAnswer?: string;
+      message?: string;
+    };
+    SubmitAnswerRequest: {
+      /** Format: int32 */
+      questionNumber: number;
+      answerText: string;
+      /** Format: int32 */
+      durationSeconds?: number;
+    };
+    StartInterviewRequest: {
+      companyName: string;
+      position: string;
+    };
+    ApiResponseStartInterviewResult: {
+      isSuccess?: boolean;
+      code?: string;
+      message?: string;
+      data?: components["schemas"]["StartInterviewResult"];
+      success?: boolean;
+    };
+    QuestionResult: {
+      /** Format: int32 */
+      questionNumber?: number;
+      questionText?: string;
+      questionType?: string;
+      category?: string;
+    };
+    StartInterviewResult: {
+      interviewId?: string;
+      questions?: components["schemas"]["QuestionResult"][];
+    };
+    ApiResponseAuthTokenResponse: {
+      isSuccess?: boolean;
+      code?: string;
+      message?: string;
+      data?: components["schemas"]["AuthTokenResponse"];
+      success?: boolean;
+    };
+    AuthTokenResponse: {
+      accessToken?: string;
+      isUser?: boolean;
+      userData?: components["schemas"]["UserData"];
+    };
+    UserData: {
+      nickname?: string;
+    };
+    KakaoTokenRequest: {
+      accessToken?: string;
+    };
+    UpdateMyInfoCommand: {
+      nickname?: string;
+      profileImage?: string;
+      interestTopicIds?: number[];
+    };
+    ApiResponseLong: {
+      isSuccess?: boolean;
+      code?: string;
+      message?: string;
+      /** Format: int64 */
+      data?: number;
+      success?: boolean;
+    };
+    ApiResponseProfileResult: {
+      isSuccess?: boolean;
+      code?: string;
+      message?: string;
+      data?: components["schemas"]["ProfileResult"];
+      success?: boolean;
+    };
+    ProfileResult: {
+      profileImage?: string;
+      nickname?: string;
+      interests?: string[];
+    };
+    ApiResponseListTopicResult: {
+      isSuccess?: boolean;
+      code?: string;
+      message?: string;
+      data?: components["schemas"]["TopicResult"][];
+      success?: boolean;
+    };
+    TopicResult: {
+      /** Format: int64 */
+      id?: number;
+      name?: string;
+    };
+    ApiResponseStreakSummaryResult: {
+      isSuccess?: boolean;
+      code?: string;
+      message?: string;
+      data?: components["schemas"]["StreakSummaryResult"];
+      success?: boolean;
+    };
+    StreakSummaryResult: {
+      /**
+       * Format: int32
+       * @example 4
+       */
+      currentStreakDays?: number;
+      /**
+       * Format: int32
+       * @example 87
+       */
+      solvedQuizCount?: number;
+      /**
+       * Format: int32
+       * @example 5
+       */
+      solvedTopicCount?: number;
+    };
+    ApiResponseStreakMonthlyResult: {
+      isSuccess?: boolean;
+      code?: string;
+      message?: string;
+      data?: components["schemas"]["StreakMonthlyResult"];
+      success?: boolean;
+    };
+    DailyStreakRecordResult: {
+      /** @example 2025-12-10 */
+      date?: string;
+      /** @example true */
+      solved?: boolean;
+      /**
+       * Format: int32
+       * @example 3
+       */
+      quizCount?: number;
+      /**
+       * Format: int32
+       * @example 4
+       */
+      streakAtEndOfDay?: number;
+    };
+    StreakMonthlyResult: {
+      /**
+       * Format: int32
+       * @example 2025
+       */
+      year?: number;
+      /**
+       * Format: int32
+       * @example 12
+       */
+      month?: number;
+      days?: components["schemas"]["DailyStreakRecordResult"][];
+    };
+    ApiResponseStreakDetailResult: {
+      isSuccess?: boolean;
+      code?: string;
+      message?: string;
+      data?: components["schemas"]["StreakDetailResult"];
+      success?: boolean;
+    };
+    StreakDetailResult: {
+      /**
+       * Format: int32
+       * @example 4
+       */
+      currentStreakDays?: number;
+      /**
+       * Format: int32
+       * @example 87
+       */
+      solvedQuizCount?: number;
+      /**
+       * Format: int32
+       * @example 5
+       */
+      solvedTopicCount?: number;
+      /**
+       * Format: int32
+       * @example 12
+       */
+      longestStreakDays?: number;
+      /**
+       * Format: date
+       * @example 2025-12-10
+       */
+      lastSolvedDate?: string;
+      /** @example true */
+      solvedToday?: boolean;
+      /**
+       * Format: int32
+       * @example 10
+       */
+      activeDaysThisMonth?: number;
+      /**
+       * Format: int32
+       * @example 23
+       */
+      currentMonthSolvedQuizCount?: number;
+    };
+    ApiResponseRankingDetailResult: {
+      isSuccess?: boolean;
+      code?: string;
+      message?: string;
+      data?: components["schemas"]["RankingDetailResult"];
+      success?: boolean;
+    };
+    RankingDetailResult: {
+      rankings?: components["schemas"]["RankingEntryResult"][];
+      myRank?: components["schemas"]["RankingEntryResult"];
+      nearbyRankings?: components["schemas"]["RankingEntryResult"][];
+    };
+    RankingEntryResult: {
+      /** Format: int64 */
+      rank?: number;
+      /** Format: int64 */
+      userId?: number;
+      /** Format: int64 */
+      score?: number;
+    };
+    ApiResponseRankingSummaryResult: {
+      isSuccess?: boolean;
+      code?: string;
+      message?: string;
+      data?: components["schemas"]["RankingSummaryResult"];
+      success?: boolean;
+    };
+    RankingSummaryResult: {
+      topEntries?: components["schemas"]["RankingEntryResult"][];
+      /** Format: int64 */
+      totalCount?: number;
+    };
+    ApiResponseGradingLogResult: {
+      isSuccess?: boolean;
+      code?: string;
+      message?: string;
+      data?: components["schemas"]["GradingLogResult"];
+      success?: boolean;
+    };
+    GradingItemResult: {
+      /** Format: int64 */
+      quizId?: number;
+      content?: string;
+      quizType?: string;
+      isCorrect?: boolean;
+    };
+    GradingLogResult: {
+      /** Format: int32 */
+      correctCount?: number;
+      /** Format: int32 */
+      quizCount?: number;
+      gradingResults?: components["schemas"]["GradingItemResult"][];
+    };
+    ApiResponseGradingDetailLogResult: {
+      isSuccess?: boolean;
+      code?: string;
+      message?: string;
+      data?: components["schemas"]["GradingDetailLogResult"];
+      success?: boolean;
+    };
+    GradingDetailLogResult: {
+      /** Format: int64 */
+      quizId?: number;
+      /** Format: int32 */
+      score?: number;
+      isCorrect?: boolean;
+      content?: string;
+      quizType?: string;
+      userAnswer?: string;
+      correctAnswer?: string;
+      feedback?: string;
+      missingKeywords?: string[];
+      improvedAnswer?: string;
+    };
+    ApiResponseListGradingLogListResult: {
+      isSuccess?: boolean;
+      code?: string;
+      message?: string;
+      data?: components["schemas"]["GradingLogListResult"][];
+      success?: boolean;
+    };
+    GradingLogListResult: {
+      id?: string;
+      /** Format: date-time */
+      solvedAt?: string;
+      /** Format: int32 */
+      correctCount?: number;
+      /** Format: int32 */
+      totalCount?: number;
+      quizMode?: string;
+      topicNames?: string[];
+    };
+    AdminTokenResponse: {
+      accessToken?: string;
+      refreshToken?: string;
+      isUser?: boolean;
+    };
+    ApiResponseAdminTokenResponse: {
+      isSuccess?: boolean;
+      code?: string;
+      message?: string;
+      data?: components["schemas"]["AdminTokenResponse"];
+      success?: boolean;
+    };
+  };
+  responses: never;
+  parameters: never;
+  requestBodies: never;
+  headers: never;
+  pathItems: never;
 }
 export type $defs = Record<string, never>;
 export interface operations {
-    createUser: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["UserSignUpCommand"];
-            };
-        };
-        responses: {
-            /** @description 회원가입 성공 */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ApiResponseVoid"];
-                };
-            };
-            /** @description 요청 검증 실패 */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            /** @description 인증 실패 */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            /** @description 이미 가입된 사용자(USER409_1) 또는 닉네임 중복(USER409) */
-            409: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
+  createUser: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    getQuizzes: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["GetQuizRequest"];
-            };
-        };
-        responses: {
-            /** @description 퀴즈 조회 성공 */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ApiResponseGetQuizResult"];
-                };
-            };
-            /** @description 퀴즈 요청 검증 실패 */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            /** @description 인증 실패 */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            /** @description 서버 내부 오류 */
-            500: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["UserSignUpCommand"];
+      };
     };
-    submitAnswers: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
+    responses: {
+      /** @description 회원가입 성공 */
+      200: {
+        headers: {
+          [name: string]: unknown;
         };
-        /** @description 사용자 답안 목록 */
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["UserGradingCommand"][];
-            };
+        content: {
+          "*/*": components["schemas"]["ApiResponseVoid"];
         };
-        responses: {
-            /** @description 답안 제출 성공 */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ApiResponseSubmitAnswerResponse"];
-                };
-            };
-            /** @description 요청 본문 검증 실패 */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            /** @description 인증 실패 */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            /** @description 채점 대상 퀴즈를 찾을 수 없음 */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            /** @description 서버 내부 오류 */
-            500: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
+      };
+      /** @description 요청 검증 실패 */
+      400: {
+        headers: {
+          [name: string]: unknown;
         };
+        content?: never;
+      };
+      /** @description 인증 실패 */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description 이미 가입된 사용자(USER409_1) 또는 닉네임 중복(USER409) */
+      409: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
     };
-    completeInterview: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description 면접 세션 ID */
-                interviewId: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description 피드백 생성 성공 */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ApiResponseFeedbackResult"];
-                };
-            };
-            /** @description 이미 완료된 면접 */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            /** @description 면접 세션 없음 */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            /** @description AI 피드백 생성 실패 */
-            500: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
+  };
+  getQuizzes: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    submitAnswer: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description 면접 세션 ID */
-                interviewId: string;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["SubmitAnswerRequest"];
-            };
-        };
-        responses: {
-            /** @description 답변 제출 성공 */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ApiResponseVoid"];
-                };
-            };
-            /** @description 이미 완료된 면접 또는 요청 검증 실패 */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            /** @description 면접 세션 없음 */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["GetQuizRequest"];
+      };
     };
-    startInterview: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
+    responses: {
+      /** @description 퀴즈 조회 성공 */
+      200: {
+        headers: {
+          [name: string]: unknown;
         };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["StartInterviewRequest"];
-            };
+        content: {
+          "*/*": components["schemas"]["ApiResponseGetQuizResult"];
         };
-        responses: {
-            /** @description 면접 세션 생성 성공 */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ApiResponseStartInterviewResult"];
-                };
-            };
-            /** @description 요청 검증 실패 */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            /** @description CS 질문 부족 또는 서버 오류 */
-            500: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
+      };
+      /** @description 퀴즈 요청 검증 실패 */
+      400: {
+        headers: {
+          [name: string]: unknown;
         };
+        content?: never;
+      };
+      /** @description 인증 실패 */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description 서버 내부 오류 */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
     };
-    reissue: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie: {
-                refreshToken: string;
-            };
-        };
-        requestBody?: never;
-        responses: {
-            /** @description 재발급 성공 */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ApiResponseAuthTokenResponse"];
-                };
-            };
-            /** @description 유효하지 않은 리프레시 토큰 (AUTH401) */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
+  };
+  submitAnswers: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    kakaoTokenLogin: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["KakaoTokenRequest"];
-            };
-        };
-        responses: {
-            /** @description 로그인 성공 */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["AuthTokenResponse"];
-                };
-            };
-            /** @description 유효하지 않은 카카오 액세스 토큰 (AUTH402) */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
+    /** @description 사용자 답안 목록 */
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["UserGradingCommand"][];
+      };
     };
-    getMyProfile: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
+    responses: {
+      /** @description 답안 제출 성공 */
+      200: {
+        headers: {
+          [name: string]: unknown;
         };
-        requestBody?: never;
-        responses: {
-            /** @description 프로필 조회 성공 */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ApiResponseProfileResult"];
-                };
-            };
-            /** @description 인증 실패 */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            /** @description 사용자를 찾을 수 없음(USER404) */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
+        content: {
+          "*/*": components["schemas"]["ApiResponseSubmitAnswerResponse"];
         };
+      };
+      /** @description 요청 본문 검증 실패 */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description 인증 실패 */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description 채점 대상 퀴즈를 찾을 수 없음 */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description 서버 내부 오류 */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
     };
-    deleteMyAccount: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description 회원 탈퇴 성공 */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ApiResponseVoid"];
-                };
-            };
-            /** @description 인증 실패 */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            /** @description 사용자를 찾을 수 없음(USER404) */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
+  };
+  completeInterview: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        /** @description 면접 세션 ID */
+        interviewId: string;
+      };
+      cookie?: never;
     };
-    updateMyProfile: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
+    requestBody?: never;
+    responses: {
+      /** @description 피드백 생성 성공 */
+      200: {
+        headers: {
+          [name: string]: unknown;
         };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["UpdateMyInfoCommand"];
-            };
+        content: {
+          "*/*": components["schemas"]["ApiResponseFeedbackResult"];
         };
-        responses: {
-            /** @description 프로필 수정 성공 */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ApiResponseVoid"];
-                };
-            };
-            /** @description 요청 검증 실패 */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            /** @description 인증 실패 */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            /** @description 사용자를 찾을 수 없음(USER404) */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            /** @description 닉네임 중복(USER409) */
-            409: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
+      };
+      /** @description 이미 완료된 면접 */
+      400: {
+        headers: {
+          [name: string]: unknown;
         };
+        content?: never;
+      };
+      /** @description 면접 세션 없음 */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description AI 피드백 생성 실패 */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
     };
-    getInterestTopicId: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                userId: number;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ApiResponseLong"];
-                };
-            };
-        };
+  };
+  submitAnswer: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        /** @description 면접 세션 ID */
+        interviewId: string;
+      };
+      cookie?: never;
     };
-    getAllTopics: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description 주제 목록 조회 성공 */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ApiResponseListTopicResult"];
-                };
-            };
-        };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["SubmitAnswerRequest"];
+      };
     };
-    getSummary: {
-        parameters: {
-            query: {
-                /** @description 조회할 연도입니다. */
-                arg1: string;
-                /** @description 조회할 월입니다. 1부터 12 사이의 값을 입력합니다. */
-                arg2: string;
-            };
-            header?: never;
-            path?: never;
-            cookie?: never;
+    responses: {
+      /** @description 답변 제출 성공 */
+      200: {
+        headers: {
+          [name: string]: unknown;
         };
-        requestBody?: never;
-        responses: {
-            /** @description 월별 스트릭 기록 조회 성공 */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ApiResponseStreakSummaryResult"];
-                };
-            };
-            /** @description 연도 또는 월 파라미터가 올바르지 않음 */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ApiResponseStreakMonthlyResult"];
-                };
-            };
-            /** @description 인증이 필요함 */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ApiResponseStreakSummaryResult"];
-                };
-            };
-            /** @description 서버 내부 오류 */
-            500: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ApiResponseStreakSummaryResult"];
-                };
-            };
+        content: {
+          "*/*": components["schemas"]["ApiResponseVoid"];
         };
+      };
+      /** @description 이미 완료된 면접 또는 요청 검증 실패 */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description 면접 세션 없음 */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
     };
-    getDetail: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description 스트릭 상세 조회 성공 */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ApiResponseStreakDetailResult"];
-                };
-            };
-            /** @description 인증이 필요함 */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ApiResponseStreakDetailResult"];
-                };
-            };
-            /** @description 서버 내부 오류 */
-            500: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ApiResponseStreakDetailResult"];
-                };
-            };
-        };
+  };
+  startInterview: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    getRanking: {
-        parameters: {
-            query?: {
-                /** @description 랭킹 조회 기준입니다. `ALL`은 전체 사용자 기준, `INTEREST`는 로그인한 사용자의 관심 주제 기준 랭킹을 의미합니다. */
-                filterType?: "ALL" | "INTEREST";
-                /** @description 반환할 랭킹 목록의 개수입니다. 기본값은 10이며 최대 100까지 요청할 수 있습니다. */
-                size?: string;
-            };
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description 랭킹 상세 조회 성공 */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ApiResponseRankingDetailResult"];
-                };
-            };
-            /** @description filterType 또는 size 파라미터가 올바르지 않음 */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ApiResponseRankingDetailResult"];
-                };
-            };
-            /** @description 인증이 필요함 */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ApiResponseRankingDetailResult"];
-                };
-            };
-            /** @description 서버 내부 오류 */
-            500: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ApiResponseRankingDetailResult"];
-                };
-            };
-        };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["StartInterviewRequest"];
+      };
     };
-    getRankingSummary: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
+    responses: {
+      /** @description 면접 세션 생성 성공 */
+      200: {
+        headers: {
+          [name: string]: unknown;
         };
-        requestBody?: never;
-        responses: {
-            /** @description 랭킹 요약 조회 성공 */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ApiResponseRankingSummaryResult"];
-                };
-            };
-            /** @description 서버 내부 오류 */
-            500: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ApiResponseRankingSummaryResult"];
-                };
-            };
+        content: {
+          "*/*": components["schemas"]["ApiResponseStartInterviewResult"];
         };
+      };
+      /** @description 요청 검증 실패 */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description CS 질문 부족 또는 서버 오류 */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
     };
-    getGradingLog: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description 채점 로그 ID */
-                gradingLogId: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description 채점 로그 조회 성공 */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ApiResponseGradingLogResult"];
-                };
-            };
-            /** @description 인증 실패 */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            /** @description 해당 채점 기록에 대한 접근 권한 없음 */
-            403: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            /** @description 채점 로그를 찾을 수 없음 */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            /** @description 서버 내부 오류 */
-            500: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
+  };
+  reissue: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie: {
+        refreshToken: string;
+      };
     };
-    getGradingDetailLog: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description 채점 로그 ID */
-                gradingLogId: string;
-                /** @description 퀴즈 ID */
-                quizId: number;
-            };
-            cookie?: never;
+    requestBody?: never;
+    responses: {
+      /** @description 재발급 성공 */
+      200: {
+        headers: {
+          [name: string]: unknown;
         };
-        requestBody?: never;
-        responses: {
-            /** @description 채점 상세 조회 성공 */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ApiResponseGradingDetailLogResult"];
-                };
-            };
-            /** @description 인증 실패 */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            /** @description 해당 채점 기록에 대한 접근 권한 없음 */
-            403: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            /** @description 채점 상세를 찾을 수 없음 */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            /** @description 서버 내부 오류 */
-            500: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
+        content: {
+          "*/*": components["schemas"]["ApiResponseAuthTokenResponse"];
         };
+      };
+      /** @description 유효하지 않은 리프레시 토큰 (AUTH401) */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
     };
-    getGradingLogList: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description 채점 기록 목록 조회 성공 */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ApiResponseListGradingLogListResult"];
-                };
-            };
-            /** @description 인증 실패 */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            /** @description 서버 내부 오류 */
-            500: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
+  };
+  kakaoTokenLogin: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    getFeedback: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description 면접 세션 ID */
-                interviewId: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description 피드백 조회 성공 */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ApiResponseFeedbackResult"];
-                };
-            };
-            /** @description 피드백 없음 */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["KakaoTokenRequest"];
+      };
     };
-    getAdminToken: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
+    responses: {
+      /** @description 로그인 성공 */
+      200: {
+        headers: {
+          [name: string]: unknown;
         };
-        requestBody?: never;
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ApiResponseAdminTokenResponse"];
-                };
-            };
+        content: {
+          "*/*": components["schemas"]["AuthTokenResponse"];
         };
+      };
+      /** @description 유효하지 않은 카카오 액세스 토큰 (AUTH402) */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
     };
+  };
+  getMyProfile: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description 프로필 조회 성공 */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "*/*": components["schemas"]["ApiResponseProfileResult"];
+        };
+      };
+      /** @description 인증 실패 */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description 사용자를 찾을 수 없음(USER404) */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  deleteMyAccount: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description 회원 탈퇴 성공 */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "*/*": components["schemas"]["ApiResponseVoid"];
+        };
+      };
+      /** @description 인증 실패 */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description 사용자를 찾을 수 없음(USER404) */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  updateMyProfile: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["UpdateMyInfoCommand"];
+      };
+    };
+    responses: {
+      /** @description 프로필 수정 성공 */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "*/*": components["schemas"]["ApiResponseVoid"];
+        };
+      };
+      /** @description 요청 검증 실패 */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description 인증 실패 */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description 사용자를 찾을 수 없음(USER404) */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description 닉네임 중복(USER409) */
+      409: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  getInterestTopicId: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        userId: number;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "*/*": components["schemas"]["ApiResponseLong"];
+        };
+      };
+    };
+  };
+  getAllTopics: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description 주제 목록 조회 성공 */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "*/*": components["schemas"]["ApiResponseListTopicResult"];
+        };
+      };
+    };
+  };
+  getSummary: {
+    parameters: {
+      query: {
+        /** @description 조회할 연도입니다. */
+        arg1: string;
+        /** @description 조회할 월입니다. 1부터 12 사이의 값을 입력합니다. */
+        arg2: string;
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description 월별 스트릭 기록 조회 성공 */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "*/*": components["schemas"]["ApiResponseStreakSummaryResult"];
+        };
+      };
+      /** @description 연도 또는 월 파라미터가 올바르지 않음 */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "*/*": components["schemas"]["ApiResponseStreakMonthlyResult"];
+        };
+      };
+      /** @description 인증이 필요함 */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "*/*": components["schemas"]["ApiResponseStreakSummaryResult"];
+        };
+      };
+      /** @description 서버 내부 오류 */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "*/*": components["schemas"]["ApiResponseStreakSummaryResult"];
+        };
+      };
+    };
+  };
+  getDetail: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description 스트릭 상세 조회 성공 */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "*/*": components["schemas"]["ApiResponseStreakDetailResult"];
+        };
+      };
+      /** @description 인증이 필요함 */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "*/*": components["schemas"]["ApiResponseStreakDetailResult"];
+        };
+      };
+      /** @description 서버 내부 오류 */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "*/*": components["schemas"]["ApiResponseStreakDetailResult"];
+        };
+      };
+    };
+  };
+  getRanking: {
+    parameters: {
+      query?: {
+        /** @description 랭킹 조회 기준입니다. `ALL`은 전체 사용자 기준, `INTEREST`는 로그인한 사용자의 관심 주제 기준 랭킹을 의미합니다. */
+        filterType?: "ALL" | "INTEREST";
+        /** @description 반환할 랭킹 목록의 개수입니다. 기본값은 10이며 최대 100까지 요청할 수 있습니다. */
+        size?: string;
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description 랭킹 상세 조회 성공 */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "*/*": components["schemas"]["ApiResponseRankingDetailResult"];
+        };
+      };
+      /** @description filterType 또는 size 파라미터가 올바르지 않음 */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "*/*": components["schemas"]["ApiResponseRankingDetailResult"];
+        };
+      };
+      /** @description 인증이 필요함 */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "*/*": components["schemas"]["ApiResponseRankingDetailResult"];
+        };
+      };
+      /** @description 서버 내부 오류 */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "*/*": components["schemas"]["ApiResponseRankingDetailResult"];
+        };
+      };
+    };
+  };
+  getRankingSummary: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description 랭킹 요약 조회 성공 */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "*/*": components["schemas"]["ApiResponseRankingSummaryResult"];
+        };
+      };
+      /** @description 서버 내부 오류 */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "*/*": components["schemas"]["ApiResponseRankingSummaryResult"];
+        };
+      };
+    };
+  };
+  getGradingLog: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        /** @description 채점 로그 ID */
+        gradingLogId: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description 채점 로그 조회 성공 */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "*/*": components["schemas"]["ApiResponseGradingLogResult"];
+        };
+      };
+      /** @description 인증 실패 */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description 해당 채점 기록에 대한 접근 권한 없음 */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description 채점 로그를 찾을 수 없음 */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description 서버 내부 오류 */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  getGradingDetailLog: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        /** @description 채점 로그 ID */
+        gradingLogId: string;
+        /** @description 퀴즈 ID */
+        quizId: number;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description 채점 상세 조회 성공 */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "*/*": components["schemas"]["ApiResponseGradingDetailLogResult"];
+        };
+      };
+      /** @description 인증 실패 */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description 해당 채점 기록에 대한 접근 권한 없음 */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description 채점 상세를 찾을 수 없음 */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description 서버 내부 오류 */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  getGradingLogList: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description 채점 기록 목록 조회 성공 */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "*/*": components["schemas"]["ApiResponseListGradingLogListResult"];
+        };
+      };
+      /** @description 인증 실패 */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description 서버 내부 오류 */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  getFeedback: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        /** @description 면접 세션 ID */
+        interviewId: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description 피드백 조회 성공 */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "*/*": components["schemas"]["ApiResponseFeedbackResult"];
+        };
+      };
+      /** @description 피드백 없음 */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  getAdminToken: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "*/*": components["schemas"]["ApiResponseAdminTokenResponse"];
+        };
+      };
+    };
+  };
 }
