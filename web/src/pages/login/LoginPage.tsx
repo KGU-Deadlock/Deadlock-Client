@@ -14,11 +14,7 @@ import { authQueries } from "@/api/auth/api.query";
 
 import { toastError } from "@/utils/toast";
 
-import { bridge } from "@/lib/bridge";
-
 const TERMINAL_LINE = "hello!";
-
-const isWebView = () => navigator.userAgent.includes("hellocswebview");
 
 function LoginTerminalHello() {
   const [display, setDisplay] = useState("");
@@ -83,7 +79,6 @@ export default function LoginPage() {
   });
 
   const [isKakaoReady, setIsKakaoReady] = useState(() => {
-    if (isWebView()) return true;
     if (window.Kakao) return true;
     const script = document.querySelector('script[src*="kakao"]');
     if (!script) return true;
@@ -132,28 +127,13 @@ export default function LoginPage() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const handleWebViewLogin = async () => {
-    const result = await bridge.kakaoLogin();
-    if (result.status === "error" || !result.code) {
-      toastError(result.errorMessage ?? "카카오 로그인에 실패했습니다.");
-      return;
-    }
-    mutate(result.code);
-  };
-
   const handleKakaoLogin = () => {
-    if (isWebView()) {
-      // Android / iOS: native Kakao SDK를 bridge를 통해 호출
-      void handleWebViewLogin();
-    } else {
-      // Web: Kakao JS SDK — authorize() 리다이렉트 방식
-      if (!window.Kakao.isInitialized()) {
-        window.Kakao.init(import.meta.env.VITE_KAKAO_JS_APP_KEY);
-      }
-      window.Kakao.Auth.authorize({
-        redirectUri: `${window.location.origin}/login`,
-      });
+    if (!window.Kakao.isInitialized()) {
+      window.Kakao.init(import.meta.env.VITE_KAKAO_JS_APP_KEY);
     }
+    window.Kakao.Auth.authorize({
+      redirectUri: `${window.location.origin}/login`,
+    });
   };
 
   const isButtonDisabled = isPending || isProcessingCode || !isKakaoReady;
