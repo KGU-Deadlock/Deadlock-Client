@@ -1,6 +1,6 @@
 export const END_POINTS = {
   AUTH: {
-    TOKEN: "auth/kakao",
+    TOKEN: "auth/token",
     REISSUE: "auth/reissue",
   },
   TOPIC: {
