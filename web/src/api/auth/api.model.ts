@@ -6,3 +6,8 @@ export type ReissueResponse =
 export type ReissueResult = components["schemas"]["AuthTokenResponse"];
 
 export type KakaoLoginResponse = components["schemas"]["AuthTokenResponse"];
+
+/** GET /v1/dev/admin-token */
+export type DevTokenResponse =
+  components["schemas"]["ApiResponseAdminTokenResponse"];
+export type DevTokenResult = components["schemas"]["AdminTokenResponse"];
