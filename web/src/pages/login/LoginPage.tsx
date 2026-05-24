@@ -1,142 +1,18 @@
 import { AppScreen } from "@stackflow/plugin-basic-ui";
-import { useMutation } from "@tanstack/react-query";
 import { motion } from "motion/react";
-import { useEffect, useState } from "react";
 import { RiKakaoTalkFill } from "react-icons/ri";
-
-import { useFlow } from "@/app/stackflow";
 
 import { Button } from "@/components/common";
 
-import { useAuthStore } from "@/model/auth/useAuthStore";
-
-import { authQueries } from "@/api/auth/api.query";
-
-import { toastError } from "@/utils/toast";
-
-const TERMINAL_LINE = "hello!";
-
-function LoginTerminalHello() {
-  const [display, setDisplay] = useState("");
-
-  useEffect(() => {
-    let cancelled = false;
-
-    const run = async () => {
-      while (!cancelled) {
-        for (let i = 0; i <= TERMINAL_LINE.length; i++) {
-          if (cancelled) return;
-          setDisplay(TERMINAL_LINE.slice(0, i));
-          await new Promise((r) => setTimeout(r, 95));
-        }
-        await new Promise((r) => setTimeout(r, 1600));
-        for (let i = TERMINAL_LINE.length; i >= 0; i--) {
-          if (cancelled) return;
-          setDisplay(TERMINAL_LINE.slice(0, i));
-          await new Promise((r) => setTimeout(r, 42));
-        }
-        await new Promise((r) => setTimeout(r, 700));
-      }
-    };
-
-    void run();
-    return () => {
-      cancelled = true;
-    };
-  }, []);
-
-  return (
-    <div
-      className="h-fit w-max max-w-[min(92vw,240px)] px-3 py-1 font-mono text-sm"
-      aria-hidden
-    >
-      <div className="text-blue-004 flex min-h-5 items-center gap-0.5 whitespace-nowrap">
-        <span className="text-blue-003 mr-1 shrink-0 select-none">{"$"}</span>
-        <span className="h-[1.5em] shrink-0 text-lg">{display}</span>
-        <motion.span
-          className="bg-blue-004 inline-block h-[1.5em] w-1 shrink-0"
-          animate={{ opacity: [1, 0.2, 1] }}
-          transition={{
-            duration: 0.85,
-            repeat: Infinity,
-            ease: "easeInOut",
-          }}
-          aria-hidden
-        />
-      </div>
-    </div>
-  );
-}
+import { LoginTerminalHello } from "./LoginTerminalHello";
+import { useLoginPage } from "./useLoginPage";
 
 export default function LoginPage() {
-  const { replace } = useFlow();
-  const { setAccessToken, setIsInitialized } = useAuthStore();
+  const { isKakaoReady, isPending, isDevPending, handleKakaoLogin, handleDevLogin } =
+    useLoginPage();
 
-  // URL에 code가 있으면 리다이렉트 복귀 상태 → 즉시 로딩으로 표시
-  const [isProcessingCode] = useState(() => {
-    const params = new URLSearchParams(window.location.search);
-    return params.has("code");
-  });
-
-  const [isKakaoReady, setIsKakaoReady] = useState(() => {
-    if (window.Kakao) return true;
-    const script = document.querySelector('script[src*="kakao"]');
-    if (!script) return true;
-    return false;
-  });
-
-  useEffect(() => {
-    if (isKakaoReady) return;
-    const script = document.querySelector<HTMLScriptElement>(
-      'script[src*="kakao"]',
-    );
-    if (!script) return;
-    const onLoad = () => setIsKakaoReady(true);
-    script.addEventListener("load", onLoad);
-    return () => script.removeEventListener("load", onLoad);
-  }, [isKakaoReady]);
-
-  const { mutate, isPending } = useMutation({
-    ...authQueries.kakaoLoginMutation(),
-    onSuccess: (data) => {
-      setAccessToken(data.accessToken);
-      if (data.isUser) {
-        setIsInitialized(true);
-        replace("HomePage", {}, { animate: false });
-      } else {
-        setIsInitialized(false);
-        replace(
-          "OnboardingNamePage",
-          { name: data.userData?.nickname },
-          { animate: false },
-        );
-      }
-    },
-    onError: (error) => {
-      toastError(error.message);
-    },
-  });
-
-  // 카카오 리다이렉트 복귀 시 URL의 code 파라미터로 로그인
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const code = params.get("code");
-    if (!code) return;
-    window.history.replaceState({}, "", window.location.pathname);
-    mutate(code);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const handleKakaoLogin = () => {
-    if (!window.Kakao.isInitialized()) {
-      window.Kakao.init(import.meta.env.VITE_KAKAO_JS_APP_KEY);
-    }
-    window.Kakao.Auth.authorize({
-      redirectUri: `${window.location.origin}/login`,
-    });
-  };
-
-  const isButtonDisabled = isPending || isProcessingCode || !isKakaoReady;
+  const isDev = import.meta.env.DEV;
+  const isButtonDisabled = isPending || !isKakaoReady;
 
   return (
     <AppScreen className="relative overflow-hidden bg-white">
@@ -170,7 +46,25 @@ export default function LoginPage() {
           </p>
         </div>
 
-        <div className="px-gutter relative z-10 pb-10 w-full">
+        <div className="px-gutter relative z-10 w-full pb-10">
+          {isDev && (
+            <Button
+              size="large"
+              state={isButtonDisabled ? "disabled" : "active"}
+              className="mb-3 w-full"
+              onClick={handleDevLogin}
+              disabled={isButtonDisabled}
+            >
+              {isDevPending ? (
+                <span className="flex items-center gap-2">
+                  <span className="border-gray-004 h-5 w-5 animate-spin rounded-full border-2 border-t-transparent" />
+                  로딩 중...
+                </span>
+              ) : (
+                "[DEV] 개발자 로그인"
+              )}
+            </Button>
+          )}
           <Button
             size="large"
             state={isButtonDisabled ? "disabled" : "kakao"}
@@ -178,7 +72,7 @@ export default function LoginPage() {
             onClick={handleKakaoLogin}
             disabled={isButtonDisabled}
           >
-            {!isKakaoReady || isProcessingCode || isPending ? (
+            {isPending && !isDevPending ? (
               <span className="flex items-center gap-2">
                 <span className="border-gray-004 h-5 w-5 animate-spin rounded-full border-2 border-t-transparent" />
                 로딩 중...
