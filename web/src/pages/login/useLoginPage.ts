@@ -1,16 +1,13 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 
-import { useFlow } from "@/app/stackflow";
-
 import { useAuthStore } from "@/model/auth/useAuthStore";
 
 import { authQueries } from "@/api/auth/api.query";
 
-import { toastError } from "@/utils/toast";
+import { toastError, toastSuccess } from "@/utils/toast";
 
 export function useLoginPage() {
-  const { replace } = useFlow();
   const { setAccessToken, setIsInitialized } = useAuthStore();
 
   const [isProcessingCode] = useState(() => {
@@ -37,19 +34,19 @@ export function useLoginPage() {
   }, [isKakaoReady]);
 
   const handleLoginSuccess = (accessToken: string, isUser?: boolean) => {
+    toastSuccess("로그인에 성공했어요");
     setAccessToken(accessToken);
     if (isUser) {
       setIsInitialized(true);
-      replace("HomePage", {}, { animate: false });
+      window.location.replace("/");
     } else {
       setIsInitialized(false);
-      replace("OnboardingNamePage", {}, { animate: false });
+      window.location.replace("/onboarding/name");
     }
   };
 
-  const { mutateAsync: loginWithKakao, isPending: isKakaoPending } = useMutation(
-    authQueries.kakaoLoginMutation(),
-  );
+  const { mutateAsync: loginWithKakao, isPending: isKakaoPending } =
+    useMutation(authQueries.kakaoLoginMutation());
 
   const { refetch: fetchDevToken, isFetching: isDevPending } = useQuery({
     ...authQueries.getDevTokenQuery(),
