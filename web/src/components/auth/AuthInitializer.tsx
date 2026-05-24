@@ -57,12 +57,12 @@ export function AuthInitializer({ children }: AuthInitializerProps) {
         const res = await postReissueToken();
         if (!res.ok) return;
 
-        const token = res.data.data?.accessToken;
+        const token = res.data.accessToken;
         if (!token) return;
 
         if (cancelled) return;
         setAccessToken(token);
-        setIsInitialized(Boolean(res.data.data?.isUser));
+        setIsInitialized(Boolean(res.data.isUser));
       } finally {
         if (!cancelled) {
           setIsBootstrappingAuth(false);

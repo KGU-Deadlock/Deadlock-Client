@@ -42,7 +42,7 @@ async function refreshAccessToken(): Promise<string | null> {
         if (!result.ok) {
           return null;
         }
-        const token = result.data.data?.accessToken;
+        const token = result.data.accessToken;
         if (!token) {
           return null;
         }
