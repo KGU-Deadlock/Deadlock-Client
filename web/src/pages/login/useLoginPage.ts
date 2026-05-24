@@ -1,6 +1,8 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 
+import { useFlow } from "@/app/stackflow";
+
 import { useAuthStore } from "@/model/auth/useAuthStore";
 
 import { authQueries } from "@/api/auth/api.query";
@@ -8,6 +10,7 @@ import { authQueries } from "@/api/auth/api.query";
 import { toastError, toastSuccess } from "@/utils/toast";
 
 export function useLoginPage() {
+  const { replace } = useFlow();
   const { setAccessToken, setIsInitialized } = useAuthStore();
 
   const [isProcessingCode] = useState(() => {
@@ -37,6 +40,11 @@ export function useLoginPage() {
     toastSuccess("로그인에 성공했어요");
     setAccessToken(accessToken);
     setIsInitialized(Boolean(isUser));
+    if (isUser) {
+      replace("HomePage", {}, { animate: false });
+    } else {
+      replace("OnboardingNamePage", {}, { animate: false });
+    }
   };
 
   const { mutateAsync: loginWithKakao, isPending: isKakaoPending } =
