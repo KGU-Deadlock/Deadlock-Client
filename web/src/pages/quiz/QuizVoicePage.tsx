@@ -2,8 +2,7 @@ import type { ActivityComponentType } from "@stackflow/react";
 import { useEffect, useMemo } from "react";
 import { BsFillSendFill } from "react-icons/bs";
 import { FaMicrophone } from "react-icons/fa";
-import { IoClose } from "react-icons/io5";
-import { IoStop } from "react-icons/io5";
+import { IoClose, IoStop } from "react-icons/io5";
 
 import { useFlow } from "@/app/stackflow";
 
@@ -14,12 +13,12 @@ import { useVoiceQuiz } from "@/model/quiz/useVoiceQuiz";
 
 import type { GetQuizResult } from "@/api/quiz/api.model";
 
+import { useMicRecording } from "@/lib/bridge/useMicRecording";
 import { cn } from "@/utils/cn";
 import { formatQuizAnswerDisplay } from "@/utils/formatQuizAnswerDisplay";
 import { toastError } from "@/utils/toast";
 
 import { QUIZ_MODE } from "@/constants/quiz/quiz";
-import { useMicRecording } from "@/lib/bridge/useMicRecording";
 
 interface QuizVoicePageProps {
   topic: string;
@@ -32,7 +31,8 @@ const QuizVoicePage: ActivityComponentType<QuizVoicePageProps> = ({
 }) => {
   const { push } = useFlow();
 
-  const { start, stop, state, transcript: micTranscript, errorMessage } = useMicRecording();
+  const { start, stop, reset, state, transcript: micTranscript, errorMessage } =
+    useMicRecording();
   const isRecording = state === "recording";
 
   const quizData: GetQuizResult | null = params.quizData
@@ -43,6 +43,7 @@ const QuizVoicePage: ActivityComponentType<QuizVoicePageProps> = ({
     [quizData?.voiceQuizzes],
   );
   const totalQuizCount = 3;
+
   const {
     currentQuiz,
     currentQuizNumber,
@@ -56,20 +57,20 @@ const QuizVoicePage: ActivityComponentType<QuizVoicePageProps> = ({
     onComplete: (answers) => {
       push(
         "QuizCompletePage",
-        {
-          userAnswers: JSON.stringify(answers),
-        },
+        { userAnswers: JSON.stringify(answers) },
         { animate: false },
       );
     },
   });
 
+  // 실시간으로 인식된 텍스트를 transcript에 반영
   useEffect(() => {
-    if (state === "done" && micTranscript) {
+    if (micTranscript) {
       setTranscript(micTranscript);
     }
-  }, [state, micTranscript, setTranscript]);
+  }, [micTranscript, setTranscript]);
 
+  // 에러 처리
   useEffect(() => {
     if (state === "error" && errorMessage) {
       toastError(errorMessage);
@@ -84,6 +85,11 @@ const QuizVoicePage: ActivityComponentType<QuizVoicePageProps> = ({
     }
   };
 
+  const handleCancelWithReset = () => {
+    reset();
+    handleCancel();
+  };
+
   return (
     <QuizLayout
       current={currentQuizNumber}
@@ -96,7 +102,7 @@ const QuizVoicePage: ActivityComponentType<QuizVoicePageProps> = ({
                 size="large"
                 state="ghost_background"
                 className="size-fit rounded-full p-6"
-                onClick={handleCancel}
+                onClick={handleCancelWithReset}
               >
                 <IoClose size={24} />
               </Button>
