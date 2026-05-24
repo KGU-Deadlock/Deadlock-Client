@@ -4,7 +4,13 @@ import { lazy } from "react";
 import type { ActivityEntry } from "./stackflow-util";
 
 const HomePage = lazy(() => import("@/pages/home/HomePage"));
+const InterviewFeedbackPage = lazy(
+  () => import("@/pages/interview/InterviewFeedbackPage"),
+);
 const InterviewPage = lazy(() => import("@/pages/interview/InterviewPage"));
+const InterviewSolvePage = lazy(
+  () => import("@/pages/interview/InterviewSolvePage"),
+);
 const LoginPage = lazy(() => import("@/pages/login/LoginPage"));
 const OnboardingCompletePage = lazy(
   () => import("@/pages/onboarding/OnboardingCompletePage"),
@@ -128,5 +134,15 @@ export const Route: ActivityEntry[] = [
     name: "InterviewPage",
     component: InterviewPage,
     path: "/interview",
+  },
+  {
+    name: "InterviewSolvePage",
+    component: InterviewSolvePage,
+    path: "/interview/solve",
+  },
+  {
+    name: "InterviewFeedbackPage",
+    component: InterviewFeedbackPage,
+    path: "/interview/feedback",
   },
 ];
