@@ -8,7 +8,7 @@ export function postKakaoLogin(
   code: string,
 ): Promise<ApiResult<KakaoLoginResponse>> {
   return baseApi.post<KakaoLoginResponse, { code: string }>(
-    END_POINTS.AUTH.TOKEN,
+    END_POINTS.AUTH.KAKAO,
     { code },
   );
 }
