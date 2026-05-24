@@ -29,4 +29,10 @@ export const END_POINTS = {
     DETAIL: "streak/detail",
     SUMMARY: "streak",
   },
+  INTERVIEW: {
+    START: "interview/start",
+    ANSWER: (interviewId: string) => `interview/${interviewId}/answer`,
+    COMPLETE: (interviewId: string) => `interview/${interviewId}/complete`,
+    FEEDBACK: (interviewId: string) => `interview/${interviewId}/feedback`,
+  },
 } as const;
