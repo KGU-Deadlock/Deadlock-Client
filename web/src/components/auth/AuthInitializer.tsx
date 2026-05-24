@@ -95,10 +95,7 @@ export function AuthInitializer({ children }: AuthInitializerProps) {
     }
 
     if (!nextInitialized) {
-      if (
-        currentActivity !== "LoginPage" &&
-        !ONBOARDING_ACTIVITIES.has(currentActivity)
-      ) {
+      if (!ONBOARDING_ACTIVITIES.has(currentActivity)) {
         replace("OnboardingNamePage", {}, { animate: false });
       }
       return;

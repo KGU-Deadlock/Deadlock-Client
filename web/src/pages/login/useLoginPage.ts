@@ -36,13 +36,7 @@ export function useLoginPage() {
   const handleLoginSuccess = (accessToken: string, isUser?: boolean) => {
     toastSuccess("로그인에 성공했어요");
     setAccessToken(accessToken);
-    if (isUser) {
-      setIsInitialized(true);
-      window.location.replace("/");
-    } else {
-      setIsInitialized(false);
-      window.location.replace("/onboarding/name");
-    }
+    setIsInitialized(Boolean(isUser));
   };
 
   const { mutateAsync: loginWithKakao, isPending: isKakaoPending } =
