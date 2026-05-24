@@ -35,13 +35,9 @@ export function AuthInitializer({ children }: AuthInitializerProps) {
   const currentActivity = stack.activities[stack.activities.length - 1]?.name;
   const isAppRoute = isStackflowRoute(window.location.pathname);
 
+  // 앱 초기화 시 refresh token 쿠키로 세션 복원
   useEffect(() => {
-    if (!isAppRoute) {
-      setIsBootstrappingAuth(false);
-      return;
-    }
-
-    if (isLoggedOut) {
+    if (!isAppRoute || isLoggedOut) {
       setIsBootstrappingAuth(false);
       return;
     }
@@ -55,46 +51,32 @@ export function AuthInitializer({ children }: AuthInitializerProps) {
     const bootstrapAuth = async () => {
       try {
         const res = await postReissueToken();
-        if (!res.ok) return;
-
-        const token = res.data.accessToken;
-        if (!token) return;
-
+        if (!res.ok || !res.data.accessToken) return;
         if (cancelled) return;
-        setAccessToken(token);
+        setAccessToken(res.data.accessToken);
         setIsInitialized(Boolean(res.data.isUser));
       } finally {
-        if (!cancelled) {
-          setIsBootstrappingAuth(false);
-        }
+        if (!cancelled) setIsBootstrappingAuth(false);
       }
     };
 
     void bootstrapAuth();
-
     return () => {
       cancelled = true;
     };
   }, [accessToken, isAppRoute, isLoggedOut, setAccessToken, setIsInitialized]);
 
   useEffect(() => {
-    if (!isAppRoute) return;
-    if (isBootstrappingAuth) return;
+    if (!isAppRoute || isBootstrappingAuth || !currentActivity) return;
 
-    const { accessToken: nextToken, isInitialized: nextInitialized } =
-      useAuthStore.getState();
-
-    const hasToken = Boolean(nextToken);
-    if (!currentActivity) return;
-
-    if (!hasToken) {
+    if (!accessToken) {
       if (currentActivity !== "LoginPage") {
         replace("LoginPage", {}, { animate: false });
       }
       return;
     }
 
-    if (!nextInitialized) {
+    if (!isInitialized) {
       if (!ONBOARDING_ACTIVITIES.has(currentActivity)) {
         replace("OnboardingNamePage", {}, { animate: false });
       }
@@ -113,26 +95,22 @@ export function AuthInitializer({ children }: AuthInitializerProps) {
     replace,
   ]);
 
-  if (!isAppRoute) {
-    return <>{children}</>;
-  }
+  if (!isAppRoute) return <>{children}</>;
   if (isBootstrappingAuth) return null;
 
   const hasToken = Boolean(accessToken);
-  const target = !hasToken
-    ? "LoginPage"
-    : isInitialized
-      ? null
-      : currentActivity === "LoginPage"
-        ? null
-        : ONBOARDING_ACTIVITIES.has(currentActivity ?? "")
-          ? null
-          : "OnboardingNamePage";
 
-  const isRedirecting = Boolean(
-    target && currentActivity && currentActivity !== target,
-  );
-  if (isRedirecting) return null;
+  if (!hasToken && currentActivity !== "LoginPage") return null;
+
+  if (
+    hasToken &&
+    !isInitialized &&
+    !ONBOARDING_ACTIVITIES.has(currentActivity ?? "")
+  ) {
+    return null;
+  }
+
+  if (hasToken && isInitialized && currentActivity === "LoginPage") return null;
 
   return <>{children}</>;
 }
