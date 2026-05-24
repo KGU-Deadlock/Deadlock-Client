@@ -5,7 +5,10 @@ import { apiClientHandler, type ApiResult } from "./api-client-handler";
 
 function createHttpMethod(apiClient: KyInstance) {
   const get = <T>(url: string, options?: Options): Promise<ApiResult<T>> => {
-    return apiClientHandler(apiClient, url, options);
+    return apiClientHandler(apiClient, url, {
+      headers: { Accept: "application/json" },
+      ...options,
+    });
   };
 
   const post = <T, B>(
