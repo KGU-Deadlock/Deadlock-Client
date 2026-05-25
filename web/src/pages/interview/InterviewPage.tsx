@@ -70,7 +70,7 @@ export default function InterviewPage() {
       <div className="px-gutter pt-header flex flex-col gap-6">
         <div>
           <PageTitle>
-            <span>모의 면접</span>
+            <span className="text-start">모의 면접</span>
           </PageTitle>
           <Subtitle className="mt-2">
             회사명과 직무를 입력하면 AI가 맞춤 질문을 준비해요.
@@ -81,7 +81,7 @@ export default function InterviewPage() {
           <div className="flex flex-col gap-1.5">
             <label className="text-gray-005 text-sm font-medium">회사명</label>
             <input
-              className="border-gray-003 focus:border-blue-004 rounded-xl border px-4 py-3 text-sm outline-none transition-colors"
+              className="border-gray-003 focus:border-blue-004 rounded-xl border px-4 py-3 text-sm transition-colors outline-none"
               placeholder="예) 카카오"
               value={companyName}
               onChange={(e) => setCompanyName(e.target.value)}
@@ -90,7 +90,7 @@ export default function InterviewPage() {
           <div className="flex flex-col gap-1.5">
             <label className="text-gray-005 text-sm font-medium">직무</label>
             <input
-              className="border-gray-003 focus:border-blue-004 rounded-xl border px-4 py-3 text-sm outline-none transition-colors"
+              className="border-gray-003 focus:border-blue-004 rounded-xl border px-4 py-3 text-sm transition-colors outline-none"
               placeholder="예) 백엔드 개발자"
               value={position}
               onChange={(e) => setPosition(e.target.value)}

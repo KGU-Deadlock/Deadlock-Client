@@ -84,7 +84,7 @@ const OnboardingInterestPage: ActivityComponentType<
           state={selectedInterest ? "active" : "disabled"}
           onClick={handleComplete}
         >
-          가입 완료
+          다음
         </Button>
       </Footer>
     </AppScreen>
