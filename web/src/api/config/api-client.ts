@@ -5,9 +5,9 @@ import ky, {
   type NormalizedOptions,
 } from "ky";
 
-import { useAuthStore } from "@/model/auth/useAuthStore";
-
 import type { ReissueResponse } from "@/api/auth/api.model";
+
+import { tokenStorage } from "@/utils/token";
 
 import { apiClientHandler } from "./api-client-handler";
 import { END_POINTS } from "./api-endpoints";
@@ -27,7 +27,7 @@ export const baseApiClient = ky.extend({
 let refreshAccessTokenPromise: Promise<string | null> | null = null;
 
 async function refreshAccessToken(): Promise<string | null> {
-  if (useAuthStore.getState().isLoggedOut) {
+  if (tokenStorage.getIsLoggedOut()) {
     return null;
   }
 
@@ -46,7 +46,7 @@ async function refreshAccessToken(): Promise<string | null> {
         if (!token) {
           return null;
         }
-        useAuthStore.getState().setAccessToken(token);
+        tokenStorage.setToken(token);
         return token;
       } finally {
         refreshAccessTokenPromise = null;
@@ -57,7 +57,7 @@ async function refreshAccessToken(): Promise<string | null> {
 }
 
 const beforeRequestHandler = (request: KyRequest) => {
-  const token = useAuthStore.getState().accessToken;
+  const token = tokenStorage.getToken();
   if (token) {
     request.headers.set("Authorization", `Bearer ${token}`);
   }
@@ -78,13 +78,13 @@ const afterResponseHook = async (
   }
 
   if (request.headers.get(AUTH_RETRY_HEADER) === "1") {
-    useAuthStore.getState().logout();
+    tokenStorage.logout();
     return response;
   }
 
   const token = await refreshAccessToken();
   if (!token) {
-    useAuthStore.getState().logout();
+    tokenStorage.logout();
     return response;
   }
 
