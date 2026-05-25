@@ -72,9 +72,9 @@ export function useLoginPage() {
       .then((data) => {
         console.log(data);
         handleLoginSuccess(
-          data.accessToken!,
-          data.isUser,
-          data.userData?.nickname,
+          data.data!.accessToken!,
+          data.data!.isUser,
+          data.data!.userData?.nickname,
         );
       })
       .catch((error: Error) => toastError(error.message));

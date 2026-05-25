@@ -1,9 +1,19 @@
 import type { components } from "@/api/config/api-models";
 
-/** POST /v1/auth/reissue */
-export type ReissueResponse = components["schemas"]["AuthTokenResponse"];
+type AuthTokenResponse = components["schemas"]["AuthTokenResponse"];
 
-export type KakaoLoginResponse = components["schemas"]["AuthTokenResponse"];
+type ApiResponseAuthTokenResponse = {
+  isSuccess?: boolean;
+  code?: string;
+  message?: string;
+  data?: AuthTokenResponse;
+  success?: boolean;
+};
+
+/** POST /v1/auth/reissue */
+export type ReissueResponse = ApiResponseAuthTokenResponse;
+
+export type KakaoLoginResponse = ApiResponseAuthTokenResponse;
 
 /** GET /v1/dev/admin-token */
 export type DevTokenResponse =

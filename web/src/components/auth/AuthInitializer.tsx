@@ -60,7 +60,10 @@ export function AuthInitializer({ children }: AuthInitializerProps) {
     const bootstrapAuth = async () => {
       try {
         const res = await postReissueToken();
-        if (!res.ok || !res.data.accessToken) {
+        const tokenData = res.ok ? res.data.data : null;
+        const accessToken = tokenData?.accessToken;
+
+        if (!res.ok || !accessToken) {
           if (currentActivity && currentActivity !== "LoginPage") {
             replace("LoginPage", {}, { animate: false });
           }
@@ -68,12 +71,12 @@ export function AuthInitializer({ children }: AuthInitializerProps) {
         }
 
         tokenStorage.setLoginState({
-          accessToken: res.data.accessToken,
-          isInitialized: Boolean(res.data.isUser),
-          userName: res.data.userData?.nickname,
+          accessToken,
+          isInitialized: Boolean(tokenData.isUser),
+          userName: tokenData.userData?.nickname,
         });
 
-        if (res.data.isUser) {
+        if (tokenData.isUser) {
           if (currentActivity === "LoginPage") {
             replace("HomePage", {}, { animate: false });
           }
@@ -81,7 +84,7 @@ export function AuthInitializer({ children }: AuthInitializerProps) {
           if (!ONBOARDING_ACTIVITIES.has(currentActivity ?? "")) {
             replace(
               "OnboardingNamePage",
-              { name: res.data.userData?.nickname ?? "" },
+              { name: tokenData.userData?.nickname ?? "" },
               { animate: false },
             );
           }
