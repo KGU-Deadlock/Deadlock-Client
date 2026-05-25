@@ -10,6 +10,11 @@ interface AuthState {
   setIsInitialized: (value: boolean) => void;
   setLoggedOut: (value: boolean) => void;
   setUserName: (name: string | undefined) => void;
+  setLoginState: (params: {
+    accessToken: string;
+    isInitialized: boolean;
+    userName?: string;
+  }) => void;
   logout: () => void;
 }
 
@@ -28,6 +33,8 @@ export const useAuthStore = create<AuthState>()(
       setIsInitialized: (isInitialized) => set({ isInitialized }),
       setLoggedOut: (isLoggedOut) => set({ isLoggedOut }),
       setUserName: (userName) => set({ userName }),
+      setLoginState: ({ accessToken, isInitialized, userName }) =>
+        set({ accessToken, isInitialized, isLoggedOut: false, userName }),
       logout: () =>
         set({
           accessToken: undefined,

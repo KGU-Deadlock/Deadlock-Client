@@ -8,7 +8,7 @@ import { authQueries } from "@/api/auth/api.query";
 import { toastError, toastSuccess } from "@/utils/toast";
 
 export function useLoginPage() {
-  const { setAccessToken, setIsInitialized, setUserName } = useAuthStore();
+  const { setLoginState } = useAuthStore();
 
   const [isProcessingCode] = useState(() => {
     const params = new URLSearchParams(window.location.search);
@@ -39,9 +39,11 @@ export function useLoginPage() {
     nickname?: string,
   ) => {
     toastSuccess("로그인에 성공했어요");
-    setUserName(nickname);
-    setAccessToken(accessToken);
-    setIsInitialized(Boolean(isUser));
+    setLoginState({
+      accessToken,
+      isInitialized: Boolean(isUser),
+      userName: nickname,
+    });
     // 네비게이션은 AuthInitializer가 accessToken/isInitialized 변경을 감지해서 처리
   };
 
