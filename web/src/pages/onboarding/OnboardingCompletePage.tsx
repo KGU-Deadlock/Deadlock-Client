@@ -7,12 +7,11 @@ import { useFlow } from "@/app/stackflow";
 
 import { Button, Footer, LoadingSpinner, Title } from "@/components/common";
 
-import { useAuthStore } from "@/model/auth/useAuthStore";
-
 import { userQueries } from "@/api/user/api.query";
 import type { QuizLevel } from "@/api/user/api.type";
 
 import { toastError } from "@/utils/toast";
+import { tokenStorage } from "@/utils/token";
 
 interface OnboardingCompletePageProps {
   name: string;
@@ -25,7 +24,6 @@ const OnboardingCompletePage: ActivityComponentType<
 > = ({ params }) => {
   const { name, interest, quizLevel } = params;
   const { push } = useFlow();
-  const { setIsInitialized } = useAuthStore();
   const {
     mutate: postUserJoin,
     isPending,
@@ -43,7 +41,7 @@ const OnboardingCompletePage: ActivityComponentType<
       },
       {
         onSuccess: () => {
-          setIsInitialized(true);
+          tokenStorage.setIsInitialized(true);
         },
         onError: (error) => {
           toastError(error.message);

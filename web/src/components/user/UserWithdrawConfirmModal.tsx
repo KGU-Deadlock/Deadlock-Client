@@ -2,7 +2,6 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { Button, Modal, Subtitle } from "@/components/common";
 
-import { useAuthStore } from "@/model/auth/useAuthStore";
 import { useModalClose } from "@/model/common";
 import { useUserStore } from "@/model/user/useUserStore";
 
@@ -10,6 +9,7 @@ import { userQueries } from "@/api/user/api.query";
 
 import { cn } from "@/utils/cn";
 import { toastError, toastSuccess } from "@/utils/toast";
+import { tokenStorage } from "@/utils/token";
 
 interface UserWithdrawConfirmModalProps {
   onClose: () => void;
@@ -19,14 +19,13 @@ export default function UserWithdrawConfirmModal({
   onClose,
 }: UserWithdrawConfirmModalProps) {
   const queryClient = useQueryClient();
-  const logout = useAuthStore((s) => s.logout);
   const resetUser = useUserStore((s) => s.reset);
 
   const { mutate: withdraw, isPending } = useMutation({
     ...userQueries.deleteUserWithdrawMutation(),
     onSuccess: () => {
       queryClient.clear();
-      logout();
+      tokenStorage.logout();
       resetUser();
       toastSuccess("회원 탈퇴가 완료되었어요.");
       onClose();
