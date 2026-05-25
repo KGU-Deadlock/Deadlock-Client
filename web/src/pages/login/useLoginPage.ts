@@ -52,7 +52,6 @@ export function useLoginPage() {
     const params = new URLSearchParams(window.location.search);
     const code = params.get("code");
     if (!code) return;
-    window.history.replaceState({}, "", window.location.pathname);
     loginWithKakao(code)
       .then((data) => handleLoginSuccess(data.accessToken!, data.isUser))
       .catch((error: Error) => toastError(error.message));

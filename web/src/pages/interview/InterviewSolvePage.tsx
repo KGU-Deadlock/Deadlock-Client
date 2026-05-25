@@ -6,9 +6,9 @@ import { useFlow } from "@/app/stackflow";
 
 import { Button, Footer, Header } from "@/components/common";
 
-import type { QuestionResult } from "@/api/interview/api.model";
-
 import { useInterviewSolve } from "@/model/interview/useInterviewSolve";
+
+import type { QuestionResult } from "@/api/interview/api.model";
 
 interface InterviewSolvePageProps {
   interviewId: string;

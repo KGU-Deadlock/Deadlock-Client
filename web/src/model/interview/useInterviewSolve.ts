@@ -1,13 +1,13 @@
 import { useMutation } from "@tanstack/react-query";
 import { useCallback, useEffect, useRef, useState } from "react";
 
-import type { QuestionResult } from "@/api/interview/api.model";
-import { interviewQueries } from "@/api/interview/api.query";
-
 import {
   getSpeechRecognitionAPI,
   type SpeechRecognitionInstance,
 } from "@/model/common/useSpeechRecognition";
+
+import type { QuestionResult } from "@/api/interview/api.model";
+import { interviewQueries } from "@/api/interview/api.query";
 
 import { toastError } from "@/utils/toast";
 
@@ -30,10 +30,12 @@ export function useInterviewSolve({
 
   const videoRef = useRef<HTMLVideoElement>(null);
   const recognitionRef = useRef<SpeechRecognitionInstance | null>(null);
-  const startTimeRef = useRef<number>(Date.now());
+  const startTimeRef = useRef<number>(0);
   const transcriptRef = useRef("");
   const onCompleteRef = useRef(onComplete);
-  onCompleteRef.current = onComplete;
+  useEffect(() => {
+    onCompleteRef.current = onComplete;
+  });
 
   const currentQuestion = questions[currentIndex];
   const totalCount = questions.length;

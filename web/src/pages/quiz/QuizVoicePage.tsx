@@ -13,12 +13,12 @@ import { useVoiceQuiz } from "@/model/quiz/useVoiceQuiz";
 
 import type { GetQuizResult } from "@/api/quiz/api.model";
 
-import { useMicRecording } from "@/lib/bridge/useMicRecording";
 import { cn } from "@/utils/cn";
 import { formatQuizAnswerDisplay } from "@/utils/formatQuizAnswerDisplay";
 import { toastError } from "@/utils/toast";
 
 import { QUIZ_MODE } from "@/constants/quiz/quiz";
+import { useMicRecording } from "@/lib/bridge/useMicRecording";
 
 interface QuizVoicePageProps {
   topic: string;
