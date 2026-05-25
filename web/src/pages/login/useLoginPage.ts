@@ -1,6 +1,8 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 
+import { useFlow } from "@/app/stackflow";
+
 import { useAuthStore } from "@/model/auth/useAuthStore";
 
 import { authQueries } from "@/api/auth/api.query";
@@ -8,6 +10,7 @@ import { authQueries } from "@/api/auth/api.query";
 import { toastError, toastSuccess } from "@/utils/toast";
 
 export function useLoginPage() {
+  const { replace } = useFlow();
   const { setLoginState } = useAuthStore();
 
   const [isProcessingCode] = useState(() => {
@@ -44,7 +47,11 @@ export function useLoginPage() {
       isInitialized: Boolean(isUser),
       userName: nickname,
     });
-    // 네비게이션은 AuthInitializer가 accessToken/isInitialized 변경을 감지해서 처리
+    if (isUser) {
+      replace("HomePage", {}, { animate: false });
+    } else {
+      replace("OnboardingNamePage", { name: nickname ?? "" }, { animate: false });
+    }
   };
 
   const { mutateAsync: loginWithKakao, isPending: isKakaoPending } =
