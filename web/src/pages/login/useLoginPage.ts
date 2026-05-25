@@ -67,14 +67,16 @@ export function useLoginPage() {
     const params = new URLSearchParams(window.location.search);
     const code = params.get("code");
     if (!code) return;
+
     loginWithKakao(code)
-      .then((data) =>
+      .then((data) => {
+        console.log(data);
         handleLoginSuccess(
           data.accessToken!,
           data.isUser,
           data.userData?.nickname,
-        ),
-      )
+        );
+      })
       .catch((error: Error) => toastError(error.message));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
