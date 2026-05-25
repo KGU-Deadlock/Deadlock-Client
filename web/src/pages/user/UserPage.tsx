@@ -18,7 +18,6 @@ import {
   UserWithdrawConfirmModal,
 } from "@/components/user";
 
-import { useAuthStore } from "@/model/auth/useAuthStore";
 import { useUserStore } from "@/model/user/useUserStore";
 
 import { quizQueries } from "@/api/quiz/api.query";
@@ -27,10 +26,10 @@ import {
   formatNicknameInput,
   NICKNAME_MAX_LENGTH,
 } from "@/utils/formatNicknameInput";
+import { tokenStorage } from "@/utils/token";
 
 export default function UserPage() {
   const { push } = useFlow();
-  const { logout } = useAuthStore();
   const { profile, name, interest } = useUserStore();
   const [editOpen, setEditOpen] = useState(false);
   const [withdrawOpen, setWithdrawOpen] = useState(false);
@@ -39,7 +38,7 @@ export default function UserPage() {
   const handleLogout = () => {
     queryClient.cancelQueries();
     queryClient.clear();
-    logout();
+    tokenStorage.logout();
   };
 
   const {

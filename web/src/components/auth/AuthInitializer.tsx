@@ -4,9 +4,9 @@ import { useEffect, useState, type ReactNode } from "react";
 import { isStackflowRoute } from "@/app/route-match";
 import { useFlow } from "@/app/stackflow";
 
-import { useAuthStore } from "@/model/auth/useAuthStore";
-
 import { postReissueToken } from "@/api/auth/postReissueToken";
+
+import { AUTH_LOGOUT_EVENT, tokenStorage } from "@/utils/token";
 
 interface AuthInitializerProps {
   children: ReactNode;
@@ -29,15 +29,17 @@ export function AuthInitializer({ children }: AuthInitializerProps) {
 
   // 앱 첫 진입 시 인증 초기화 (한 번만 실행)
   useEffect(() => {
-    const { accessToken, isLoggedOut, isInitialized, userName, setLoginState } =
-      useAuthStore.getState();
+    const accessToken = tokenStorage.getToken();
+    const isLoggedOut = tokenStorage.getIsLoggedOut();
+    const isInitialized = tokenStorage.getIsInitialized();
+    const userName = tokenStorage.getUserName();
 
     if (!isAppRoute || isLoggedOut) {
       setIsBootstrappingAuth(false);
       return;
     }
 
-    // sessionStorage에 토큰이 이미 있으면 reissue 생략
+    // localStorage에 토큰이 이미 있으면 reissue 생략
     if (accessToken) {
       setIsBootstrappingAuth(false);
       if (currentActivity === "LoginPage") {
@@ -65,7 +67,7 @@ export function AuthInitializer({ children }: AuthInitializerProps) {
           return;
         }
 
-        setLoginState({
+        tokenStorage.setLoginState({
           accessToken: res.data.accessToken,
           isInitialized: Boolean(res.data.isUser),
           userName: res.data.userData?.nickname,
@@ -95,11 +97,9 @@ export function AuthInitializer({ children }: AuthInitializerProps) {
 
   // 토큰 소멸 감지 (만료/로그아웃) → 로그인 페이지로 이동
   useEffect(() => {
-    return useAuthStore.subscribe((state, prevState) => {
-      if (prevState.accessToken && !state.accessToken) {
-        replace("LoginPage", {}, { animate: false });
-      }
-    });
+    const handler = () => replace("LoginPage", {}, { animate: false });
+    window.addEventListener(AUTH_LOGOUT_EVENT, handler);
+    return () => window.removeEventListener(AUTH_LOGOUT_EVENT, handler);
   }, [replace]);
 
   if (!isAppRoute) return <>{children}</>;

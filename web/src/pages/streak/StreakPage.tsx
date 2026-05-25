@@ -5,12 +5,12 @@ import { Card, Header, Title, Scrollable } from "@/components/common";
 import { BackButton } from "@/components/common";
 import { StreakBoard, StreakCalendar } from "@/components/streak";
 
-import { useAuthStore } from "@/model/auth/useAuthStore";
+import { useIsLoggedOut } from "@/model/auth/useIsLoggedOut";
 
 import { streakQueries } from "@/api/streak/api.query";
 
 export default function StreakPage() {
-  const isLoggedOut = useAuthStore((s) => s.isLoggedOut);
+  const isLoggedOut = useIsLoggedOut();
   const { data: streakDetail } = useQuery({
     ...streakQueries.getStreakDetailQuery(),
     enabled: !isLoggedOut,

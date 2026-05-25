@@ -3,15 +3,13 @@ import { useEffect, useState } from "react";
 
 import { useFlow } from "@/app/stackflow";
 
-import { useAuthStore } from "@/model/auth/useAuthStore";
-
 import { authQueries } from "@/api/auth/api.query";
 
 import { toastError, toastSuccess } from "@/utils/toast";
+import { tokenStorage } from "@/utils/token";
 
 export function useLoginPage() {
   const { replace } = useFlow();
-  const { setLoginState } = useAuthStore();
 
   const [isProcessingCode] = useState(() => {
     const params = new URLSearchParams(window.location.search);
@@ -42,7 +40,7 @@ export function useLoginPage() {
     nickname?: string,
   ) => {
     toastSuccess("로그인에 성공했어요");
-    setLoginState({
+    tokenStorage.setLoginState({
       accessToken,
       isInitialized: Boolean(isUser),
       userName: nickname,

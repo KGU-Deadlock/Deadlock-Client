@@ -10,7 +10,7 @@ import { Card, Subtitle, Title, Scrollable } from "@/components/common";
 import { RankingItem } from "@/components/ranking";
 import { StreakBoard } from "@/components/streak";
 
-import { useAuthStore } from "@/model/auth/useAuthStore";
+import { useIsLoggedOut } from "@/model/auth/useIsLoggedOut";
 import { useUserStore } from "@/model/user/useUserStore";
 
 import { rankingQueries } from "@/api/ranking/api.query";
@@ -20,7 +20,7 @@ import { userQueries } from "@/api/user/api.query";
 export default function HomePage() {
   const { push } = useFlow();
   const { setProfile, setName } = useUserStore();
-  const isLoggedOut = useAuthStore((s) => s.isLoggedOut);
+  const isLoggedOut = useIsLoggedOut();
   const { data } = useQuery({
     ...userQueries.getUserProfileQuery(),
     enabled: !isLoggedOut,
