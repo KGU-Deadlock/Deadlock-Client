@@ -8,7 +8,7 @@ import { authQueries } from "@/api/auth/api.query";
 import { toastError, toastSuccess } from "@/utils/toast";
 
 export function useLoginPage() {
-  const { setAccessToken, setIsInitialized } = useAuthStore();
+  const { setAccessToken, setIsInitialized, setUserName } = useAuthStore();
 
   const [isProcessingCode] = useState(() => {
     const params = new URLSearchParams(window.location.search);
@@ -33,8 +33,13 @@ export function useLoginPage() {
     return () => script.removeEventListener("load", onLoad);
   }, [isKakaoReady]);
 
-  const handleLoginSuccess = (accessToken: string, isUser?: boolean) => {
+  const handleLoginSuccess = (
+    accessToken: string,
+    isUser?: boolean,
+    nickname?: string,
+  ) => {
     toastSuccess("로그인에 성공했어요");
+    setUserName(nickname);
     setAccessToken(accessToken);
     setIsInitialized(Boolean(isUser));
     // 네비게이션은 AuthInitializer가 accessToken/isInitialized 변경을 감지해서 처리
@@ -52,7 +57,13 @@ export function useLoginPage() {
     const code = params.get("code");
     if (!code) return;
     loginWithKakao(code)
-      .then((data) => handleLoginSuccess(data.accessToken!, data.isUser))
+      .then((data) =>
+        handleLoginSuccess(
+          data.accessToken!,
+          data.isUser,
+          data.userData?.nickname,
+        ),
+      )
       .catch((error: Error) => toastError(error.message));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

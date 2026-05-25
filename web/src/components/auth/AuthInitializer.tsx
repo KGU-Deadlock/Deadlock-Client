@@ -27,6 +27,7 @@ export function AuthInitializer({ children }: AuthInitializerProps) {
     accessToken,
     isInitialized,
     isLoggedOut,
+    userName,
     setAccessToken,
     setIsInitialized,
   } = useAuthStore();
@@ -78,7 +79,11 @@ export function AuthInitializer({ children }: AuthInitializerProps) {
 
     if (!isInitialized) {
       if (!ONBOARDING_ACTIVITIES.has(currentActivity)) {
-        replace("OnboardingNamePage", {}, { animate: false });
+        replace(
+          "OnboardingNamePage",
+          { name: userName ?? "" },
+          { animate: false },
+        );
       }
       return;
     }
@@ -92,6 +97,7 @@ export function AuthInitializer({ children }: AuthInitializerProps) {
     isAppRoute,
     isBootstrappingAuth,
     isInitialized,
+    userName,
     replace,
   ]);
 
