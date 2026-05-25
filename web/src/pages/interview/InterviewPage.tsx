@@ -67,10 +67,10 @@ export default function InterviewPage() {
   return (
     <AppScreen>
       <Header left={<BackButton />} />
-      <div className="pt-header flex flex-col gap-6">
+      <div className="px-gutter pt-header flex flex-col gap-6">
         <div>
-          <PageTitle>
-            <span>모의 면접</span>
+          <PageTitle className="px-0">
+            <span className="text-start">모의 면접</span>
           </PageTitle>
           <Subtitle className="mt-2">
             회사명과 직무를 입력하면 AI가 맞춤 질문을 준비해요.
