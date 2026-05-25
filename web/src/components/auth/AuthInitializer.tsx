@@ -12,6 +12,8 @@ interface AuthInitializerProps {
   children: ReactNode;
 }
 
+const PUBLIC_ACTIVITIES = new Set(["LoginPage"]);
+
 const ONBOARDING_ACTIVITIES = new Set([
   "OnboardingNamePage",
   "OnboardingInterestPage",
@@ -34,7 +36,15 @@ export function AuthInitializer({ children }: AuthInitializerProps) {
     const isInitialized = tokenStorage.getIsInitialized();
     const userName = tokenStorage.getUserName();
 
-    if (!isAppRoute || isLoggedOut) {
+    if (!isAppRoute) {
+      setIsBootstrappingAuth(false);
+      return;
+    }
+
+    if (isLoggedOut) {
+      if (currentActivity && !PUBLIC_ACTIVITIES.has(currentActivity)) {
+        replace("LoginPage", {}, { animate: false });
+      }
       setIsBootstrappingAuth(false);
       return;
     }
@@ -64,7 +74,7 @@ export function AuthInitializer({ children }: AuthInitializerProps) {
         const accessToken = tokenData?.accessToken;
 
         if (!res.ok || !accessToken) {
-          if (currentActivity && currentActivity !== "LoginPage") {
+          if (currentActivity && !PUBLIC_ACTIVITIES.has(currentActivity)) {
             replace("LoginPage", {}, { animate: false });
           }
           return;
