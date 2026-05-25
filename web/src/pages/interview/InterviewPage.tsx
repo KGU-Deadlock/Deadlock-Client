@@ -69,7 +69,7 @@ export default function InterviewPage() {
       <Header left={<BackButton />} />
       <div className="px-gutter pt-header flex flex-col gap-6">
         <div>
-          <PageTitle className="px-0">
+          <PageTitle className="!px-0">
             <span className="text-start">모의 면접</span>
           </PageTitle>
           <Subtitle className="mt-2">
