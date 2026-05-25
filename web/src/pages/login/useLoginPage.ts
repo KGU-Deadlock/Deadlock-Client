@@ -50,7 +50,11 @@ export function useLoginPage() {
     if (isUser) {
       replace("HomePage", {}, { animate: false });
     } else {
-      replace("OnboardingNamePage", { name: nickname ?? "" }, { animate: false });
+      replace(
+        "OnboardingNamePage",
+        { name: nickname ?? "" },
+        { animate: false },
+      );
     }
   };
 

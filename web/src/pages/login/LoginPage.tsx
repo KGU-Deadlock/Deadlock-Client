@@ -8,10 +8,9 @@ import { LoginTerminalHello } from "./LoginTerminalHello";
 import { useLoginPage } from "./useLoginPage";
 
 export default function LoginPage() {
-  const { isKakaoReady, isPending, isDevPending, handleKakaoLogin, handleDevLogin } =
+  const { isKakaoReady, isPending, isDevPending, handleKakaoLogin } =
     useLoginPage();
 
-  const isDev = import.meta.env.DEV;
   const isButtonDisabled = isPending || !isKakaoReady;
 
   return (
@@ -47,24 +46,6 @@ export default function LoginPage() {
         </div>
 
         <div className="px-gutter relative z-10 w-full pb-10">
-          {isDev && (
-            <Button
-              size="large"
-              state={isButtonDisabled ? "disabled" : "active"}
-              className="mb-3 w-full"
-              onClick={handleDevLogin}
-              disabled={isButtonDisabled}
-            >
-              {isDevPending ? (
-                <span className="flex items-center gap-2">
-                  <span className="border-gray-004 h-5 w-5 animate-spin rounded-full border-2 border-t-transparent" />
-                  로딩 중...
-                </span>
-              ) : (
-                "[DEV] 개발자 로그인"
-              )}
-            </Button>
-          )}
           <Button
             size="large"
             state={isButtonDisabled ? "disabled" : "kakao"}
