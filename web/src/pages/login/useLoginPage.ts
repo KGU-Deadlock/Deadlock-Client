@@ -1,7 +1,5 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { useEffect, useRef, useState } from "react";
-
-import { useFlow } from "@/app/stackflow";
+import { useEffect, useState } from "react";
 
 import { useAuthStore } from "@/model/auth/useAuthStore";
 
@@ -10,9 +8,7 @@ import { authQueries } from "@/api/auth/api.query";
 import { toastError, toastSuccess } from "@/utils/toast";
 
 export function useLoginPage() {
-  const { replace } = useFlow();
-  const { accessToken, isInitialized, setAccessToken, setIsInitialized } =
-    useAuthStore();
+  const { setAccessToken, setIsInitialized } = useAuthStore();
 
   const [isProcessingCode] = useState(() => {
     const params = new URLSearchParams(window.location.search);
@@ -26,18 +22,6 @@ export function useLoginPage() {
     return false;
   });
 
-  // 로그인 성공 후 store가 실제로 채워지면 navigate
-  const pendingNavigate = useRef(false);
-  useEffect(() => {
-    if (!pendingNavigate.current || !accessToken) return;
-    pendingNavigate.current = false;
-    if (isInitialized) {
-      replace("HomePage", {}, { animate: false });
-    } else {
-      replace("OnboardingNamePage", {}, { animate: false });
-    }
-  }, [accessToken, isInitialized, replace]);
-
   useEffect(() => {
     if (isKakaoReady) return;
     const script = document.querySelector<HTMLScriptElement>(
@@ -49,11 +33,11 @@ export function useLoginPage() {
     return () => script.removeEventListener("load", onLoad);
   }, [isKakaoReady]);
 
-  const handleLoginSuccess = (token: string, isUser?: boolean) => {
+  const handleLoginSuccess = (accessToken: string, isUser?: boolean) => {
     toastSuccess("로그인에 성공했어요");
-    setAccessToken(token);
+    setAccessToken(accessToken);
     setIsInitialized(Boolean(isUser));
-    pendingNavigate.current = true;
+    window.location.replace(isUser ? "/" : "/onboarding/name");
   };
 
   const { mutateAsync: loginWithKakao, isPending: isKakaoPending } =
