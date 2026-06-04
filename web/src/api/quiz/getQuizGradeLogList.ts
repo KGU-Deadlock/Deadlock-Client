@@ -9,5 +9,6 @@ export function getQuizGradeLogList(): Promise<
 > {
   return authApi.get<GetGradingLogListResponse>(
     END_POINTS.QUIZ.QUIZ_GRADING_LIST,
+    { timeout: 30_000 },
   );
 }

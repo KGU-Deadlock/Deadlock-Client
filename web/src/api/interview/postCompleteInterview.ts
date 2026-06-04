@@ -10,5 +10,6 @@ export function postCompleteInterview(
   return authApi.post<FeedbackResponse, undefined>(
     END_POINTS.INTERVIEW.COMPLETE(interviewId),
     undefined,
+    { timeout: 60_000 },
   );
 }

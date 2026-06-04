@@ -11,5 +11,6 @@ export function postSubmitAnswer(
   return authApi.post<SubmitAnswerResponse, SubmitAnswerRequest>(
     END_POINTS.INTERVIEW.ANSWER(interviewId),
     body,
+    { timeout: 60_000 },
   );
 }

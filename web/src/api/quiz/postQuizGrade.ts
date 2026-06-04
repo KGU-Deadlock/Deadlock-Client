@@ -10,5 +10,6 @@ export function postQuizGrade(
   return authApi.post<SubmitAnswersResponse, UserGradingCommand[]>(
     END_POINTS.QUIZ.QUIZ_GRADING,
     body,
+    { timeout: 60_000 },
   );
 }
